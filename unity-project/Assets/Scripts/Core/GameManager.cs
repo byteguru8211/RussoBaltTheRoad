@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
         Profile = SaveSystem.LoadProfile();
         Settings = SaveSystem.LoadSettings();
         AudioListener.volume = Settings.masterVolume;
+        if (LanSessionController.Instance == null)
+            new GameObject("LanSessionController").AddComponent<LanSessionController>();
         Application.targetFrameRate = 60;
         Screen.SetResolution(1600, 900, false);
     }

@@ -17,9 +17,9 @@
       "height_m": 1.925,
       "stats": {
         "meshes": 1,
-        "vertices": 6764,
-        "polygons": 6850,
-        "triangles": 13244,
+        "vertices": 12576,
+        "polygons": 12662,
+        "triangles": 24696,
         "dimensions_m": [
           0.7393,
           0.36,
@@ -49,9 +49,9 @@
       "height_m": 1.92,
       "stats": {
         "meshes": 1,
-        "vertices": 6090,
-        "polygons": 6186,
-        "triangles": 11916,
+        "vertices": 11902,
+        "polygons": 11998,
+        "triangles": 23368,
         "dimensions_m": [
           0.7393,
           0.4,
@@ -81,22 +81,22 @@
       "height_m": 2.022,
       "stats": {
         "meshes": 1,
-        "vertices": 6020,
-        "polygons": 6078,
-        "triangles": 11788,
+        "vertices": 11878,
+        "polygons": 11970,
+        "triangles": 23344,
         "dimensions_m": [
-          0.7415,
-          0.4616,
+          0.7393,
+          0.5054,
           2.0222
         ],
         "bounds_min_m": [
-          -0.37,
-          -0.2316,
+          -0.3677,
+          -0.2527,
           0.005
         ],
         "bounds_max_m": [
           0.3715,
-          0.23,
+          0.2527,
           2.0272
         ]
       },

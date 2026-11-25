@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,7 +19,9 @@ public static class GameBuilderEditor
     {
         CreateFolders();
         ConfigureImporters();
+        ConfigureUIImageImporters();
         BuildVehiclePrefabs();
+        BuildNetworkPrefabs();
         BuildEnvironmentPrefabs();
         CreateTrackAssets();
         CreateScenes();
@@ -54,6 +58,25 @@ public static class GameBuilderEditor
             importer.materialImportMode = ModelImporterMaterialImportMode.ImportStandard;
             importer.animationType = path.Contains("Characters") ? ModelImporterAnimationType.Generic : ModelImporterAnimationType.None;
             importer.SaveAndReimport();
+        }
+    }
+
+    public static void ConfigureUIImageImporters()
+    {
+        foreach (string folder in new[] { "Assets/Resources/UI", "Assets/UI/Images" })
+        {
+            if (!AssetDatabase.IsValidFolder(folder)) continue;
+            foreach (string guid in AssetDatabase.FindAssets("t:Texture2D", new[] { folder }))
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+                if (importer == null) continue;
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spriteImportMode = SpriteImportMode.Single;
+                importer.maxTextureSize = 2048;
+                importer.textureCompression = TextureImporterCompression.CompressedHQ;
+                importer.SaveAndReimport();
+            }
         }
     }
 
@@ -114,6 +137,7 @@ public static class GameBuilderEditor
         controller.steeringWheelVisual = FindTransformContains(instance.transform, "SteeringWheel_Pivot");
         wrapper.AddComponent<VehicleInput1912>().vehicle = controller;
         wrapper.AddComponent<EngineAudio1912>().vehicle = controller;
+        wrapper.AddComponent<VehicleEffects1912>().vehicle = controller;
 
         ConvertMaterials(instance);
         PrefabUtility.SaveAsPrefabAsset(wrapper, $"Assets/Resources/Vehicles/{id}.prefab");
@@ -132,6 +156,31 @@ public static class GameBuilderEditor
         collider.suspensionDistance = 0.16f;
         collider.suspensionSpring = new JointSpring { spring = 42000f, damper = 4500f, targetPosition = 0.5f };
         return collider;
+    }
+
+    public static void BuildNetworkPrefabs()
+    {
+        GameObject source = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Vehicles/russo_balt_c24_55.prefab");
+        if (source == null) return;
+        GameObject instance = UnityEngine.Object.Instantiate(source);
+        instance.name = "NetworkPlayerCar";
+        if (instance.GetComponent<NetworkObject>() == null) instance.AddComponent<NetworkObject>();
+        NetworkTransform transform = instance.GetComponent<NetworkTransform>();
+        if (transform == null) transform = instance.AddComponent<NetworkTransform>();
+        transform.AuthorityMode = NetworkTransform.AuthorityModes.Owner;
+        transform.Interpolate = true;
+        transform.SyncScaleX = false;
+        transform.SyncScaleY = false;
+        transform.SyncScaleZ = false;
+        if (instance.GetComponent<NetworkPlayerCar>() == null) instance.AddComponent<NetworkPlayerCar>();
+        PrefabUtility.SaveAsPrefabAsset(instance, "Assets/Resources/Vehicles/network_russo_balt.prefab");
+        UnityEngine.Object.DestroyImmediate(instance);
+
+        GameObject lobby = new GameObject("LobbyManager");
+        lobby.AddComponent<NetworkObject>();
+        lobby.AddComponent<LobbyManager>();
+        PrefabUtility.SaveAsPrefabAsset(lobby, "Assets/Resources/Networking/LobbyManager.prefab");
+        UnityEngine.Object.DestroyImmediate(lobby);
     }
 
     private static void BuildEnvironmentPrefabs()
@@ -241,6 +290,7 @@ public static class GameBuilderEditor
     {
         CreateMenuScene("MainMenu", "MainMenuUI");
         CreateMenuScene("Garage", "GarageUI");
+        CreateLobbyScene();
         CreateRaceScene("Race_Winter");
         CreateRaceScene("Race_Alps");
         CreateRaceScene("Race_Monaco");
@@ -264,6 +314,18 @@ public static class GameBuilderEditor
         EditorSceneManager.SaveScene(scene, $"Assets/Scenes/{sceneName}.unity");
     }
 
+    private static void CreateLobbyScene()
+    {
+        Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        GameObject camera = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener));
+        camera.tag = "MainCamera";
+        camera.transform.position = new Vector3(0, 2, -8);
+        GameObject light = new GameObject("Directional Light", typeof(Light));
+        light.GetComponent<Light>().type = LightType.Directional;
+        new GameObject("GameManager").AddComponent<GameManager>();
+        EditorSceneManager.SaveScene(scene, "Assets/Scenes/Lobby.unity");
+    }
+
     private static void CreateRaceScene(string sceneName)
     {
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
@@ -277,16 +339,17 @@ public static class GameBuilderEditor
         EditorSceneManager.SaveScene(scene, $"Assets/Scenes/{sceneName}.unity");
     }
 
-    private static void ConfigurePlayerSettings()
+    public static void ConfigurePlayerSettings()
     {
         PlayerSettings.companyName = "RussoBalt The Road";
         PlayerSettings.productName = "RussoBalt The Road";
-        PlayerSettings.bundleVersion = "0.3.0";
-        PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Standalone, "com.russobalt.theroad");
+        PlayerSettings.bundleVersion = "0.4.0";
+        PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone, "com.russobalt.theroad");
         EditorBuildSettings.scenes = new[]
         {
             new EditorBuildSettingsScene("Assets/Scenes/MainMenu.unity", true),
             new EditorBuildSettingsScene("Assets/Scenes/Garage.unity", true),
+            new EditorBuildSettingsScene("Assets/Scenes/Lobby.unity", true),
             new EditorBuildSettingsScene("Assets/Scenes/Race_Winter.unity", true),
             new EditorBuildSettingsScene("Assets/Scenes/Race_Alps.unity", true),
             new EditorBuildSettingsScene("Assets/Scenes/Race_Monaco.unity", true)

@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Garage.unity
     guid: b641b5ad49af51b4e8dcce3ac69337d8
   - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: f31ca4f91ff7c6d4084d3acf3e1f3136
+  - enabled: 1
     path: Assets/Scenes/Race_Winter.unity
     guid: 7ff05dc9f3292644f90eb30916905637
   - enabled: 1

@@ -1312,6 +1312,7 @@ GameObject:
   - component: {fileID: 8192063229721675953}
   - component: {fileID: 4870855890425906235}
   - component: {fileID: 7909896964600551528}
+  - component: {fileID: 1568264392514510901}
   m_Layer: 0
   m_Name: ford_model_t_1912
   m_TagString: Untagged
@@ -1456,6 +1457,19 @@ MonoBehaviour:
   roadSource: {fileID: 0}
   windSource: {fileID: 0}
   starterSource: {fileID: 0}
+--- !u!114 &1568264392514510901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3852528352525060457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9152df5a30b70d439461654d44fcffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
+  vehicle: {fileID: 8192063229721675953}
 --- !u!1 &3906597260005080671
 GameObject:
   m_ObjectHideFlags: 0

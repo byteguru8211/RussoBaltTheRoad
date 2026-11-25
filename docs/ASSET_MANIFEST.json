@@ -4,36 +4,36 @@
   "counts": {
     "fbx": 58,
     "blend": 6,
-    "png": 41,
+    "png": 43,
     "wav": 16,
-    "manifest_files": 159
+    "manifest_files": 162
   },
-  "total_bytes": 186157253,
+  "total_bytes": 188827851,
   "files": [
     {
       "file": "game_assets/characters/asset_metadata.json",
-      "bytes": 2436,
-      "sha256": "7835a64da4ecd335a82ce59154321c1bd64dcfff0deb908df703b6233e3f48d1"
+      "bytes": 2446,
+      "sha256": "675f1a7c87ffecae868304196ead4846526cee5e0ed4e4eb31fa8cb744bd18ca"
     },
     {
       "file": "game_assets/characters/Driver_1912.fbx",
-      "bytes": 2495820,
-      "sha256": "919e716b904e80cc3752c65f080012fcbe3a2c0442b9d2032b5c9d994ec042d8"
+      "bytes": 2760652,
+      "sha256": "70ba0c99e041959bf45d4807d2d976cd99bca668468eafc86ce9697e117b9805"
     },
     {
       "file": "game_assets/characters/Historical_Characters.blend",
-      "bytes": 5828304,
-      "sha256": "936a85d38478b7dd28cc8af6e74c603ccd2987d64cc80d219c43b9ddbfa3b352"
+      "bytes": 6531752,
+      "sha256": "919e4c75fed0f904627151d8b8f2fe6a72d131219cb8999e30eff8f46c111338"
     },
     {
       "file": "game_assets/characters/Lady_1912.fbx",
-      "bytes": 2971324,
-      "sha256": "46d4b14c24f098f0d5000e71c36c2744b4d40585630f6b3bec905838b5825219"
+      "bytes": 3240172,
+      "sha256": "3b95c450cbbd8f9312881851ea0d7ced3542c056f02bf176a520fc95bb317d3a"
     },
     {
       "file": "game_assets/characters/Mechanic_1912.fbx",
-      "bytes": 2463804,
-      "sha256": "a585dc0943ad990264cff88f6307ed207abfaf28a823f317529d094883062de8"
+      "bytes": 2729212,
+      "sha256": "414b638787fc951ae003c8c615f75e2b27eee0e10b3d4a26a4a7ac5c1fe8e60d"
     },
     {
       "file": "game_assets/environment/Russia_1912/asset_metadata.json",
@@ -262,8 +262,8 @@
     },
     {
       "file": "game_assets/textures/shared/manifest.json",
-      "bytes": 6543,
-      "sha256": "9adf7c479d1a47119ffe1f0fd4337c49fbe10473a4559207effb4ad34f8b140e"
+      "bytes": 6727,
+      "sha256": "26a340c29ff1a3ec929415b69c63b4c625cccad70e770bc396cd817f17cdd2b6"
     },
     {
       "file": "game_assets/textures/shared/paint_racing_green_basecolor.png",
@@ -279,6 +279,11 @@
       "file": "game_assets/textures/shared/paint_racing_green_roughness.png",
       "bytes": 51564,
       "sha256": "740a7e2269f56578acff3bdd4fb3c288a7378395fab9b8d51ec5bac212e47733"
+    },
+    {
+      "file": "game_assets/textures/shared/particle_dust.png",
+      "bytes": 147488,
+      "sha256": "e7d28f5f3af8b90be9f62fec92507037e670466c6b1eb576d779913801e5856d"
     },
     {
       "file": "game_assets/textures/shared/plaster_ochre_basecolor.png",
@@ -687,8 +692,8 @@
     },
     {
       "file": "previews/Contact_Sheet.png",
-      "bytes": 1187919,
-      "sha256": "dadc497aa47ae6e75268354a3d10cb0b7f1c5a7c1c7e243b17a95d0c5b3bbc9f"
+      "bytes": 1188092,
+      "sha256": "99a6e7e6703cd8b167acb51639ce3e5d9ad15af36367dec576d294d3b66ee817"
     },
     {
       "file": "previews/Era_Vehicles_preview.png",
@@ -696,9 +701,14 @@
       "sha256": "f6d5b68c26dabd798bf3fb194aed1bd3ae59148d7621549d27f14b534671774b"
     },
     {
+      "file": "previews/Historical_Characters_detail.png",
+      "bytes": 1011854,
+      "sha256": "c88d20cace1fee8e695ce94987e3b7d0f3503a9c0669dd955bd43d3833d9880c"
+    },
+    {
       "file": "previews/Historical_Characters_preview.png",
-      "bytes": 1103698,
-      "sha256": "f8aa2f01966f721bad04535d379863409df7b3bb2e67eaaced5e3c3b1faee5fa"
+      "bytes": 1107391,
+      "sha256": "91e43e88f274585d372d41d439e72266d6748c85866573854f86bdf25a87f54d"
     },
     {
       "file": "previews/Russia_1912_Modular_Kit_preview.png",
@@ -742,8 +752,8 @@
     },
     {
       "file": "docs/ASSET_CATALOG.md",
-      "bytes": 7129,
-      "sha256": "58ac0302710375651e520014e8de0d45e65d1ff1f201736122d8d122a1cd5c7d"
+      "bytes": 7277,
+      "sha256": "0d9eb8c7ea28e6f8d07aa16fb1a782b405cd1c0d43066d70b5441bda99e1363b"
     },
     {
       "file": "docs/AUDIO_MAP.md",
@@ -752,13 +762,13 @@
     },
     {
       "file": "docs/FBX_VALIDATION.json",
-      "bytes": 40557,
-      "sha256": "25fc5951415f4f85bc653807be48bbdfd3b75efff877a451d50cb9d3e16dae93"
+      "bytes": 40568,
+      "sha256": "08a3bbffccf5b78cce95171135b6e1a7457056534e41461b31e5d763f0f5ecb9"
     },
     {
       "file": "docs/GAME_PRODUCTION_PLAN.md",
-      "bytes": 10511,
-      "sha256": "cb1d3c0a2244e7bda9e2c8981543a7e2424755a2be50bf2c9b45f61e23f0f512"
+      "bytes": 10550,
+      "sha256": "cf6e2136a2b48c8fa38aa5b9989a413da9fdb00c83e91506a5637568dd13e9e8"
     },
     {
       "file": "docs/HISTORICAL_RESEARCH.md",
@@ -766,19 +776,24 @@
       "sha256": "6915e82410e906444587e3a260557297ac8c647a18c2558448a682ff7bd0a2cf"
     },
     {
+      "file": "docs/LAN_MULTIPLAYER.md",
+      "bytes": 1889,
+      "sha256": "9a65d693567f410f241cc36c195c3ae42923c4ca867952b4cf7a430b9aa3d955"
+    },
+    {
       "file": "docs/UNITY_ASSET_PIPELINE.md",
-      "bytes": 6023,
-      "sha256": "f6b9f7eb87375e2d5c14ba733c8aaba14531b6e266f6fa81c3f3ab2a6df98ba4"
+      "bytes": 6839,
+      "sha256": "9acbea30342bfb20eb31c156a13c2cd9b364fad77ae908ee177c37ba431fee81"
     },
     {
       "file": "docs/UNITY_IMPLEMENTATION.md",
-      "bytes": 5043,
-      "sha256": "28ee5d1a6dccb3b574517ff7e95233b00acb82adc9ab1771004ff715ac4f0c4f"
+      "bytes": 6169,
+      "sha256": "23f9d4e17f8f45db416f822a1eb30e7eb6e91f1818c15a351d120140a1797d9d"
     },
     {
       "file": "docs/VALIDATION_REPORT.md",
-      "bytes": 3335,
-      "sha256": "eb6e7c49d19165cae5aa1a47b9392ba5665283c20b3ff16aaad6f220bdb6c4b5"
+      "bytes": 3966,
+      "sha256": "3546c1506bd6cb42bedee535c8c5e58fbdd309bf0716acf40af5063a5d6bf6e0"
     },
     {
       "file": "references/history/download_manifest.json",

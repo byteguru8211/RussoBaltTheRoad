@@ -2738,6 +2738,7 @@ GameObject:
   - component: {fileID: 5891874941940064571}
   - component: {fileID: 5561756276122814831}
   - component: {fileID: 7891726749044075032}
+  - component: {fileID: 6224832554888264208}
   m_Layer: 0
   m_Name: benz_1912_racer_concept
   m_TagString: Untagged
@@ -2882,6 +2883,19 @@ MonoBehaviour:
   roadSource: {fileID: 0}
   windSource: {fileID: 0}
   starterSource: {fileID: 0}
+--- !u!114 &6224832554888264208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5068192681453667864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9152df5a30b70d439461654d44fcffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
+  vehicle: {fileID: 5891874941940064571}
 --- !u!1 &5122023839470539527
 GameObject:
   m_ObjectHideFlags: 0

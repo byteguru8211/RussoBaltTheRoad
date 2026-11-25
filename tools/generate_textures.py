@@ -153,6 +153,18 @@ roof_color = np.asarray(img, dtype=np.float32)
 roof_height = np.asarray(himg, dtype=np.float32) / 255.0
 save_set("roof_iron", roof_color, roof_height, 150, 2.2)
 
+particle_size = 256
+yy, xx = np.mgrid[0:particle_size, 0:particle_size]
+distance = np.sqrt((xx - particle_size / 2) ** 2 + (yy - particle_size / 2) ** 2) / (particle_size / 2)
+alpha = np.uint8(np.clip((1.0 - distance) ** 2 * 255, 0, 255))
+particle_noise = RNG.uniform(0.82, 1.0, (particle_size, particle_size))
+particle = np.zeros((particle_size, particle_size, 4), dtype=np.uint8)
+particle[:, :, :3] = np.uint8(np.array([210, 190, 150])[None, None, :] * particle_noise[:, :, None])
+particle[:, :, 3] = alpha
+particle_path = OUT / "particle_dust.png"
+Image.fromarray(particle, "RGBA").save(particle_path, optimize=True)
+MANIFEST.append({"file": particle_path.relative_to(ROOT).as_posix(), "kind": "particle", "license": "CC0-1.0", "generator": "tools/generate_textures.py"})
+
 (OUT / "manifest.json").write_text(json.dumps({
     "generated": "2026-11-24",
     "license": "CC0-1.0",

@@ -2437,6 +2437,7 @@ GameObject:
   - component: {fileID: 8369551682164968589}
   - component: {fileID: 2721203528572650461}
   - component: {fileID: 5948629080447662937}
+  - component: {fileID: 6731395943685790441}
   m_Layer: 0
   m_Name: fiat_s76_1910
   m_TagString: Untagged
@@ -2581,6 +2582,19 @@ MonoBehaviour:
   roadSource: {fileID: 0}
   windSource: {fileID: 0}
   starterSource: {fileID: 0}
+--- !u!114 &6731395943685790441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9031121460109269766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9152df5a30b70d439461654d44fcffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
+  vehicle: {fileID: 8369551682164968589}
 --- !u!1 &9071691583098074656
 GameObject:
   m_ObjectHideFlags: 0

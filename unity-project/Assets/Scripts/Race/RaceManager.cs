@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class RaceManager : MonoBehaviour
 {
     public enum RaceState { Intro, Countdown, Racing, Finished }
+    public static RaceManager Instance { get; private set; }
 
     public TrackData TrackData { get; private set; }
     public TrackBuilder TrackBuilder { get; private set; }
@@ -18,14 +20,18 @@ public class RaceManager : MonoBehaviour
     public int CheckpointIndex { get; private set; }
     public int CompletedLaps { get; private set; }
     public int CurrentPosition { get; private set; } = 1;
-    public int RacersCount => AI.Count + 1;
+    public int RacersCount => networkMode && networkCars.Count > 0 ? networkCars.Count : AI.Count + 1;
     public int Reward { get; private set; }
     public bool PlayerFinished { get; private set; }
     public bool PlayerWon { get; private set; }
     public string NextInstruction { get; private set; } = "Прямо";
 
+    private bool networkMode;
+    private readonly List<NetworkPlayerCar> networkCars = new List<NetworkPlayerCar>();
+
     private void Awake()
     {
+        Instance = this;
         EnsureServices();
         TrackData = Resources.Load<TrackData>($"Tracks/{GameManager.Instance.SelectedTrackId}");
         if (TrackData == null)
@@ -36,12 +42,14 @@ public class RaceManager : MonoBehaviour
         foreach (Checkpoint checkpoint in TrackBuilder.GetComponentsInChildren<Checkpoint>())
             checkpoint.raceManager = this;
         GameManager.Instance.Profile.racesStarted++;
-        SpawnRacers();
-        CheckpointIndex = 1;
-        SetupCamera();
-        HUD = RaceHUD.Create(this);
-        State = RaceState.Intro;
-        StoryUI.Show(TrackData.storyTitle, TrackData.storyText, TrackData.previewResource, BeginCountdown);
+        networkMode = NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening;
+        if (networkMode)
+            StartCoroutine(SetupNetworkRace());
+        else
+        {
+            SpawnRacers();
+            BeginAfterSetup();
+        }
     }
 
     private void EnsureServices()
@@ -88,6 +96,43 @@ public class RaceManager : MonoBehaviour
             ai.progress = -0.008f * (i + 1);
             AI.Add(ai);
         }
+    }
+
+    private IEnumerator SetupNetworkRace()
+    {
+        float timeout = 0f;
+        while (networkCars.Count == 0 && timeout < 5f)
+        {
+            networkCars.AddRange(UnityEngine.Object.FindObjectsByType<NetworkPlayerCar>());
+            timeout += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        if (NetworkManager.Singleton.IsServer)
+        {
+            for (int i = 0; i < networkCars.Count; i++)
+                networkCars[i].GridSlot.Value = i;
+        }
+        Player = networkCars.Find(car => car.IsOwner)?.vehicle;
+        if (Player == null)
+        {
+            networkMode = false;
+            SpawnRacers();
+        }
+        else
+        {
+            foreach (NetworkPlayerCar car in networkCars)
+                if (car.vehicle != null) car.vehicle.SetSurfaceGrip(TrackData.surfaceGrip);
+        }
+        BeginAfterSetup();
+    }
+
+    private void BeginAfterSetup()
+    {
+        CheckpointIndex = 1;
+        SetupCamera();
+        HUD = RaceHUD.Create(this);
+        State = RaceState.Intro;
+        StoryUI.Show(TrackData.storyTitle, TrackData.storyText, TrackData.previewResource, BeginCountdown);
     }
 
     private void SetupCamera()
@@ -149,9 +194,18 @@ public class RaceManager : MonoBehaviour
     {
         float playerProgress = CompletedLaps + CheckpointIndex / (float)TrackBuilder.checkpointCount;
         int position = 1;
-        foreach (AIDriver1912 ai in AI)
-            if (ai.RaceProgress > playerProgress)
-                position++;
+        if (networkMode)
+        {
+            foreach (NetworkPlayerCar car in networkCars)
+                if (!car.IsOwner && car.RaceProgress.Value > playerProgress)
+                    position++;
+        }
+        else
+        {
+            foreach (AIDriver1912 ai in AI)
+                if (ai.RaceProgress > playerProgress)
+                    position++;
+        }
         CurrentPosition = position;
     }
 

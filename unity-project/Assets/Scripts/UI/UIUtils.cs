@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
@@ -8,13 +9,16 @@ public static class UIUtils
 {
     public static Canvas CreateCanvas(string name, int sortingOrder = 10)
     {
+        Canvas existing = UnityEngine.Object.FindObjectsByType<Canvas>().FirstOrDefault(c => c.name == name);
+        if (existing != null)
+            return existing;
         GameObject canvasObject = new GameObject(name, typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         Canvas canvas = canvasObject.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = sortingOrder;
         CanvasScaler scaler = canvasObject.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1600, 900);
+        scaler.referenceResolution = new Vector2(1920, 1080);
         scaler.matchWidthOrHeight = 0.5f;
         if (UnityEngine.Object.FindAnyObjectByType<EventSystem>() == null)
         {
@@ -22,6 +26,19 @@ public static class UIUtils
             UnityEngine.Object.DontDestroyOnLoad(eventSystem);
         }
         return canvas;
+    }
+
+    public static Sprite LoadSprite(string resource)
+    {
+        Sprite sprite = Resources.Load<Sprite>(resource);
+        if (sprite != null)
+            return sprite;
+        Texture2D texture = Resources.Load<Texture2D>(resource);
+        if (texture == null)
+            return null;
+        sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100f);
+        sprite.name = resource;
+        return sprite;
     }
 
     public static RectTransform Rect(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax)
@@ -36,17 +53,27 @@ public static class UIUtils
         return rect;
     }
 
-    public static Image Panel(Transform parent, string name, Color color, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax)
+    public static Image Panel(Transform parent, string name, Color color, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax, bool raycastTarget = true)
     {
         Image image = Rect(parent, name, anchorMin, anchorMax, offsetMin, offsetMax).gameObject.AddComponent<Image>();
         image.color = color;
+        image.raycastTarget = raycastTarget;
         return image;
     }
 
-    public static Text Text(Transform parent, string name, string value, int size, Color color, TextAnchor alignment, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax)
+    public static Image Card(Transform parent, string name, Color color, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax)
+    {
+        Image image = Panel(parent, name, color, anchorMin, anchorMax, offsetMin, offsetMax);
+        Outline outline = image.gameObject.AddComponent<Outline>();
+        outline.effectColor = new Color(0.77f, 0.63f, 0.36f, 0.42f);
+        outline.effectDistance = new Vector2(2f, 2f);
+        return image;
+    }
+
+    public static Text Text(Transform parent, string name, string value, int size, Color color, TextAnchor alignment, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax, Font font = null)
     {
         Text text = Rect(parent, name, anchorMin, anchorMax, offsetMin, offsetMax).gameObject.AddComponent<Text>();
-        text.font = UITheme.Font;
+        text.font = font != null ? font : UITheme.Font;
         text.text = value;
         text.fontSize = size;
         text.color = color;
@@ -55,32 +82,43 @@ public static class UIUtils
         return text;
     }
 
-    public static Button Button(Transform parent, string name, string label, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax, Action action, int fontSize = 28)
+    public static Button Button(Transform parent, string name, string label, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax, Action action, int fontSize = 28, Font font = null)
     {
-        Button button = Panel(parent, name, UITheme.Panel, anchorMin, anchorMax, offsetMin, offsetMax).gameObject.AddComponent<Button>();
+        Button button = Card(parent, name, UITheme.Panel, anchorMin, anchorMax, offsetMin, offsetMax).gameObject.AddComponent<Button>();
         button.targetGraphic = button.image;
         ColorBlock colors = button.colors;
         colors.normalColor = UITheme.Panel;
-        colors.highlightedColor = new Color(0.10f, 0.18f, 0.14f, 1f);
+        colors.highlightedColor = UITheme.Raised;
         colors.pressedColor = UITheme.Brass;
-        colors.selectedColor = colors.highlightedColor;
+        colors.selectedColor = UITheme.Raised;
+        colors.fadeDuration = 0.12f;
         button.colors = colors;
-        Text child = Text(button.transform, "Label", label, fontSize, UITheme.Cream, TextAnchor.MiddleCenter, Vector2.zero, Vector2.one, new Vector2(12, 6), new Vector2(-12, -6));
+        Text(button.transform, "Label", label, fontSize, UITheme.Cream, TextAnchor.MiddleCenter, Vector2.zero, Vector2.one, new Vector2(18, 8), new Vector2(-18, -8), font);
         button.onClick.AddListener(() => action?.Invoke());
         return button;
     }
 
     public static Image Background(Transform parent, string textureResource, Color tint)
     {
-        Texture2D texture = Resources.Load<Texture2D>(textureResource);
-        if (texture == null)
-            return Panel(parent, "BackgroundFallback", UITheme.Dark, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        Sprite sprite = LoadSprite(textureResource);
+        if (sprite == null)
+            return Panel(parent, "BackgroundFallback", UITheme.Dark, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero, false);
         Image image = Rect(parent, "Background", Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero).gameObject.AddComponent<Image>();
         image.sprite = sprite;
         image.color = tint;
+        image.preserveAspect = true;
         image.raycastTarget = false;
         return image;
+    }
+
+    public static void Scrim(Transform parent, string name, Color color, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax)
+    {
+        Panel(parent, name, color, anchorMin, anchorMax, offsetMin, offsetMax, false);
+    }
+
+    public static void Divider(Transform parent, string name, Vector2 position, float width)
+    {
+        Panel(parent, name, new Color(0.77f, 0.63f, 0.36f, 0.35f), new Vector2(0f, 1f), new Vector2(0f, 1f), position, position + new Vector2(width, 2f), false);
     }
 
     public static void Slider(Transform parent, string name, string label, float value, Vector2 position, Action<float> changed, float min = 0f, float max = 1f)

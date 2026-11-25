@@ -200,6 +200,12 @@
       "kind": "normal",
       "license": "CC0-1.0",
       "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/particle_dust.png",
+      "kind": "particle",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
     }
   ],
   "note": "Original procedural material maps generated for RussoBalt The Road; no third-party imagery."

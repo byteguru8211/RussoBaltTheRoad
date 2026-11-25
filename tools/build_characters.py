@@ -31,6 +31,13 @@ def torso_mesh(name, rings, mat, root, coll, segments=16):
     return mesh(name, verts, faces, mat, root, coll, True, uvs)
 
 
+def subdiv(obj, levels=1):
+    modifier = obj.modifiers.new("OrganicSubdivision", "SUBSURF")
+    modifier.levels = levels
+    modifier.render_levels = levels
+    return obj
+
+
 def combine_parts(parts, name, root, coll):
     bpy.context.view_layer.update()
     verts, faces, loop_uvs, smooth, face_materials = [], [], [], [], []
@@ -101,6 +108,8 @@ def build_body(kind, root, coll, p):
 
     eye_white = material("CHR_Eye_White", (0.78, 0.75, 0.66), roughness=0.35)
     iris = material("CHR_Iris", (0.055, 0.075, 0.065), roughness=0.28)
+    lips = material("CHR_Lips", (0.32, 0.12, 0.09), roughness=0.58)
+    nails = material("CHR_Nails", (0.62, 0.46, 0.34), roughness=0.42)
     skin_bsdf = p["skin"].node_tree.nodes.get("Principled BSDF")
     if skin_bsdf and "Subsurface Weight" in skin_bsdf.inputs:
         skin_bsdf.inputs["Subsurface Weight"].default_value = 0.08
@@ -108,20 +117,31 @@ def build_body(kind, root, coll, p):
     for side in (-1, 1):
         x = side * 0.14
         if kind == "lady":
-            add(cone(f"{kind}_Skirt_{side}", (x, 0, 0.68), 0.23, 0.15, 1.05, coat, root, coll, 16))
+            if side == 1:
+                add(subdiv(cone(f"{kind}_Skirt", (0, 0, 0.68), 0.34, 0.20, 1.08, coat, root, coll, 24), 1))
         else:
             add(cylinder_between(f"{kind}_Thigh_{side}", (side * 0.13, 0, 0.96), (side * 0.14, 0, 0.55), 0.092, trousers, root, coll, 14))
             add(cylinder_between(f"{kind}_Shin_{side}", (side * 0.14, 0, 0.55), (side * 0.14, 0, 0.18), 0.075, trousers, root, coll, 14))
         add(box(f"{kind}_Boot_{side}", (x, -0.055, 0.105), (0.17, 0.30, 0.18), shoe, root, coll, 0.055))
         add(box(f"{kind}_Boot_Sole_{side}", (x, -0.055, 0.025), (0.18, 0.31, 0.04), p["rubber"], root, coll, 0.01))
+        for lace in range(3):
+            add(tube(f"{kind}_Boot_Lace_{side}_{lace}", [(x - 0.055, -0.12 + lace * 0.035, 0.19), (x + 0.055, -0.12 + lace * 0.035, 0.19)], 0.004, p["cream"], root, coll, 6))
+        if kind != "lady":
+            add(tube(f"{kind}_Trouser_Crease_{side}", [(x, -0.088, 0.90), (x, -0.082, 0.56), (x, -0.070, 0.22)], 0.006, trousers, root, coll, 6))
     add(sphere(f"{kind}_Pelvis", (0, 0, 0.98), (0.24, 0.15, 0.16), trousers, root, coll, 20, 10))
     rings = [(0.98, 0.20, 0.125), (1.14, 0.19, 0.12), (1.38, 0.235, 0.14), (1.51, 0.215, 0.12)]
-    add(torso_mesh(f"{kind}_Torso", rings, coat, root, coll))
+    add(subdiv(torso_mesh(f"{kind}_Torso", rings, coat, root, coll), 1))
     add(box(f"{kind}_Shirt_Front", (0, -0.137, 1.33), (0.16, 0.022, 0.34), shirt, root, coll, 0.01))
     for side in (-1, 1):
         add(tube(f"{kind}_Coat_Fold_{side}", [(side * 0.11, -0.128, 1.08), (side * 0.15, -0.142, 1.22), (side * 0.13, -0.145, 1.38)], 0.008, coat, root, coll, 6))
     add(tube(f"{kind}_Collar_Left", [(-0.11, -0.13, 1.49), (-0.03, -0.16, 1.43), (0, -0.15, 1.39)], 0.018, shirt, root, coll, 8))
     add(tube(f"{kind}_Collar_Right", [(0.11, -0.13, 1.49), (0.03, -0.16, 1.43), (0, -0.15, 1.39)], 0.018, shirt, root, coll, 8))
+    for side in (-1, 1):
+        add(panel_x(f"{kind}_Lapel_{side}", [(-0.15, 1.47), (-0.02, 1.40), (-0.10, 1.22), (-0.19, 1.38)], side * 0.025, 0.018, coat, root, coll))
+        add(box(f"{kind}_Pocket_{side}", (side * 0.13, -0.135, 1.13), (0.12, 0.025, 0.14), coat, root, coll, 0.012))
+        add(tube(f"{kind}_Pocket_Seam_{side}", [(side * 0.07, -0.154, 1.20), (side * 0.19, -0.154, 1.20)], 0.006, accent, root, coll, 6))
+    for z in (1.24, 1.34, 1.44):
+        add(rivet(f"{kind}_Jacket_Button_{z}", (0.02, -0.162, z), accent, root, coll, 0.010))
     if kind == "driver":
         for z in (1.17, 1.28, 1.39):
             add(rivet(f"{kind}_Coat_Button_{z}", (0.02, -0.166, z), accent, root, coll, 0.012))
@@ -138,7 +158,7 @@ def build_body(kind, root, coll, p):
         add(cylinder_between(f"{kind}_UpperArm_{side}", shoulder, elbow, 0.064, coat, root, coll, 14))
         add(sphere(f"{kind}_Elbow_{side}", elbow, (0.061, 0.061, 0.061), coat, root, coll, 14, 8))
         add(cylinder_between(f"{kind}_Forearm_{side}", elbow, hand, 0.050, coat, root, coll, 14))
-        add(sphere(f"{kind}_Hand_{side}", hand, (0.044, 0.034, 0.058), p["skin"], root, coll, 18, 10))
+        add(subdiv(sphere(f"{kind}_Hand_{side}", hand, (0.044, 0.034, 0.058), p["skin"], root, coll, 18, 10), 1))
         add(box(f"{kind}_Cuff_{side}", (side * 0.305, -0.052, 0.985), (0.105, 0.095, 0.042), shirt, root, coll, 0.009))
         add(tube(f"{kind}_Sleeve_Seam_{side}", [(side * 0.255, -0.052, 1.40), (side * 0.305, -0.061, 1.20), (side * 0.305, -0.079, 1.00)], 0.006, coat, root, coll, 6))
         for finger in range(4):
@@ -147,20 +167,30 @@ def build_body(kind, root, coll, p):
             end = (fx, hand[1] - 0.012, hand[2] - 0.098 + abs(finger - 1.5) * 0.006)
             add(cylinder_between(f"{kind}_Finger_{side}_{finger}", start, end, 0.0065, p["skin"], root, coll, 8))
             add(sphere(f"{kind}_Fingertip_{side}_{finger}", end, (0.007, 0.007, 0.009), p["skin"], root, coll, 10, 6))
+            add(sphere(f"{kind}_Knuckle_{side}_{finger}", (fx, hand[1] - 0.020, hand[2] - 0.045), (0.009, 0.010, 0.010), p["skin"], root, coll, 10, 6))
+            add(box(f"{kind}_Nail_{side}_{finger}", (fx, hand[1] - 0.020, end[2] + 0.002), (0.009, 0.003, 0.014), nails, root, coll, 0.002))
         thumb_start = (hand[0] - side * 0.034, hand[1] - 0.012, hand[2] - 0.012)
         thumb_end = (hand[0] - side * 0.058, hand[1] - 0.042, hand[2] - 0.055)
         add(cylinder_between(f"{kind}_Thumb_{side}", thumb_start, thumb_end, 0.008, p["skin"], root, coll, 8))
+        add(sphere(f"{kind}_Thumb_Nail_{side}", thumb_end, (0.009, 0.004, 0.012), nails, root, coll, 10, 6))
     add(cylinder(f"{kind}_Neck", (0, 0, 1.56), 0.055, 0.14, p["skin"], root, coll, "Z", 16))
-    add(sphere(f"{kind}_Head", (0, -0.005, 1.72), (0.108, 0.095, 0.135), p["skin"], root, coll, 28, 16))
-    add(sphere(f"{kind}_Jaw", (0, -0.022, 1.65), (0.085, 0.080, 0.065), p["skin"], root, coll, 22, 12))
-    add(sphere(f"{kind}_Nose", (0, -0.103, 1.72), (0.020, 0.032, 0.030), p["skin"], root, coll, 16, 10))
+    add(subdiv(sphere(f"{kind}_Head", (0, -0.005, 1.72), (0.108, 0.095, 0.135), p["skin"], root, coll, 28, 16), 1))
+    add(subdiv(sphere(f"{kind}_Jaw", (0, -0.022, 1.65), (0.085, 0.080, 0.065), p["skin"], root, coll, 22, 12), 1))
+    add(sphere(f"{kind}_Chin", (0, -0.060, 1.605), (0.052, 0.038, 0.030), p["skin"], root, coll, 18, 10))
+    for side in (-1, 1):
+        add(sphere(f"{kind}_Cheek_{side}", (side * 0.052, -0.074, 1.690), (0.040, 0.026, 0.034), p["skin"], root, coll, 18, 10))
+    add(subdiv(sphere(f"{kind}_Nose", (0, -0.103, 1.72), (0.020, 0.032, 0.030), p["skin"], root, coll, 16, 10), 1))
     add(sphere(f"{kind}_Nose_Tip", (0, -0.126, 1.705), (0.024, 0.020, 0.018), p["skin"], root, coll, 14, 8))
-    add(tube(f"{kind}_Mouth", [(-0.028, -0.101, 1.655), (0, -0.108, 1.651), (0.028, -0.101, 1.655)], 0.004, p["hair"], root, coll, 6))
+    for side in (-1, 1):
+        add(sphere(f"{kind}_Nostril_{side}", (side * 0.011, -0.139, 1.696), (0.0045, 0.003, 0.003), p["hair"], root, coll, 8, 6))
+    add(tube(f"{kind}_Upper_Lip", [(-0.026, -0.104, 1.652), (0, -0.112, 1.655), (0.026, -0.104, 1.652)], 0.005, lips, root, coll, 8))
+    add(tube(f"{kind}_Lower_Lip", [(-0.023, -0.105, 1.646), (0, -0.111, 1.643), (0.023, -0.105, 1.646)], 0.0055, lips, root, coll, 8))
     for side in (-1, 1):
         add(sphere(f"{kind}_Ear_{side}", (side * 0.108, 0, 1.72), (0.022, 0.016, 0.034), p["skin"], root, coll, 14, 8))
         add(sphere(f"{kind}_Eye_White_{side}", (side * 0.039, -0.093, 1.755), (0.016, 0.008, 0.011), eye_white, root, coll, 14, 8))
         add(sphere(f"{kind}_Iris_{side}", (side * 0.039, -0.101, 1.755), (0.006, 0.003, 0.006), iris, root, coll, 12, 8))
         add(cylinder_between(f"{kind}_Brow_{side}", (side * 0.022, -0.098, 1.783), (side * 0.060, -0.095, 1.785), 0.005, p["hair"], root, coll, 6))
+        add(tube(f"{kind}_Eyelid_{side}", [(side * 0.023, -0.101, 1.758), (side * 0.039, -0.106, 1.766), (side * 0.055, -0.101, 1.758)], 0.0035, p["skin"], root, coll, 6))
     add(sphere(f"{kind}_Hair", (0, 0.008, 1.805), (0.110, 0.095, 0.068), p["hair"], root, coll, 22, 12))
     if kind == "driver":
         add(sphere(f"{kind}_Cap", (0, 0, 1.865), (0.14, 0.13, 0.065), p["leather"], root, coll, 20, 10))
@@ -357,6 +387,17 @@ def build():
     bpy.context.view_layer.update()
     add_studio(target=(0, 0, 1.0), camera=(4.2, -7.0, 3.0), size=5)
     render_preview(PREVIEW_DIR / "Historical_Characters_preview.png", (1400, 900), 48)
+    cam = bpy.data.objects["STUDIO_Camera"]
+    original_location = cam.location.copy()
+    original_rotation = cam.rotation_euler.copy()
+    cam.location = (-0.15, -2.7, 1.95)
+    target = Vector((-1.2, 0, 1.58))
+    cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
+    cam.data.lens = 78
+    render_preview(PREVIEW_DIR / "Historical_Characters_detail.png", (1200, 900), 64)
+    cam.location = original_location
+    cam.rotation_euler = original_rotation
+    cam.data.lens = 52
     save_blend(ASSET_DIR / "Historical_Characters.blend")
     metadata = {
         "asset_id": "historical_characters_1912",

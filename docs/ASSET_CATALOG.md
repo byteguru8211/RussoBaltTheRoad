@@ -85,7 +85,7 @@
 
 Папка: `game_assets/textures/shared/`
 
-33 оригинальные PBR-карты: Base Color, Roughness и Normal для краски, кожи, дерева, ткани, грунта, снега, булыжника, кирпича, штукатурки, кровли и коры. Лицензия CC0.
+34 оригинальных ресурса: PBR-карты Base Color, Roughness и Normal для краски, кожи, дерева, ткани, грунта, снега, булыжника, кирпича, штукатурки, кровли и коры, а также particle-текстура пыли. Лицензия CC0.
 
 ## Звук
 
@@ -108,6 +108,8 @@
 - `previews/Era_Vehicles_preview.png`
 - `previews/Russia_1912_Modular_Kit_preview.png`
 - `previews/Historical_Characters_preview.png`
+- `previews/Historical_Characters_detail.png`
+- `previews/Unity_Contact_Sheet.png`
 
 ## Воспроизводимость
 

@@ -408,6 +408,7 @@ GameObject:
   - component: {fileID: 6690670776008849590}
   - component: {fileID: 312150898349380161}
   - component: {fileID: 1762428777220551058}
+  - component: {fileID: 9127561258821949940}
   m_Layer: 0
   m_Name: mercedes_37_90_1912
   m_TagString: Untagged
@@ -552,6 +553,19 @@ MonoBehaviour:
   roadSource: {fileID: 0}
   windSource: {fileID: 0}
   starterSource: {fileID: 0}
+--- !u!114 &9127561258821949940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573009236781603384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9152df5a30b70d439461654d44fcffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
+  vehicle: {fileID: 6690670776008849590}
 --- !u!1 &1817486816725897726
 GameObject:
   m_ObjectHideFlags: 0

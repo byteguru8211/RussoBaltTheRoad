@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class TrackBuilder : MonoBehaviour
 {
@@ -23,6 +25,7 @@ public class TrackBuilder : MonoBehaviour
         Tangents.Clear();
         TrackLength = 0f;
         CreateMaterials();
+        CreateAtmosphere();
         CreateGround();
         CreateSampledPath();
         CreateRoadMesh();
@@ -30,22 +33,88 @@ public class TrackBuilder : MonoBehaviour
         CreateStartGantry();
         CreateCheckpoints();
         CreateScenery();
+        CreateRoadsideDetails();
     }
 
     private void CreateMaterials()
     {
-        roadMaterial = CreateMaterial("RoadMaterial", track.roadColor, 0.22f);
-        groundMaterial = CreateMaterial("GroundMaterial", track.groundColor, 0.05f);
-        curbMaterial = CreateMaterial("CurbMaterial", track.curbColor, 0.12f);
+        string roadTexture = track.id == "monaco_finish" ? "road_cobblestone" : "road_dirt";
+        roadMaterial = CreateMaterial("RoadMaterial", track.roadColor, 0.18f, roadTexture);
+        groundMaterial = CreateMaterial("GroundMaterial", track.groundColor, 0.04f, "road_dirt");
+        curbMaterial = CreateMaterial("CurbMaterial", track.curbColor, 0.10f);
     }
 
-    private Material CreateMaterial(string name, Color color, float smoothness)
+    private Material CreateMaterial(string name, Color color, float smoothness, string texturePrefix = null)
     {
         Material material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         material.name = name;
         material.SetColor("_BaseColor", color);
         material.SetFloat("_Smoothness", smoothness);
+        if (!string.IsNullOrEmpty(texturePrefix))
+        {
+            Texture2D baseMap = Resources.Load<Texture2D>($"Textures/{texturePrefix}_basecolor");
+            Texture2D normalMap = Resources.Load<Texture2D>($"Textures/{texturePrefix}_normal");
+            Texture2D roughnessMap = Resources.Load<Texture2D>($"Textures/{texturePrefix}_roughness");
+            if (baseMap != null)
+            {
+                material.SetTexture("_BaseMap", baseMap);
+                material.SetTextureScale("_BaseMap", new Vector2(3f, 24f));
+            }
+            if (normalMap != null)
+            {
+                material.SetTexture("_BumpMap", normalMap);
+                material.SetFloat("_BumpScale", 0.65f);
+            }
+            if (roughnessMap != null)
+            {
+                material.SetFloat("_Metallic", 0f);
+                material.SetFloat("_Smoothness", 0.12f);
+            }
+        }
         return material;
+    }
+
+    private void CreateAtmosphere()
+    {
+        bool alpine = track.id == "alps_pass";
+        bool coastal = track.id == "monaco_finish";
+        RenderSettings.fog = true;
+        RenderSettings.fogMode = FogMode.ExponentialSquared;
+        RenderSettings.fogDensity = alpine ? 0.007f : coastal ? 0.0025f : 0.004f;
+        RenderSettings.fogColor = alpine ? new Color(0.56f, 0.62f, 0.63f) : coastal ? new Color(0.66f, 0.75f, 0.78f) : new Color(0.48f, 0.55f, 0.52f);
+        RenderSettings.ambientMode = AmbientMode.Flat;
+        RenderSettings.ambientSkyColor = new Color(0.42f, 0.48f, 0.45f);
+        RenderSettings.ambientEquatorColor = new Color(0.30f, 0.34f, 0.28f);
+        RenderSettings.ambientGroundColor = new Color(0.16f, 0.15f, 0.11f);
+        Light sun = FindAnyObjectByType<Light>();
+        if (sun != null)
+        {
+            sun.color = coastal ? new Color(1f, 0.91f, 0.73f) : new Color(1f, 0.86f, 0.64f);
+            sun.intensity = coastal ? 1.35f : 1.15f;
+        }
+        Camera main = Camera.main;
+        if (main != null) main.backgroundColor = RenderSettings.fogColor;
+
+        VolumeProfile profile = ScriptableObject.CreateInstance<VolumeProfile>();
+        Bloom bloom = ScriptableObject.CreateInstance<Bloom>();
+        bloom.intensity.value = 0.28f;
+        bloom.threshold.value = 1.05f;
+        bloom.scatter.value = 0.55f;
+        profile.components.Add(bloom);
+        ColorAdjustments color = ScriptableObject.CreateInstance<ColorAdjustments>();
+        color.postExposure.value = 0.15f;
+        color.contrast.value = 12f;
+        color.saturation.value = 6f;
+        profile.components.Add(color);
+        Vignette vignette = ScriptableObject.CreateInstance<Vignette>();
+        vignette.intensity.value = 0.18f;
+        vignette.smoothness.value = 0.35f;
+        profile.components.Add(vignette);
+        GameObject volumeObject = new GameObject("AtmosphereVolume");
+        volumeObject.transform.SetParent(transform, false);
+        Volume volume = volumeObject.AddComponent<Volume>();
+        volume.profile = profile;
+        volume.isGlobal = true;
     }
 
     private void CreateGround()
@@ -192,6 +261,58 @@ public class TrackBuilder : MonoBehaviour
             label.color = UITheme.Cream;
             label.alignment = TextAlignment.Center;
             label.anchor = TextAnchor.MiddleCenter;
+        }
+        for (int i = 0; i < 16; i++)
+        {
+            GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            tile.name = "StartLineTile";
+            tile.transform.SetParent(transform, false);
+            tile.transform.position = point + right * (-track.roadWidth * 0.48f + i * track.roadWidth * 0.96f / 15f) + Vector3.up * 0.045f;
+            tile.transform.rotation = rotation;
+            tile.transform.localScale = new Vector3(track.roadWidth * 0.96f / 15f, 0.02f, 0.65f);
+            tile.GetComponent<MeshRenderer>().sharedMaterial = i % 2 == 0 ? curbMaterial : roadMaterial;
+            tile.isStatic = true;
+        }
+    }
+
+    private void CreateRoadsideDetails()
+    {
+        for (int i = 12; i < sampleCount; i += 14)
+        {
+            Vector3 point = Samples[i];
+            Vector3 tangent = Tangents[i];
+            Vector3 right = Vector3.Cross(Vector3.up, tangent).normalized;
+            for (int side = -1; side <= 1; side += 2)
+            {
+                GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                post.name = "RoadsidePost";
+                post.transform.SetParent(transform, false);
+                post.transform.position = point + right * side * (track.roadWidth * 0.5f + 0.7f) + Vector3.up * 0.45f;
+                post.transform.localScale = new Vector3(0.12f, 0.9f, 0.12f);
+                post.GetComponent<MeshRenderer>().sharedMaterial = curbMaterial;
+                post.isStatic = true;
+            }
+        }
+        for (int i = 35; i < sampleCount; i += 55)
+        {
+            Vector3 point = Samples[i];
+            Vector3 tangent = Tangents[i];
+            Vector3 right = Vector3.Cross(Vector3.up, tangent).normalized;
+            GameObject sign = Resources.Load<GameObject>("Environment/Sign") as GameObject;
+            if (sign != null)
+            {
+                GameObject instance = Instantiate(sign, point + right * (track.roadWidth * 0.5f + 2.2f), Quaternion.LookRotation(tangent, Vector3.up));
+                instance.transform.SetParent(transform, true);
+            }
+            if (i % 110 == 35)
+            {
+                GameObject cart = Resources.Load<GameObject>("Environment/Cart") as GameObject;
+                if (cart != null)
+                {
+                    GameObject instance = Instantiate(cart, point - right * (track.roadWidth * 0.5f + 3.5f), Quaternion.LookRotation(tangent, Vector3.up));
+                    instance.transform.SetParent(transform, true);
+                }
+            }
         }
     }
 

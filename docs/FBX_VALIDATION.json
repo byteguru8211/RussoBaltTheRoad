@@ -10,9 +10,9 @@
       "root": "CHR_Driver_1912_Root",
       "stats": {
         "meshes": 1,
-        "vertices": 6764,
-        "polygons": 6850,
-        "triangles": 13244,
+        "vertices": 12576,
+        "polygons": 12662,
+        "triangles": 24696,
         "dimensions_m": [
           0.7393,
           0.36,
@@ -29,7 +29,7 @@
           1.9298
         ]
       },
-      "materials": 11,
+      "materials": 13,
       "missing_uv": [],
       "invalid_values": [],
       "armatures": [
@@ -52,26 +52,26 @@
       "root": "CHR_Lady_1912_Root",
       "stats": {
         "meshes": 1,
-        "vertices": 6020,
-        "polygons": 6078,
-        "triangles": 11788,
+        "vertices": 11878,
+        "polygons": 11970,
+        "triangles": 23344,
         "dimensions_m": [
-          0.7415,
-          0.4617,
+          0.7393,
+          0.5054,
           2.0226
         ],
         "bounds_min_m": [
-          -0.37,
-          -0.2317,
+          -0.3677,
+          -0.2527,
           0.005
         ],
         "bounds_max_m": [
           0.3715,
-          0.23,
+          0.2527,
           2.0276
         ]
       },
-      "materials": 10,
+      "materials": 12,
       "missing_uv": [],
       "invalid_values": [],
       "armatures": [
@@ -94,9 +94,9 @@
       "root": "CHR_Mechanic_1912_Root",
       "stats": {
         "meshes": 1,
-        "vertices": 6090,
-        "polygons": 6186,
-        "triangles": 11916,
+        "vertices": 11902,
+        "polygons": 11998,
+        "triangles": 23368,
         "dimensions_m": [
           0.7393,
           0.4,
@@ -113,7 +113,7 @@
           1.9248
         ]
       },
-      "materials": 9,
+      "materials": 11,
       "missing_uv": [],
       "invalid_values": [],
       "armatures": [

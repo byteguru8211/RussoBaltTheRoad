@@ -4,11 +4,11 @@
   "counts": {
     "fbx": 58,
     "blend": 6,
-    "png": 41,
+    "png": 43,
     "wav": 16,
-    "manifest_files": 159
+    "manifest_files": 162
   },
-  "total_bytes": 186157253,
+  "total_bytes": 188827851,
   "errors": [],
   "warnings": [],
   "wav_stats": {
@@ -708,6 +708,10 @@
     },
     {
       "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\particle_dust.png 256x256"
+    },
+    {
+      "ok": true,
       "message": "PNG resolution: game_assets\\textures\\shared\\plaster_ochre_basecolor.png 512x512"
     },
     {
@@ -789,6 +793,10 @@
     {
       "ok": true,
       "message": "PNG resolution: previews\\Era_Vehicles_preview.png 1800x900"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\Historical_Characters_detail.png 1200x900"
     },
     {
       "ok": true,

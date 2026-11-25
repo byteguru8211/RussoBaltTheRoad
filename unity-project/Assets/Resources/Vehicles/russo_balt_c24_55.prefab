@@ -4648,6 +4648,7 @@ GameObject:
   - component: {fileID: 5524295618395859416}
   - component: {fileID: 1978611039028338321}
   - component: {fileID: 6640836694978767422}
+  - component: {fileID: 265947955898991142}
   m_Layer: 0
   m_Name: russo_balt_c24_55
   m_TagString: Untagged
@@ -4792,6 +4793,19 @@ MonoBehaviour:
   roadSource: {fileID: 0}
   windSource: {fileID: 0}
   starterSource: {fileID: 0}
+--- !u!114 &265947955898991142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6661955855758015141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9152df5a30b70d439461654d44fcffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
+  vehicle: {fileID: 5524295618395859416}
 --- !u!1 &6750183723127243887
 GameObject:
   m_ObjectHideFlags: 0

@@ -96,6 +96,16 @@ RussoBalt_C24_55 (Rigidbody + VehicleController)
 - Гравий и ветер меняют pitch/gain по скорости.
 - Ambient-зоны используют `AudioMixer` группы Engine, Road, Wind, World, OneShots.
 
+## UI-изображения
+
+Все изображения в `Assets/Resources/UI` импортируются как **Sprite** (`TextureImporterType.Sprite`). `UIUtils.LoadSprite` сначала загружает Sprite и только затем использует Texture2D fallback. Не создавать UI-фон через `Sprite.Create` из сжатой нечитаемой текстуры: в standalone-сборке это может дать сплошную заливку.
+
+## Сетевые префабы
+
+- `network_russo_balt.prefab` — NetworkObject, NetworkTransform (Owner), VehicleController, Input, Audio, Effects.
+- `LobbyManager.prefab` — серверный NetworkObject с replicated roster.
+- `LanSessionController` — persistent NetworkManager + UnityTransport, UDP 7777.
+
 ## Проверка перед коммитом
 
 - [ ] Масштаб автомобиля примерно 4,4 м в длину.

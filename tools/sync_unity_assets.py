@@ -28,8 +28,8 @@ def main():
     images.mkdir(parents=True, exist_ok=True)
     resource_images = UNITY / "Resources" / "UI"
     resource_images.mkdir(parents=True, exist_ok=True)
-    resource_names = {"RussoBalt_The_Road_Hero.png": "Hero.png", "RussoBalt_C24_55_preview.png": "RussoBalt.png", "Benz_1912_Racer_Concept_preview.png": "Benz.png", "Era_Vehicles_preview.png": "Era.png", "Historical_Characters_preview.png": "Characters.png", "Russia_1912_Modular_Kit_preview.png": "Russia.png"}
-    for name in ("RussoBalt_The_Road_Hero.png", "Contact_Sheet.png", "RussoBalt_C24_55_preview.png", "Benz_1912_Racer_Concept_preview.png", "Era_Vehicles_preview.png", "Historical_Characters_preview.png", "Russia_1912_Modular_Kit_preview.png"):
+    resource_names = {"RussoBalt_The_Road_Hero.png": "Hero.png", "RussoBalt_C24_55_preview.png": "RussoBalt.png", "Benz_1912_Racer_Concept_preview.png": "Benz.png", "Era_Vehicles_preview.png": "Era.png", "Historical_Characters_preview.png": "Characters.png", "Historical_Characters_detail.png": "CharactersDetail.png", "Russia_1912_Modular_Kit_preview.png": "Russia.png"}
+    for name in ("RussoBalt_The_Road_Hero.png", "Contact_Sheet.png", "RussoBalt_C24_55_preview.png", "Benz_1912_Racer_Concept_preview.png", "Era_Vehicles_preview.png", "Historical_Characters_preview.png", "Historical_Characters_detail.png", "Russia_1912_Modular_Kit_preview.png"):
         source = ROOT / "previews" / name
         if source.exists():
             shutil.copy2(source, images / name)
@@ -40,6 +40,18 @@ def main():
     for folder in (ROOT / "audio" / "engine", ROOT / "audio" / "processed"):
         for path in folder.glob("*.wav"):
             shutil.copy2(path, resources_audio / path.name)
+    resources_textures = UNITY / "Resources" / "Textures"
+    resources_textures.mkdir(parents=True, exist_ok=True)
+    for name in ("road_dirt_basecolor.png", "road_dirt_normal.png", "road_dirt_roughness.png", "road_snow_basecolor.png", "road_snow_normal.png", "road_snow_roughness.png", "road_cobblestone_basecolor.png", "road_cobblestone_normal.png", "road_cobblestone_roughness.png", "particle_dust.png"):
+        source = ROOT / "game_assets" / "textures" / "shared" / name
+        if source.exists():
+            shutil.copy2(source, resources_textures / name)
+    resources_fonts = UNITY / "Resources" / "Fonts"
+    resources_fonts.mkdir(parents=True, exist_ok=True)
+    for system_name, asset_name in (("arial.ttf", "Arial.ttf"), ("georgia.ttf", "Georgia.ttf")):
+        source = Path("C:/Windows/Fonts") / system_name
+        if source.exists():
+            shutil.copy2(source, resources_fonts / asset_name)
     print("Unity assets synchronized")
 
 

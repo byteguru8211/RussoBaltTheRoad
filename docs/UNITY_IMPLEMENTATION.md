@@ -5,8 +5,11 @@
 - Unity 6000.6.10f1
 - Universal Render Pipeline
 - Input System 1.20.1
+- Netcode for GameObjects 2.14.0 + Unity Transport 6.6.0
 - C# / Mono2x
 - Физика WheelCollider с фиксированным шагом
+- URP: PBR-покрытия, туман, Bloom, Color Adjustments, Vignette, пыль и выхлоп
+- UI 1920×1080, импортированные Sprite, кириллические шрифты
 - Локальные JSON-сохранения профиля и настроек
 
 ## Игровой цикл
@@ -52,7 +55,7 @@
 - `alps_pass` — горный серпантин с изменением высоты, 1 круг, 5 соперников.
 - `monaco_finish` — финальный маршрут, 2 круга, 6 соперников.
 
-Трассы строятся из Catmull-Rom сплайна: дорожное полотно, бордюры, стартовая арка, контрольные точки, деревья/здания и земля.
+Трассы строятся из Catmull-Rom сплайна: PBR-дорожное полотно, бордюры, стартовая клетка, арка, контрольные точки, обочины, дорожные знаки, повозки, деревья/здания и земля. Для каждой трассы настраиваются туман, свет и постобработка.
 
 ## Системы
 
@@ -62,7 +65,10 @@
 - `RaceManager` — отсчёт, checkpoint-логика, круги, позиция, награды, открытие маршрутов.
 - `SaveSystem` — профиль и настройки в `Application.persistentDataPath`.
 - `AchievementSystem` — семь достижений.
-- `MainMenuUI`, `GarageUI`, `RaceHUD`, `PauseMenuUI`, `ResultsUI`, `StoryUI`, `SettingsUI`, `ArchiveUI`, `CreditsUI`.
+- `MainMenuUI`, `GarageUI`, `RaceHUD`, `PauseMenuUI`, `ResultsUI`, `StoryUI`, `SettingsUI`, `ArchiveUI`, `CreditsUI`, `ProfileUI`, `NetworkMenuUI`.
+- `LanSessionController` — host/join по IP, UDP 7777, approval и transport.
+- `LobbyManager` — replicated roster, ready и запуск гонки.
+- `NetworkPlayerCar` — owner-authoritative машина, NetworkTransform, камера и сетевой прогресс.
 
 ## Проверка
 
@@ -73,6 +79,8 @@
 - AI движется по сплайну и не толкает игрока физическими коллайдерами.
 - Награда и открытие следующей трассы сохраняются в профиль.
 - Windows Release build запускается без исключений.
+- StoryUI и гараж визуально проверены после исправления Sprite.
+- Отдельные Windows-процессы host и client подключились по 127.0.0.1; runtime-исключений нет.
 
 ## Авторы
 
@@ -81,4 +89,4 @@
 
 ## Онлайн
 
-Сетевой режим не включён в текущую сборку: для него нужны сервер/relay, аккаунты и отдельная сетевая физика. Локальные рекорды и достижения реализованы без внешних сервисов.
+LAN-режим реализован через Unity Netcode и Unity Transport. RadminVPN создаёт виртуальную LAN; хост сообщает IP, клиент подключается по UDP 7777. До 6 игроков, lobby, ready, общий старт и синхронизация машин. Matchmaking, relay, host migration и серверный античит в текущую версию не входят.
