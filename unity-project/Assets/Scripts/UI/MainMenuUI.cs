@@ -5,6 +5,9 @@ using UnityEngine.UI;
 public class MainMenuUI : MonoBehaviour
 {
     private Canvas canvas;
+    private Text profileName;
+    private Text profileStats;
+    private float profileRefreshTimer;
 
     private void Start()
     {
@@ -24,7 +27,7 @@ public class MainMenuUI : MonoBehaviour
         UIUtils.Text(canvas.transform, "Title", "RUSSO-BALT\nTHE ROAD", 72, UITheme.Cream, TextAnchor.MiddleLeft, new Vector2(0.07f, 0.62f), new Vector2(0.62f, 0.84f), Vector2.zero, Vector2.zero, UITheme.TitleFont);
         UIUtils.Text(canvas.transform, "Subtitle", "Дорога к Монако · 1912", 26, UITheme.Muted, TextAnchor.MiddleLeft, new Vector2(0.07f, 0.57f), new Vector2(0.60f, 0.62f), Vector2.zero, Vector2.zero);
 
-        UIUtils.Button(canvas.transform, "Expedition", "Экспедиция", new Vector2(0.07f, 0.43f), new Vector2(0.36f, 0.52f), Vector2.zero, Vector2.zero, StartExpedition, 30);
+        UIUtils.Button(canvas.transform, "Expedition", "Выбрать заезд", new Vector2(0.07f, 0.43f), new Vector2(0.36f, 0.52f), Vector2.zero, Vector2.zero, () => RaceSelectionUI.Show(canvas), 30);
         UIUtils.Button(canvas.transform, "Garage", "Гараж", new Vector2(0.07f, 0.32f), new Vector2(0.36f, 0.41f), Vector2.zero, Vector2.zero, () => SceneManager.LoadScene("Garage"), 28);
         UIUtils.Button(canvas.transform, "Network", "Сетевая игра", new Vector2(0.07f, 0.21f), new Vector2(0.36f, 0.30f), Vector2.zero, Vector2.zero, () => NetworkMenuUI.Show(canvas), 28);
         UIUtils.Button(canvas.transform, "Archive", "Архив", new Vector2(0.07f, 0.10f), new Vector2(0.36f, 0.19f), Vector2.zero, Vector2.zero, () => ArchiveUI.Show(canvas), 28);
@@ -37,16 +40,25 @@ public class MainMenuUI : MonoBehaviour
         Image profileCard = UIUtils.Card(canvas.transform, "Profile", UITheme.Dark, new Vector2(0.72f, 0.12f), new Vector2(0.96f, 0.42f), Vector2.zero, Vector2.zero);
         Button profileButton = profileCard.gameObject.AddComponent<Button>();
         profileButton.onClick.AddListener(() => ProfileUI.Show(canvas));
-        UIUtils.Text(canvas.transform, "ProfileName", profile.playerName, 29, UITheme.Brass, TextAnchor.MiddleLeft, new Vector2(0.74f, 0.32f), new Vector2(0.94f, 0.39f), Vector2.zero, Vector2.zero, UITheme.TitleFont);
-        UIUtils.Text(canvas.transform, "ProfileStats", $"Пройдено: {profile.totalDistanceKm:F1} км\nПобед: {profile.racesWon}\nРубли: {profile.credits:F0}", 22, UITheme.Cream, TextAnchor.UpperLeft, new Vector2(0.74f, 0.14f), new Vector2(0.94f, 0.30f), Vector2.zero, Vector2.zero);
+        profileName = UIUtils.Text(canvas.transform, "ProfileName", profile.playerName, 29, UITheme.Brass, TextAnchor.MiddleLeft, new Vector2(0.74f, 0.32f), new Vector2(0.94f, 0.39f), Vector2.zero, Vector2.zero, UITheme.TitleFont);
+        profileStats = UIUtils.Text(canvas.transform, "ProfileStats", $"Пройдено: {profile.totalDistanceKm:F1} км\nПобед: {profile.racesWon}\nРубли: {profile.credits:F0}", 22, UITheme.Cream, TextAnchor.UpperLeft, new Vector2(0.74f, 0.14f), new Vector2(0.94f, 0.30f), Vector2.zero, Vector2.zero);
         UIUtils.Text(canvas.transform, "Authors", "Ковалёв Юрий · Валерия Труфанова", 17, UITheme.Muted, TextAnchor.MiddleRight, new Vector2(0.55f, 0.025f), new Vector2(0.96f, 0.07f), Vector2.zero, Vector2.zero);
-        UIUtils.Text(canvas.transform, "Version", "v0.4 · LAN", 17, UITheme.Muted, TextAnchor.MiddleLeft, new Vector2(0.07f, 0.025f), new Vector2(0.30f, 0.07f), Vector2.zero, Vector2.zero);
+        UIUtils.Text(canvas.transform, "Version", $"v{Application.version} · RELEASE · LAN", 17, UITheme.Muted, TextAnchor.MiddleLeft, new Vector2(0.07f, 0.025f), new Vector2(0.34f, 0.07f), Vector2.zero, Vector2.zero);
+    }
+
+    private void Update()
+    {
+        profileRefreshTimer -= Time.unscaledDeltaTime;
+        if (profileRefreshTimer > 0f || GameManager.Instance == null || profileName == null || profileStats == null)
+            return;
+        profileRefreshTimer = 0.25f;
+        ProfileData profile = GameManager.Instance.Profile;
+        profileName.text = profile.playerName;
+        profileStats.text = $"Пройдено: {profile.totalDistanceKm:F1} км\nПобед: {profile.racesWon}\nРубли: {profile.credits:F0}";
     }
 
     private void StartExpedition()
     {
-        string trackId = GameManager.Instance.SelectedTrackId;
-        string scene = trackId == "alps_pass" ? "Race_Alps" : trackId == "monaco_finish" ? "Race_Monaco" : "Race_Winter";
-        SceneManager.LoadScene(scene);
+        RaceSelectionUI.Show(canvas);
     }
 }

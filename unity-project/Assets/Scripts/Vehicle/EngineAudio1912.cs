@@ -1,13 +1,15 @@
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class EngineAudio1912 : MonoBehaviour
 {
     public VehicleController1912 vehicle;
     public AudioSource roadSource;
     public AudioSource windSource;
     public AudioSource starterSource;
+    public AudioSource gearSource;
+    public AudioSource hornSource;
 
-    private AudioSource[] engineSources;
     private readonly string[] clips =
     {
         "engine_synthetic_4cyl_600rpm",
@@ -18,82 +20,195 @@ public class EngineAudio1912 : MonoBehaviour
         "engine_synthetic_4cyl_2100rpm"
     };
 
+    private AudioSource[] engineSources;
+    private bool initialized;
+    private bool spatialized;
+
+    public bool IsSpatialized => spatialized;
+
     private void Awake()
     {
+        EnsureInitialized();
+    }
+
+    public void EnsureInitialized()
+    {
+        if (initialized)
+            return;
+        initialized = true;
+        if (vehicle == null)
+            vehicle = GetComponent<VehicleController1912>();
+
         engineSources = new AudioSource[clips.Length];
         for (int i = 0; i < clips.Length; i++)
         {
-            AudioClip clip = Resources.Load<AudioClip>($"Audio/{clips[i]}");
-            AudioSource source = gameObject.AddComponent<AudioSource>();
-            source.clip = clip;
-            source.loop = true;
-            source.playOnAwake = false;
-            source.spatialBlend = 0f;
-            source.volume = 0f;
-            source.Play();
-            engineSources[i] = source;
+            engineSources[i] = CreateLoop(clips[i]);
+            if (engineSources[i] != null)
+                engineSources[i].volume = 0f;
         }
 
-        roadSource = CreateLoop("road_gravel_loop", 0f);
-        windSource = CreateLoop("wind_open_cockpit_loop", 0f);
-        starterSource = CreateOneShot("starter_hand_crank");
+        roadSource = EnsureSource(roadSource, "road_gravel_loop", true);
+        windSource = EnsureSource(windSource, "wind_open_cockpit_loop", true);
+        starterSource = EnsureSource(starterSource, "starter_hand_crank", false);
+        gearSource = EnsureSource(gearSource, "gear_lever_clack", false);
+        hornSource = EnsureSource(hornSource, "horn_close_era", false);
+        UpdateSpatialMode();
     }
 
-    private AudioSource CreateLoop(string resource, float volume)
+    private AudioSource CreateLoop(string resource)
     {
-        AudioSource source = gameObject.AddComponent<AudioSource>();
-        source.clip = Resources.Load<AudioClip>($"Audio/{resource}");
-        source.loop = true;
-        source.spatialBlend = 0f;
-        source.volume = volume;
-        source.Play();
-        return source;
+        return EnsureSource(null, resource, true);
     }
 
-    private AudioSource CreateOneShot(string resource)
+    private AudioSource EnsureSource(AudioSource source, string resource, bool loop)
     {
-        AudioSource source = gameObject.AddComponent<AudioSource>();
-        source.clip = Resources.Load<AudioClip>($"Audio/{resource}");
-        source.spatialBlend = 0f;
+        if (source == null)
+            source = gameObject.AddComponent<AudioSource>();
         source.playOnAwake = false;
+        source.loop = loop;
+        source.spatialBlend = 0f;
+        source.minDistance = 3f;
+        source.maxDistance = 45f;
+        source.rolloffMode = AudioRolloffMode.Logarithmic;
+        source.dopplerLevel = 0f;
+        if (source.clip == null)
+            source.clip = Resources.Load<AudioClip>($"Audio/{resource}");
+        if (source.clip == null)
+        {
+            Debug.LogWarning($"Engine audio resource 'Audio/{resource}' is missing.", this);
+            return null;
+        }
+        if (loop && !source.isPlaying)
+            source.Play();
         return source;
+    }
+
+    public void SetSpatialMode(bool spatial)
+    {
+        spatialized = spatial;
+        ConfigureSpatialSource(roadSource);
+        ConfigureSpatialSource(windSource);
+        ConfigureSpatialSource(starterSource);
+        ConfigureSpatialSource(gearSource);
+        ConfigureSpatialSource(hornSource);
+        if (engineSources != null)
+        {
+            foreach (AudioSource source in engineSources)
+                ConfigureSpatialSource(source);
+        }
+    }
+
+    private void ConfigureSpatialSource(AudioSource source)
+    {
+        if (source == null)
+            return;
+        source.spatialBlend = spatialized ? 1f : 0f;
+        source.minDistance = 3f;
+        source.maxDistance = 45f;
+        source.rolloffMode = AudioRolloffMode.Logarithmic;
+        source.dopplerLevel = spatialized ? 1f : 0f;
+    }
+
+    private void UpdateSpatialMode()
+    {
+        SetSpatialMode(vehicle != null && !vehicle.isPlayer);
     }
 
     public void PlayStarter()
     {
-        if (starterSource != null)
-            starterSource.Play();
+        if (starterSource != null && starterSource.clip != null)
+            starterSource.PlayOneShot(starterSource.clip, OneShotVolume(0.9f));
+    }
+
+    public void PlayGearShift()
+    {
+        if (gearSource != null && gearSource.clip != null)
+            gearSource.PlayOneShot(gearSource.clip, OneShotVolume(0.55f));
+    }
+
+    public void PlayHorn()
+    {
+        if (hornSource != null && hornSource.clip != null && !hornSource.isPlaying)
+            hornSource.PlayOneShot(hornSource.clip, OneShotVolume(0.72f));
+    }
+
+    private float OneShotVolume(float volume)
+    {
+        SettingsData settings = GameManager.Instance != null ? GameManager.Instance.Settings : null;
+        float engineVolume = settings != null ? settings.engineVolume : 0.85f;
+        bool audible = PersistentAudioService1912.Instance == null || PersistentAudioService1912.Instance.IsVehicleAudioAudible;
+        return Mathf.Clamp01(volume * engineVolume) * (audible ? 1f : 0f);
     }
 
     private void Update()
     {
-        if (vehicle == null || engineSources == null)
+        if (!initialized || engineSources == null)
             return;
+        Tick(Time.unscaledDeltaTime, false);
+    }
 
-        float normalized = Mathf.InverseLerp(600f, 2100f, vehicle.rpm);
+    // NetworkPlayerCar disables this component on remote clients. The persistent audio service
+    // calls this method so those engine sources still follow the replicated transform spatially.
+    public void TickExternal(float deltaTime)
+    {
+        EnsureInitialized();
+        UpdateSpatialMode();
+        Tick(deltaTime, true);
+    }
+
+    private void Tick(float deltaTime, bool external)
+    {
+        if (vehicle == null)
+            return;
+        UpdateSpatialMode();
+
+        SettingsData settings = GameManager.Instance != null ? GameManager.Instance.Settings : null;
+        float engineVolume = settings != null ? Mathf.Clamp01(settings.engineVolume) : 0.85f;
+        float ambientVolume = settings != null ? Mathf.Clamp01(settings.ambientVolume) : 0.65f;
+        bool serviceAllowsAudio = PersistentAudioService1912.Instance == null || PersistentAudioService1912.Instance.IsVehicleAudioAudible;
+        float audible = serviceAllowsAudio ? 1f : 0f;
+        float speed = Mathf.Clamp01(Mathf.Abs(vehicle.SpeedKmh) / 110f);
+        float rpm = vehicle.rpm;
+        bool engineAudible = vehicle.engineRunning;
+        if (external)
+        {
+            float absoluteSpeed = Mathf.Abs(vehicle.SpeedKmh);
+            rpm = Mathf.Max(rpm, 650f + absoluteSpeed * 16f);
+            engineAudible = engineAudible || absoluteSpeed > 1f;
+        }
+
+        float normalized = Mathf.InverseLerp(600f, 2100f, Mathf.Clamp(rpm, 600f, 2100f));
         float scaled = normalized * (engineSources.Length - 1);
         int lower = Mathf.Clamp(Mathf.FloorToInt(scaled), 0, engineSources.Length - 1);
         int upper = Mathf.Clamp(lower + 1, 0, engineSources.Length - 1);
         float blend = scaled - lower;
-        float engineVolume = GameManager.Instance != null ? GameManager.Instance.Settings.engineVolume : 0.85f;
+        float smoothing = 1f - Mathf.Exp(-6f * Mathf.Max(0.0001f, deltaTime));
+
         for (int i = 0; i < engineSources.Length; i++)
         {
-            float target = vehicle.engineRunning ? (i == lower ? 1f - blend : i == upper ? blend : 0f) * engineVolume : 0f;
-            engineSources[i].volume = Mathf.Lerp(engineSources[i].volume, target, Time.deltaTime * 5f);
-            engineSources[i].pitch = Mathf.Clamp(0.88f + normalized * 0.22f + vehicle.Throttle * 0.06f, 0.8f, 1.25f);
+            AudioSource source = engineSources[i];
+            if (source == null)
+                continue;
+            float weight = i == lower ? 1f - blend : i == upper ? blend : 0f;
+            float targetVolume = engineAudible ? weight * engineVolume * audible : 0f;
+            source.volume = Mathf.Lerp(source.volume, targetVolume, smoothing);
+            source.pitch = Mathf.Clamp(0.97f + normalized * 0.06f + vehicle.Throttle * 0.025f, 0.9f, 1.12f);
         }
 
         if (roadSource != null)
         {
-            float speed = Mathf.Clamp01(vehicle.SpeedKmh / 90f);
-            roadSource.volume = speed * 0.42f;
-            roadSource.pitch = 0.75f + speed * 0.45f;
+            roadSource.volume = Mathf.Lerp(roadSource.volume, speed * 0.38f * ambientVolume * audible, smoothing);
+            roadSource.pitch = 0.78f + speed * 0.42f;
         }
         if (windSource != null)
         {
-            float speed = Mathf.Clamp01(vehicle.SpeedKmh / 110f);
-            windSource.volume = speed * speed * 0.55f;
-            windSource.pitch = 0.8f + speed * 0.35f;
+            windSource.volume = Mathf.Lerp(windSource.volume, speed * speed * 0.5f * ambientVolume * audible, smoothing);
+            windSource.pitch = 0.82f + speed * 0.32f;
         }
+
+        float oneShotTarget = serviceAllowsAudio ? 1f : 0f;
+        if (starterSource != null) starterSource.volume = Mathf.Lerp(starterSource.volume, oneShotTarget, smoothing);
+        if (gearSource != null) gearSource.volume = Mathf.Lerp(gearSource.volume, oneShotTarget, smoothing);
+        if (hornSource != null) hornSource.volume = Mathf.Lerp(hornSource.volume, oneShotTarget, smoothing);
     }
 }

@@ -43,7 +43,7 @@ public static class UIUtils
 
     public static RectTransform Rect(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax)
     {
-        GameObject go = new GameObject(name, typeof(RectTransform));
+        GameObject go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer));
         go.transform.SetParent(parent, false);
         RectTransform rect = go.GetComponent<RectTransform>();
         rect.anchorMin = anchorMin;

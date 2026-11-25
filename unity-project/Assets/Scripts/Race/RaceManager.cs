@@ -20,19 +20,46 @@ public class RaceManager : MonoBehaviour
     public int CheckpointIndex { get; private set; }
     public int CompletedLaps { get; private set; }
     public int CurrentPosition { get; private set; } = 1;
-    public int RacersCount => networkMode && networkCars.Count > 0 ? networkCars.Count : AI.Count + 1;
+    public int RacersCount
+    {
+        get
+        {
+            PruneNetworkCars();
+            return networkMode && networkCars.Count > 0 ? networkCars.Count : AI.Count + 1;
+        }
+    }
     public int Reward { get; private set; }
     public bool PlayerFinished { get; private set; }
     public bool PlayerWon { get; private set; }
     public string NextInstruction { get; private set; } = "Прямо";
+    public float PlayerRaceProgress => playerContinuousProgress;
 
     private bool networkMode;
+    private float playerContinuousProgress;
+    private float lastPlayerTrackProgress = -1f;
     private readonly List<NetworkPlayerCar> networkCars = new List<NetworkPlayerCar>();
 
     private void Awake()
     {
         Instance = this;
         EnsureServices();
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && LobbyManager.Instance != null)
+        {
+            GameManager.Instance.SelectedTrackId = LobbyManager.Instance.TrackId.Value.ToString();
+            GameManager.Instance.SelectedRaceType = (RaceType)LobbyManager.Instance.RaceType.Value;
+        }
+        else
+        {
+            string sceneTrackId = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name switch
+            {
+                "Race_Alps" => "alps_pass",
+                "Race_Monaco" => "monaco_finish",
+                "Race_Moscow" => "moscow_highway",
+                "Race_Finland" => "finland_coast",
+                _ => "winter_departure"
+            };
+            GameManager.Instance.SelectedTrackId = sceneTrackId;
+        }
         TrackData = Resources.Load<TrackData>($"Tracks/{GameManager.Instance.SelectedTrackId}");
         if (TrackData == null)
             TrackData = Resources.Load<TrackData>("Tracks/winter_departure");
@@ -66,77 +93,120 @@ public class RaceManager : MonoBehaviour
         GameObject playerPrefab = Resources.Load<GameObject>($"Vehicles/{vehicleId}");
         if (playerPrefab == null)
             playerPrefab = Resources.Load<GameObject>("Vehicles/russo_balt_c24_55");
-        Player = Instantiate(playerPrefab).GetComponent<VehicleController1912>();
-        Player.isPlayer = true;
-        Player.transform.position = TrackBuilder.StartPoint - TrackBuilder.StartTangent * 2.5f + Vector3.up * 0.8f;
-        Player.transform.rotation = Quaternion.LookRotation(TrackBuilder.StartTangent, Vector3.up);
-        Player.GetComponent<Rigidbody>().position = Player.transform.position;
-        Player.GetComponent<Rigidbody>().rotation = Player.transform.rotation;
-        Player.SetSurfaceGrip(TrackData.surfaceGrip);
+        VehicleController1912 playerVehicle = playerPrefab != null ? Instantiate(playerPrefab).GetComponent<VehicleController1912>() : null;
+        if (playerVehicle != null)
+        {
+            Player = playerVehicle;
+            Player.isPlayer = true;
+            Player.SetTransmissionMode(GameManager.Instance.Settings.automaticTransmission);
+            Player.transform.position = TrackBuilder.StartPoint - TrackBuilder.StartTangent * 2.5f + Vector3.up * 0.75f;
+            Player.transform.rotation = Quaternion.LookRotation(TrackBuilder.StartTangent, Vector3.up);
+            Player.SetSurfaceGrip(TrackData.surfaceGrip);
+            PrepareLocalGrid(Player);
+        }
 
         string[] rivals = { "benz_1912_racer_concept", "ford_model_t_1912", "fiat_s76_1910", "mercedes_37_90_1912" };
-        for (int i = 0; i < TrackData.aiCount; i++)
+        int aiCount = GameManager.Instance.GetRaceAiCount();
+        for (int i = 0; i < aiCount; i++)
         {
             GameObject prefab = Resources.Load<GameObject>($"Vehicles/{rivals[i % rivals.Length]}");
-            if (prefab == null)
+            VehicleController1912 vehicle = prefab != null ? Instantiate(prefab).GetComponent<VehicleController1912>() : null;
+            if (vehicle == null)
                 continue;
-            VehicleController1912 vehicle = Instantiate(prefab).GetComponent<VehicleController1912>();
             vehicle.isPlayer = false;
             vehicle.SetSurfaceGrip(TrackData.surfaceGrip);
             Vector3 right = Vector3.Cross(Vector3.up, TrackBuilder.StartTangent).normalized;
-            vehicle.transform.position = TrackBuilder.StartPoint - TrackBuilder.StartTangent * (3f + i * 3f) + right * ((i % 2 == 0) ? -1.2f : 1.2f) + Vector3.up * 0.8f;
+            int row = i / 2;
+            int column = i % 2;
+            vehicle.transform.position = TrackBuilder.StartPoint - TrackBuilder.StartTangent * (12f + row * 7f) + right * (column == 0 ? -2.6f : 2.6f) + Vector3.up * 0.75f;
             vehicle.transform.rotation = Quaternion.LookRotation(TrackBuilder.StartTangent, Vector3.up);
-            vehicle.GetComponent<Rigidbody>().position = vehicle.transform.position;
-            vehicle.GetComponent<Rigidbody>().rotation = vehicle.transform.rotation;
+            PrepareLocalGrid(vehicle);
             vehicle.TryStartEngine();
             AIDriver1912 ai = vehicle.gameObject.AddComponent<AIDriver1912>();
             ai.vehicle = vehicle;
             ai.track = TrackBuilder;
+            ai.race = this;
+            ai.laneOffset = column == 0 ? -2.5f : 2.5f;
             ai.skill = 0.62f + i * 0.06f;
-            ai.progress = -0.008f * (i + 1);
             AI.Add(ai);
         }
     }
 
+    private void PrepareLocalGrid(VehicleController1912 vehicle)
+    {
+        Rigidbody body = vehicle.GetComponent<Rigidbody>();
+        body.isKinematic = true;
+        body.position = vehicle.transform.position;
+        body.rotation = vehicle.transform.rotation;
+        body.linearVelocity = Vector3.zero;
+        body.angularVelocity = Vector3.zero;
+        vehicle.SetInput(default);
+        vehicle.SetSimulationEnabled(false);
+        VehicleInput1912 vehicleInput = vehicle.GetComponent<VehicleInput1912>();
+        if (vehicleInput != null) vehicleInput.enabled = false;
+        foreach (Collider collider in vehicle.GetComponentsInChildren<Collider>())
+            collider.enabled = true;
+    }
+
     private IEnumerator SetupNetworkRace()
     {
-        float timeout = 0f;
-        while (networkCars.Count == 0 && timeout < 5f)
+        // Do not start a countdown while any peer's car is still spawning or loading.
+        while (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
         {
+            networkCars.Clear();
             networkCars.AddRange(UnityEngine.Object.FindObjectsByType<NetworkPlayerCar>());
-            timeout += Time.unscaledDeltaTime;
+            int expected = NetworkManager.Singleton.ConnectedClientsIds.Count;
+            bool allReady = expected > 0 && networkCars.Count >= expected;
+            foreach (NetworkPlayerCar car in networkCars)
+                if (!car.IsSpawned || car.vehicle == null) allReady = false;
+            if (allReady)
+                break;
             yield return null;
         }
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+            yield break;
+
+        networkCars.Sort((a, b) => a.OwnerClientId.CompareTo(b.OwnerClientId));
         if (NetworkManager.Singleton.IsServer)
         {
             for (int i = 0; i < networkCars.Count; i++)
-                networkCars[i].GridSlot.Value = i;
+            {
+                if (networkCars[i].vehicle != null)
+                    networkCars[i].vehicle.SetSurfaceGrip(TrackData.surfaceGrip);
+                networkCars[i].PlaceOnGrid(i);
+            }
         }
         Player = networkCars.Find(car => car.IsOwner)?.vehicle;
-        if (Player == null)
-        {
-            networkMode = false;
-            SpawnRacers();
-        }
-        else
-        {
-            foreach (NetworkPlayerCar car in networkCars)
-                if (car.vehicle != null) car.vehicle.SetSurfaceGrip(TrackData.surfaceGrip);
-        }
         BeginAfterSetup();
     }
 
     private void BeginAfterSetup()
     {
+        // Checkpoint 0 contains the grid; the next required trigger is checkpoint 1.
         CheckpointIndex = 1;
+        CompletedLaps = 0;
+        playerContinuousProgress = 0f;
+        lastPlayerTrackProgress = -1f;
         SetupCamera();
-        HUD = RaceHUD.Create(this);
+        if (!networkMode || NetworkManager.Singleton.IsClient)
+            HUD = RaceHUD.Create(this);
         State = RaceState.Intro;
-        StoryUI.Show(TrackData.storyTitle, TrackData.storyText, TrackData.previewResource, BeginCountdown);
+        if (networkMode)
+            BeginNetworkCountdown();
+        else if (GameManager.Instance.SkipRaceStory)
+        {
+            GameManager.Instance.SkipRaceStory = false;
+            BeginCountdown();
+        }
+        else
+        {
+            StoryUI.Show(TrackData.storyTitle, TrackData.storyText, TrackData.previewResource, BeginCountdown);
+        }
     }
 
     private void SetupCamera()
     {
+        if (Player == null) return;
         Camera camera = Camera.main;
         if (camera == null)
         {
@@ -144,12 +214,16 @@ public class RaceManager : MonoBehaviour
             camera = cameraObject.GetComponent<Camera>();
             camera.tag = "MainCamera";
         }
-        CameraController1912 controller = camera.gameObject.AddComponent<CameraController1912>();
+        CameraController1912 controller = camera.GetComponent<CameraController1912>() ?? camera.gameObject.AddComponent<CameraController1912>();
         controller.vehicle = Player;
         controller.targetCamera = camera;
-        controller.mode = 0;
+        controller.SetCamera((CameraMode)GameManager.Instance.SelectedCameraMode, false);
         VehicleInput1912 playerInput = Player.GetComponent<VehicleInput1912>();
-        if (playerInput != null) playerInput.cameraController = controller;
+        if (playerInput != null)
+        {
+            playerInput.cameraController = controller;
+            playerInput.enabled = false;
+        }
     }
 
     private void BeginCountdown()
@@ -157,61 +231,236 @@ public class RaceManager : MonoBehaviour
         StartCoroutine(Countdown());
     }
 
+    private void BeginNetworkCountdown()
+    {
+        State = RaceState.Countdown;
+        HUD?.SetCountdown("Ожидание игроков");
+        if (LobbyManager.Instance == null)
+        {
+            Debug.LogError("[Race] Сетевая гонка без LobbyManager; синхронный старт невозможен.");
+            return;
+        }
+        // Every peer acknowledges after its track and all local car objects are ready.
+        if (NetworkManager.Singleton.IsServer)
+            LobbyManager.Instance.ServerMarkRaceReady(0);
+        else
+            LobbyManager.Instance.MarkRaceReadyServerRpc();
+    }
+
+    private void UpdateNetworkCountdown()
+    {
+        if (LobbyManager.Instance == null || NetworkManager.Singleton == null)
+            return;
+        double startTime = LobbyManager.Instance.RaceStartServerTime.Value;
+        if (startTime <= 0d)
+        {
+            HUD?.SetCountdown("Ожидание игроков");
+            return;
+        }
+        double remaining = startTime - NetworkManager.Singleton.ServerTime.Time;
+        if (remaining > 0d)
+        {
+            int count = Mathf.Clamp(Mathf.CeilToInt((float)remaining), 1, 3);
+            HUD?.SetCountdown(count.ToString());
+            return;
+        }
+        BeginNetworkRacing(startTime);
+    }
+
+    private void BeginNetworkRacing(double sharedStartTime)
+    {
+        State = RaceState.Racing;
+        Elapsed = Mathf.Max(0f, (float)(NetworkManager.Singleton.ServerTime.Time - sharedStartTime));
+        ReleaseGrid();
+        EnablePlayerInput();
+        HUD?.SetCountdown("СТАРТ!");
+        Invoke(nameof(ClearNetworkCountdown), 0.8f);
+        HUD?.SetMessage("Синхронный старт · F — ручной старт", 4f);
+    }
+
+    private void ClearNetworkCountdown()
+    {
+        HUD?.SetCountdown("");
+    }
+
     private IEnumerator Countdown()
     {
         State = RaceState.Countdown;
-        HUD.SetCountdown("3");
+        HUD?.SetCountdown("3");
         yield return new WaitForSeconds(1f);
-        HUD.SetCountdown("2");
+        HUD?.SetCountdown("2");
         yield return new WaitForSeconds(1f);
-        HUD.SetCountdown("1");
+        HUD?.SetCountdown("1");
         yield return new WaitForSeconds(1f);
-        HUD.SetCountdown("СТАРТ!");
-        yield return new WaitForSeconds(0.8f);
-        HUD.SetCountdown("");
+        HUD?.SetCountdown("СТАРТ!");
         State = RaceState.Racing;
         Elapsed = 0f;
-        HUD.SetMessage("F — ручной старт · 1 — первая передача", 4f);
+        ReleaseGrid();
+        EnablePlayerInput();
+        HUD?.SetMessage("F — ручной старт · 1 — первая передача", 4f);
+        yield return new WaitForSeconds(0.8f);
+        HUD?.SetCountdown("");
+    }
+
+    private void PruneNetworkCars()
+    {
+        networkCars.RemoveAll(car => car == null || !car.IsSpawned);
+    }
+
+    private void ReleaseGrid()
+    {
+        if (networkMode)
+        {
+            PruneNetworkCars();
+            if (NetworkManager.Singleton.IsServer)
+                foreach (NetworkPlayerCar car in networkCars)
+                    car.SetGridPhase(false);
+            return;
+        }
+        if (Player != null)
+        {
+            Rigidbody body = Player.GetComponent<Rigidbody>();
+            body.isKinematic = false;
+            body.linearVelocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
+            body.WakeUp();
+            Player.SetSimulationEnabled(true);
+        }
+        foreach (AIDriver1912 ai in AI)
+        {
+            if (ai.vehicle == null) continue;
+            Rigidbody body = ai.vehicle.GetComponent<Rigidbody>();
+            body.isKinematic = false;
+            body.linearVelocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
+            body.WakeUp();
+            ai.vehicle.SetSimulationEnabled(true);
+        }
+    }
+
+    private void EnablePlayerInput()
+    {
+        if (FindAnyObjectByType<PauseMenuUI>() != null)
+            return;
+        VehicleInput1912 playerInput = Player != null ? Player.GetComponent<VehicleInput1912>() : null;
+        if (playerInput != null) playerInput.enabled = true;
     }
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame && Time.timeScale > 0f && State != RaceState.Finished)
+        if (Player != null && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame && Time.timeScale > 0f && State != RaceState.Finished)
         {
             Pause();
             return;
         }
+        if (networkMode && State == RaceState.Countdown)
+        {
+            UpdateNetworkCountdown();
+            return;
+        }
         if (State != RaceState.Racing)
             return;
-        Elapsed += Time.deltaTime;
+        if (networkMode)
+        {
+            PruneNetworkCars();
+            if (LobbyManager.Instance == null || NetworkManager.Singleton == null)
+                return;
+            Elapsed = Mathf.Max(0f, (float)(NetworkManager.Singleton.ServerTime.Time - LobbyManager.Instance.RaceStartServerTime.Value));
+            NetworkPlayerCar localCar = networkCars.Find(car => car.IsOwner);
+            if (localCar != null)
+            {
+                CheckpointIndex = localCar.CheckpointIndex.Value;
+                CompletedLaps = localCar.CompletedLaps.Value;
+                playerContinuousProgress = localCar.RaceProgress.Value;
+                if (localCar.Finished.Value && !PlayerFinished)
+                {
+                    UpdatePosition();
+                    FinishRace(true);
+                    return;
+                }
+            }
+        }
+        else if (Player != null)
+        {
+            Elapsed += Time.deltaTime;
+            UpdatePlayerContinuousProgress();
+        }
         UpdatePosition();
         UpdateRoadbook();
-        if (Elapsed >= TrackData.timeLimit && !PlayerFinished)
+        if (Player != null && Elapsed >= TrackData.timeLimit && !PlayerFinished)
             FinishRace(false);
     }
 
     private void UpdatePosition()
     {
-        float playerProgress = CompletedLaps + CheckpointIndex / (float)TrackBuilder.checkpointCount;
+        float playerProgress = playerContinuousProgress;
+        if (networkMode)
+        {
+            PruneNetworkCars();
+            NetworkPlayerCar localCar = networkCars.Find(car => car.IsOwner);
+            if (localCar != null)
+                playerProgress = localCar.RaceProgress.Value;
+        }
         int position = 1;
         if (networkMode)
         {
             foreach (NetworkPlayerCar car in networkCars)
-                if (!car.IsOwner && car.RaceProgress.Value > playerProgress)
+                if (!car.IsOwner && car.RaceProgress.Value > playerProgress + 0.0001f)
                     position++;
         }
         else
         {
             foreach (AIDriver1912 ai in AI)
-                if (ai.RaceProgress > playerProgress)
+                if (ai != null && ai.RaceProgress > playerProgress + 0.0001f)
                     position++;
         }
         CurrentPosition = position;
     }
 
+    private void UpdatePlayerContinuousProgress()
+    {
+        if (Player == null || TrackBuilder == null || TrackBuilder.Samples.Count == 0)
+            return;
+        float nearest = NearestTrackProgress(Player.transform.position);
+        if (lastPlayerTrackProgress < 0f)
+        {
+            lastPlayerTrackProgress = nearest;
+            return;
+        }
+        float delta = Mathf.Repeat(nearest - lastPlayerTrackProgress + 0.5f, 1f) - 0.5f;
+        if (Mathf.Abs(delta) < 0.1f)
+            playerContinuousProgress += delta;
+        lastPlayerTrackProgress = nearest;
+    }
+
+    private static float NearestTrackProgress(Vector3 position)
+    {
+        TrackBuilder track = Instance != null ? Instance.TrackBuilder : null;
+        if (track == null || track.Samples.Count == 0)
+            return 0f;
+        float bestDistance = float.PositiveInfinity;
+        float bestProgress = 0f;
+        for (int i = 0; i < track.Samples.Count; i++)
+        {
+            Vector3 a = track.Samples[i];
+            Vector3 b = track.Samples[(i + 1) % track.Samples.Count];
+            Vector3 segment = b - a;
+            float lengthSquared = segment.sqrMagnitude;
+            float t = lengthSquared > 0.0001f ? Mathf.Clamp01(Vector3.Dot(position - a, segment) / lengthSquared) : 0f;
+            float candidateDistance = Vector3.SqrMagnitude(position - (a + segment * t));
+            if (candidateDistance < bestDistance)
+            {
+                bestDistance = candidateDistance;
+                bestProgress = (i + t) / track.Samples.Count;
+            }
+        }
+        return bestProgress;
+    }
+
     private void UpdateRoadbook()
     {
-        float progress = (CompletedLaps + CheckpointIndex / (float)TrackBuilder.checkpointCount) % 1f;
+        if (TrackBuilder == null) return;
+        float progress = Mathf.Repeat(playerContinuousProgress, 1f);
         Vector3 current = TrackBuilder.TangentAt(progress);
         Vector3 next = TrackBuilder.TangentAt(progress + 0.035f);
         float angle = Vector3.SignedAngle(current, next, Vector3.up);
@@ -220,19 +469,34 @@ public class RaceManager : MonoBehaviour
 
     public void PlayerCheckpoint(int index)
     {
-        if (State != RaceState.Racing || index != CheckpointIndex)
+        // Network progress is calculated and replicated by the server for every car.
+        if (networkMode)
             return;
-        CheckpointIndex++;
-        HUD.SetMessage($"Контроль {CheckpointIndex}/{TrackBuilder.checkpointCount}", 1.2f);
-        if (CheckpointIndex >= TrackBuilder.checkpointCount)
+        int expectedIndex = CheckpointIndex >= TrackBuilder.checkpointCount ? 0 : CheckpointIndex;
+        if (State != RaceState.Racing || index != expectedIndex)
+            return;
+        if (index == 0)
         {
-            CheckpointIndex = 0;
+            // Checkpoint 0 is valid only after all intermediate checkpoints (1..N-1).
+            if (CheckpointIndex != TrackBuilder.checkpointCount)
+                return;
             CompletedLaps++;
-            if (CompletedLaps >= TrackData.laps)
+            CheckpointIndex = 1;
+            int raceLaps = GameManager.Instance.GetRaceLaps();
+            if (CompletedLaps >= raceLaps)
+            {
+                playerContinuousProgress = CompletedLaps;
+                UpdatePosition();
                 FinishRace(true);
+            }
             else
-                HUD.SetMessage($"Круг {CompletedLaps + 1}/{TrackData.laps}", 2.5f);
+            {
+                HUD?.SetMessage($"Круг {CompletedLaps + 1}/{raceLaps}", 2.5f);
+            }
+            return;
         }
+        CheckpointIndex = index + 1;
+        HUD?.SetMessage($"Контроль {CheckpointIndex}/{TrackBuilder.checkpointCount}", 1.2f);
     }
 
     public void PlayerRepair()
@@ -244,7 +508,16 @@ public class RaceManager : MonoBehaviour
         }
         GameManager.Instance.Profile.credits -= 50f;
         GameManager.Instance.Profile.repairs++;
-        Player.Repair(45f);
+        if (networkMode)
+        {
+            NetworkPlayerCar localCar = networkCars.Find(car => car.IsOwner);
+            if (localCar != null)
+                localCar.RequestRepairServerRpc();
+        }
+        else
+        {
+            Player.Repair(45f);
+        }
         GameManager.Instance.Save();
         HUD?.SetMessage("Машина отремонтирована", 2f);
     }
@@ -258,7 +531,7 @@ public class RaceManager : MonoBehaviour
 
     private void FinishRace(bool finished)
     {
-        if (State == RaceState.Finished)
+        if (State == RaceState.Finished || Player == null)
             return;
         PlayerFinished = finished;
         PlayerWon = finished && CurrentPosition == 1;
@@ -283,17 +556,17 @@ public class RaceManager : MonoBehaviour
             }
             best.seconds = Elapsed;
         }
-        if (finished && TrackData.id == "winter_departure" && !GameManager.Instance.Profile.unlockedTracks.Contains("alps_pass"))
-            GameManager.Instance.Profile.unlockedTracks.Add("alps_pass");
         if (finished && TrackData.id == "alps_pass")
             AchievementSystem.Instance.Unlock("alps");
         if (finished && TrackData.id == "monaco_finish")
-        {
-            GameManager.Instance.Profile.unlockedTracks.Add("monaco_finish");
             AchievementSystem.Instance.Unlock("monaco");
-        }
-        GameManager.Instance.Save();
+        if (finished)
+            GameManager.Instance.RegisterTrackCompletion(TrackData.id);
+        else
+            GameManager.Instance.Save();
         Player.SetInput(new VehicleController1912.VehicleInput());
+        VehicleInput1912 playerInput = Player.GetComponent<VehicleInput1912>();
+        if (playerInput != null) playerInput.enabled = false;
         StartCoroutine(ShowResults());
     }
 
@@ -306,6 +579,9 @@ public class RaceManager : MonoBehaviour
     public void ReturnToMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        if (LanSessionController.Instance != null && LanSessionController.Instance.Network != null && LanSessionController.Instance.Network.IsListening)
+            LanSessionController.Instance.ShutdownSession();
+        else
+            SceneManager.LoadScene("MainMenu");
     }
 }

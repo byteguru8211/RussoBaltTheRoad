@@ -3,12 +3,12 @@
   "status": "passed",
   "counts": {
     "fbx": 58,
-    "blend": 6,
-    "png": 43,
+    "blend": 7,
+    "png": 47,
     "wav": 16,
-    "manifest_files": 162
+    "manifest_files": 169
   },
-  "total_bytes": 188827851,
+  "total_bytes": 194561540,
   "errors": [],
   "warnings": [],
   "wav_stats": {
@@ -636,6 +636,10 @@
     },
     {
       "ok": true,
+      "message": "BLEND header: game_assets\\pre_race\\PreRace_Paddock.blend"
+    },
+    {
+      "ok": true,
       "message": "BLEND header: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept.blend"
     },
     {
@@ -788,7 +792,15 @@
     },
     {
       "ok": true,
+      "message": "PNG resolution: previews\\Build_MainMenu.png 1280x720"
+    },
+    {
+      "ok": true,
       "message": "PNG resolution: previews\\Contact_Sheet.png 1600x1500"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\Driver_HD_Final.png 900x675"
     },
     {
       "ok": true,
@@ -800,7 +812,15 @@
     },
     {
       "ok": true,
+      "message": "PNG resolution: previews\\Historical_Characters_Final.png 900x675"
+    },
+    {
+      "ok": true,
       "message": "PNG resolution: previews\\Historical_Characters_preview.png 1400x900"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\PreRace_Blender.png 1050x675"
     },
     {
       "ok": true,

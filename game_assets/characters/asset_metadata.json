@@ -1,6 +1,6 @@
 {
   "asset_id": "historical_characters_1912",
-  "historical_status": "original_stylized_game_art",
+  "historical_status": "original_detailed_historical_game_art",
   "coordinate_system": {
     "blender": "meters, Z up, front -Y",
     "unity_fbx": "meters, Y up, forward +Z"
@@ -14,29 +14,29 @@
         "Walk",
         "Drive"
       ],
-      "height_m": 1.925,
+      "height_m": 1.8344,
       "stats": {
         "meshes": 1,
-        "vertices": 12576,
-        "polygons": 12662,
-        "triangles": 24696,
+        "vertices": 27836,
+        "polygons": 28276,
+        "triangles": 55304,
         "dimensions_m": [
-          0.7393,
-          0.36,
-          1.9248
+          0.66,
+          0.3813,
+          1.8344
         ],
         "bounds_min_m": [
-          -0.3677,
-          -0.21,
-          0.005
+          -0.3284,
+          -0.25,
+          0.01
         ],
         "bounds_max_m": [
-          0.3715,
-          0.15,
-          1.9298
+          0.3315,
+          0.1313,
+          1.8444
         ]
       },
-      "notes": "Humanoid rig with 21 bones; manual weights; 30-frame clips at 30 fps."
+      "notes": "Detailed historical driver with 20-bone rig, blended manual weights and Idle/Walk/Drive clips."
     },
     {
       "id": "chr_mechanic_1912",
@@ -46,29 +46,29 @@
         "Walk",
         "Drive"
       ],
-      "height_m": 1.92,
+      "height_m": 1.8121,
       "stats": {
         "meshes": 1,
-        "vertices": 11902,
-        "polygons": 11998,
-        "triangles": 23368,
+        "vertices": 14778,
+        "polygons": 15088,
+        "triangles": 29352,
         "dimensions_m": [
-          0.7393,
-          0.4,
-          1.9198
+          0.6435,
+          0.35,
+          1.8121
         ],
         "bounds_min_m": [
-          -0.3677,
-          -0.21,
-          0.005
+          -0.32,
+          -0.24,
+          0.014
         ],
         "bounds_max_m": [
-          0.3715,
-          0.19,
-          1.9248
+          0.3235,
+          0.11,
+          1.8261
         ]
       },
-      "notes": "Humanoid rig with 21 bones; manual weights; 30-frame clips at 30 fps."
+      "notes": "Detailed period mechanic with 20-bone rig, blended manual weights and Idle/Walk/Drive clips."
     },
     {
       "id": "chr_lady_1912",
@@ -78,29 +78,29 @@
         "Walk",
         "Drive"
       ],
-      "height_m": 2.022,
+      "height_m": 1.8273,
       "stats": {
         "meshes": 1,
-        "vertices": 11878,
-        "polygons": 11970,
-        "triangles": 23344,
+        "vertices": 14402,
+        "polygons": 14828,
+        "triangles": 28632,
         "dimensions_m": [
-          0.7393,
-          0.5054,
-          2.0222
+          0.6288,
+          0.395,
+          1.8273
         ],
         "bounds_min_m": [
-          -0.3677,
-          -0.2527,
-          0.005
+          -0.3132,
+          -0.21,
+          0.018
         ],
         "bounds_max_m": [
-          0.3715,
-          0.2527,
-          2.0272
+          0.3156,
+          0.185,
+          1.8453
         ]
       },
-      "notes": "Humanoid rig with 21 bones; manual weights; 30-frame clips at 30 fps."
+      "notes": "Detailed period lady with 20-bone rig, blended manual weights and Idle/Walk/Drive clips."
     }
   ],
   "notes": "Clips are baked into each FBX. Import with Rig > Humanoid and remap bones; use Drive clip for open-car seating."

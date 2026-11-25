@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Garage.unity
     guid: b641b5ad49af51b4e8dcce3ac69337d8
   - enabled: 1
+    path: Assets/Scenes/PreRace.unity
+    guid: 266e5011afcc5804fa98d8c71fbf55bb
+  - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: f31ca4f91ff7c6d4084d3acf3e1f3136
   - enabled: 1
@@ -23,5 +26,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Race_Monaco.unity
     guid: e98cbf0345f397b46865e64079c41458
+  - enabled: 1
+    path: Assets/Scenes/Race_Moscow.unity
+    guid: 494eb739a3fb07648827a2b46e9c4f28
+  - enabled: 1
+    path: Assets/Scenes/Race_Finland.unity
+    guid: d3667238ef910724fbdec65785ef84a7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

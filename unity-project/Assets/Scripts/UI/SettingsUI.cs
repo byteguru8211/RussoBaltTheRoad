@@ -15,20 +15,34 @@ public class SettingsUI : MonoBehaviour
         canvas = parent != null ? parent.GetComponent<Canvas>() : UIUtils.CreateCanvas("SettingsCanvas", 70);
         if (parent == null)
             UIUtils.Panel(canvas.transform, "Shade", new Color(0.01f, 0.02f, 0.015f, 0.82f), Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
-        RectTransform panel = UIUtils.Panel(canvas.transform, "SettingsPanel", UITheme.Dark, new Vector2(0.22f, 0.10f), new Vector2(0.78f, 0.90f), Vector2.zero, Vector2.zero).rectTransform;
+        RectTransform panel = UIUtils.Panel(canvas.transform, "SettingsPanel", UITheme.Dark, new Vector2(0.22f, 0.05f), new Vector2(0.78f, 0.95f), Vector2.zero, Vector2.zero).rectTransform;
         UIUtils.Text(panel, "Title", "Настройки", 48, UITheme.Cream, TextAnchor.MiddleCenter, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0, -80), new Vector2(0, -20));
         SettingsData settings = GameManager.Instance.Settings;
         UIUtils.Text(panel, "NameLabel", "Имя гонщика", 22, UITheme.Cream, TextAnchor.MiddleLeft, new Vector2(0, 1), new Vector2(0, 1), new Vector2(40, -128), new Vector2(250, -100));
-        UIUtils.InputField(panel, "PlayerName", GameManager.Instance.Profile.playerName, new Vector2(300, -136), v => GameManager.Instance.Profile.playerName = string.IsNullOrWhiteSpace(v) ? "Гонщик" : v);
+        UIUtils.InputField(panel, "PlayerName", GameManager.Instance.Profile.playerName, new Vector2(300, -136), v => GameManager.Instance.Profile.playerName = v);
         UIUtils.Slider(panel, "Master", "Общая громкость", settings.masterVolume, new Vector2(40, -185), v => { settings.masterVolume = v; AudioListener.volume = v; });
         UIUtils.Slider(panel, "Engine", "Двигатель", settings.engineVolume, new Vector2(40, -250), v => settings.engineVolume = v);
         UIUtils.Slider(panel, "Ambient", "Мир", settings.ambientVolume, new Vector2(40, -315), v => settings.ambientVolume = v);
-        UIUtils.Slider(panel, "Steering", "Чувствительность руля", settings.steeringSensitivity, new Vector2(40, -380), v => settings.steeringSensitivity = v, 0.5f, 1.5f);
-        UIUtils.Toggle(panel, "Shake", "Тряска камеры", settings.cameraShake, new Vector2(40, -450), v => settings.cameraShake = v);
-        UIUtils.Toggle(panel, "Clutch", "Помощь со сцеплением", settings.automaticClutch, new Vector2(40, -500), v => settings.automaticClutch = v);
-        UIUtils.Toggle(panel, "Subtitles", "Субтитры", settings.subtitles, new Vector2(40, -550), v => settings.subtitles = v);
-        UIUtils.Button(panel, "Save", "Сохранить", new Vector2(0.25f, 0.06f), new Vector2(0.75f, 0.16f), Vector2.zero, Vector2.zero, () =>
+        UIUtils.Slider(panel, "Music", "Музыка меню", settings.musicVolume, new Vector2(40, -380), v => settings.musicVolume = v);
+        UIUtils.Slider(panel, "Steering", "Чувствительность руля", settings.steeringSensitivity, new Vector2(40, -445), v => settings.steeringSensitivity = v, 0.5f, 1.5f);
+        UIUtils.Text(panel, "CameraLabel", "Камера", 22, UITheme.Cream, TextAnchor.MiddleLeft, new Vector2(0, 1), new Vector2(0, 1), new Vector2(40, -505), new Vector2(250, -477));
+        string[] cameraNames = { "Погоня", "Капот", "Кокпит", "Кино" };
+        for (int i = 0; i < cameraNames.Length; i++)
         {
+            int mode = i;
+            UIUtils.Button(panel, "Camera_" + i, cameraNames[i], new Vector2(0.06f + i * 0.225f, 0.40f), new Vector2(0.25f + i * 0.225f, 0.455f), Vector2.zero, Vector2.zero, () =>
+            {
+                settings.cameraMode = (CameraMode)mode;
+                GameManager.Instance.SelectCameraMode(mode);
+            }, 18);
+        }
+        UIUtils.Toggle(panel, "Shake", "Тряска камеры", settings.cameraShake, new Vector2(40, -555), v => settings.cameraShake = v);
+        UIUtils.Toggle(panel, "Clutch", "Помощь со сцеплением", settings.automaticClutch, new Vector2(40, -605), v => settings.automaticClutch = v);
+        UIUtils.Toggle(panel, "Subtitles", "Субтитры", settings.subtitles, new Vector2(40, -655), v => settings.subtitles = v);
+        UIUtils.Toggle(panel, "AutomaticTransmission", "Автоматическая коробка", settings.automaticTransmission, new Vector2(40, -705), v => settings.automaticTransmission = v);
+        UIUtils.Button(panel, "Save", "Сохранить", new Vector2(0.25f, 0.02f), new Vector2(0.75f, 0.10f), Vector2.zero, Vector2.zero, () =>
+        {
+            GameManager.Instance.Profile.playerName = SaveSystem.NormalizePlayerName(GameManager.Instance.Profile.playerName);
             GameManager.Instance.Save();
             if (parent == null)
             {

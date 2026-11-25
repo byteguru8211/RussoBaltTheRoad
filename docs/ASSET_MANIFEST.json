@@ -3,37 +3,42 @@
   "root": "D:/programming/RussoBaltTheRoad",
   "counts": {
     "fbx": 58,
-    "blend": 6,
-    "png": 43,
+    "blend": 7,
+    "png": 47,
     "wav": 16,
-    "manifest_files": 162
+    "manifest_files": 169
   },
-  "total_bytes": 188827851,
+  "total_bytes": 194561540,
   "files": [
     {
       "file": "game_assets/characters/asset_metadata.json",
-      "bytes": 2446,
-      "sha256": "675f1a7c87ffecae868304196ead4846526cee5e0ed4e4eb31fa8cb744bd18ca"
+      "bytes": 2524,
+      "sha256": "a414280ed8da17fcb3cfb0e2220a534c45ce0c879863d3b909059b3a58cfed35"
     },
     {
       "file": "game_assets/characters/Driver_1912.fbx",
-      "bytes": 2760652,
-      "sha256": "70ba0c99e041959bf45d4807d2d976cd99bca668468eafc86ce9697e117b9805"
+      "bytes": 1971100,
+      "sha256": "5d794d3ce5526568686d8d5dfb9bd6a1a4759afc3b0ce69c7bb4355340f855d8"
     },
     {
       "file": "game_assets/characters/Historical_Characters.blend",
-      "bytes": 6531752,
-      "sha256": "919e4c75fed0f904627151d8b8f2fe6a72d131219cb8999e30eff8f46c111338"
+      "bytes": 5550022,
+      "sha256": "d3a3538481c3484df341b9667a7291f9fa366ce7dfe00f272ac1b9b2c4c4dd07"
+    },
+    {
+      "file": "game_assets/characters/Historical_Characters.blend1",
+      "bytes": 5550016,
+      "sha256": "bc27cfe9bf563d5f5f865e75d16e0f9a236372dffa3a0749fb634afd7b858a0b"
     },
     {
       "file": "game_assets/characters/Lady_1912.fbx",
-      "bytes": 3240172,
-      "sha256": "3b95c450cbbd8f9312881851ea0d7ced3542c056f02bf176a520fc95bb317d3a"
+      "bytes": 1356044,
+      "sha256": "483e27ee9b7cf6b47f48fe91c13f5030ea37f31389fe35345710e8914bce44f8"
     },
     {
       "file": "game_assets/characters/Mechanic_1912.fbx",
-      "bytes": 2729212,
-      "sha256": "414b638787fc951ae003c8c615f75e2b27eee0e10b3d4a26a4a7ac5c1fe8e60d"
+      "bytes": 1379740,
+      "sha256": "9591503ab3918df77a33853d30be6dae4d0ecaf8b3444da40a20622463d99f46"
     },
     {
       "file": "game_assets/environment/Russia_1912/asset_metadata.json",
@@ -199,6 +204,11 @@
       "file": "game_assets/environment/Russia_1912/RussoBalt_The_Road_Hero.blend",
       "bytes": 8231222,
       "sha256": "dced6ae02ce1906389747fbe32044b378cc98c01c16579c5ea2df5fba635a08c"
+    },
+    {
+      "file": "game_assets/pre_race/PreRace_Paddock.blend",
+      "bytes": 1532150,
+      "sha256": "3e5405cea887c44be6714a449f737a71efb40b6d10fac5bcc538235f13c82033"
     },
     {
       "file": "game_assets/textures/shared/bark_birch_basecolor.png",
@@ -586,6 +596,11 @@
       "sha256": "a81be7501cecde9684105918502575b916bf106f9f3791a26110a35c55850823"
     },
     {
+      "file": "audio/menu_1912_original.wav",
+      "bytes": 705644,
+      "sha256": "9f04c3f9b20833885c67d5e19610840bff48af38ed62bd7c814d61449a522666"
+    },
+    {
       "file": "audio/processed/ambience_birds_loop.wav",
       "bytes": 1536044,
       "sha256": "300a008ca4f4e86ddd3d839ff43876c1d8ad09b685f79bacbfe3b4c31a5245dd"
@@ -691,9 +706,19 @@
       "sha256": "f8c8ef41142482a5dedd80d540ee9548b8b212400e5b4139b0385c8fa34298a9"
     },
     {
+      "file": "previews/Build_MainMenu.png",
+      "bytes": 825215,
+      "sha256": "8141ed87f885ae443ac9c3c3005b2f30681cb49bc328a02f16b341cd3d3ca22d"
+    },
+    {
       "file": "previews/Contact_Sheet.png",
       "bytes": 1188092,
       "sha256": "99a6e7e6703cd8b167acb51639ce3e5d9ad15af36367dec576d294d3b66ee817"
+    },
+    {
+      "file": "previews/Driver_HD_Final.png",
+      "bytes": 568222,
+      "sha256": "e1e964edc0cebba65bbabf2d21213b7732ab4cf294c0c3f6c92b7ede6407bf6f"
     },
     {
       "file": "previews/Era_Vehicles_preview.png",
@@ -706,9 +731,19 @@
       "sha256": "c88d20cace1fee8e695ce94987e3b7d0f3503a9c0669dd955bd43d3833d9880c"
     },
     {
+      "file": "previews/Historical_Characters_Final.png",
+      "bytes": 532111,
+      "sha256": "0d755135d44a8a227509716a8277a7465771f38dcb95cd163aef6d75e964e14e"
+    },
+    {
       "file": "previews/Historical_Characters_preview.png",
       "bytes": 1107391,
       "sha256": "91e43e88f274585d372d41d439e72266d6748c85866573854f86bdf25a87f54d"
+    },
+    {
+      "file": "previews/PreRace_Blender.png",
+      "bytes": 1024444,
+      "sha256": "10134197a8925fb3d7d69d5d7e04f9d97e10717b0eae51ab53dc57cd631f3fa7"
     },
     {
       "file": "previews/Russia_1912_Modular_Kit_preview.png",
@@ -762,8 +797,8 @@
     },
     {
       "file": "docs/FBX_VALIDATION.json",
-      "bytes": 40568,
-      "sha256": "08a3bbffccf5b78cce95171135b6e1a7457056534e41461b31e5d763f0f5ecb9"
+      "bytes": 41259,
+      "sha256": "8d35fbace175d10b1866dc4ec4e95ff5593260cf9a06a0778e9783f4dc031432"
     },
     {
       "file": "docs/GAME_PRODUCTION_PLAN.md",

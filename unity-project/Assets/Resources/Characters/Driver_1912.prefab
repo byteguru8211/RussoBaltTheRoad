@@ -1,0 +1,164 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4624870320366946779
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      propertyPath: m_Name
+      value: Driver_1912
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4240367671352236148}
+    - targetCorrespondingSourceObject: {fileID: 8020716316519476151, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2907595980128481523}
+  m_SourcePrefab: {fileID: 100100000, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+--- !u!4 &3205020423787020614 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -1417417729613592419, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+  m_PrefabInstance: {fileID: 4624870320366946779}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3414179261679575660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8020716316519476151, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+  m_PrefabInstance: {fileID: 4624870320366946779}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2907595980128481523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3414179261679575660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70e94fcafba717848afcdf7ad2c93fee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DriverRigController
+  vehicle: {fileID: 0}
+  input: {fileID: 0}
+  animator: {fileID: 4240367671352236148}
+  rigRoot: {fileID: 3205020423787020614}
+  root: {fileID: 0}
+  pelvis: {fileID: 0}
+  spine: {fileID: 0}
+  chest: {fileID: 0}
+  neck: {fileID: 0}
+  head: {fileID: 0}
+  leftClavicle: {fileID: 0}
+  rightClavicle: {fileID: 0}
+  leftUpperArm: {fileID: 0}
+  rightUpperArm: {fileID: 0}
+  leftForearm: {fileID: 0}
+  rightForearm: {fileID: 0}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  leftThigh: {fileID: 0}
+  rightThigh: {fileID: 0}
+  leftShin: {fileID: 0}
+  rightShin: {fileID: 0}
+  leftFoot: {fileID: 0}
+  rightFoot: {fileID: 0}
+  seatAnchor: {fileID: 0}
+  steeringWheel: {fileID: 0}
+  gearLever: {fileID: 0}
+  useSeatAnchor: 0
+  leftHandTarget: {fileID: 0}
+  rightHandTarget: {fileID: 0}
+  leftKneeTarget: {fileID: 0}
+  rightKneeTarget: {fileID: 0}
+  leftFootTarget: {fileID: 0}
+  rightFootTarget: {fileID: 0}
+  boneAxis: {x: 0, y: 1, z: 0}
+  leftGripLocal: {x: 0.22, y: 0, z: 0}
+  rightGripLocal: {x: -0.22, y: 0, z: 0}
+  leftElbowPoleLocal: {x: 0.85, y: -0.3, z: 0.2}
+  rightElbowPoleLocal: {x: -0.85, y: -0.3, z: 0.2}
+  leftKneeLocal: {x: 0.17, y: 0.64, z: -0.22}
+  rightKneeLocal: {x: -0.17, y: 0.64, z: -0.22}
+  leftFootLocal: {x: 0.18, y: 0.24, z: 0.24}
+  rightFootLocal: {x: -0.18, y: 0.24, z: 0.24}
+  gearGripLocal: {x: 0, y: 0.12, z: 0}
+  armResponse: 12
+  bodyResponse: 6
+  shiftDuration: 0.42
+  maximumSteerAngle: 30
+  headRenderer: {fileID: 0}
+  hideHeadInCockpit: 0
+--- !u!1 &5543859520124826762 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
+  m_PrefabInstance: {fileID: 4624870320366946779}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4240367671352236148
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5543859520124826762}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22035548a74c49b4990beb51bda5bbb4, type: 3}
+  m_Name: moscow_highway
+  m_EditorClassIdentifier: Assembly-CSharp::TrackData
+  id: moscow_highway
+  displayName: "\u041C\u043E\u0441\u043A\u043E\u0432\u0441\u043A\u043E\u0435 \u0448\u043E\u0441\u0441\u0435"
+  chapter: "\u0421\u0432\u043E\u0431\u043E\u0434\u043D\u044B\u0439 \u0437\u0430\u0435\u0437\u0434"
+  description: "\u0420\u0430\u043D\u043D\u0435\u0435 \u0443\u0442\u0440\u043E, \u043F\u043E\u0434\u0441\u043D\u0435\u0436\u043D\u0430\u044F \u043F\u0440\u043E\u0441\u0435\u043A\u0430 \u0438 \u0441\u0442\u0430\u0440\u044B\u0435 \u043F\u043E\u0447\u0442\u043E\u0432\u044B\u0435 \u043E\u043F\u043E\u0440\u044B."
+  waypoints:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 65}
+  - {x: 22, y: 1, z: 125}
+  - {x: 75, y: 2, z: 155}
+  - {x: 135, y: 1, z: 125}
+  - {x: 165, y: 0, z: 65}
+  - {x: 145, y: 0, z: 0}
+  - {x: 95, y: -1, z: -35}
+  - {x: 40, y: 0, z: -45}
+  roadWidth: 10
+  laps: 2
+  aiCount: 4
+  surfaceGrip: 0.8
+  timeLimit: 360
+  reward: 900
+  roadColor: {r: 0.3, g: 0.27, b: 0.22, a: 1}
+  groundColor: {r: 0.72, g: 0.77, b: 0.8, a: 1}
+  curbColor: {r: 0.76, g: 0.72, b: 0.62, a: 1}
+  storyTitle: "\u041C\u041E\u0421\u041A\u041E\u0412\u0421\u041A\u041E\u0415 \u0428\u041E\u0421\u0421\u0415"
+  storyText: "\u0420\u0430\u0441\u0441\u0432\u0435\u0442 \u043D\u0430\u0434 \u041F\u043E\u0434\u043C\u043E\u0441\u043A\u043E\u0432\u044C\u0435\u043C. \u041C\u0430\u0448\u0438\u043D\u044B \u0432\u044B\u0445\u043E\u0434\u044F\u0442 \u043D\u0430 \u0442\u0440\u0430\u0441\u0441\u0443 \u0440\u0430\u043D\u044C\u0448\u0435 \u043F\u043E\u0447\u0442\u043E\u0432\u044B\u0445 \u0434\u0438\u043B\u0438\u0436\u0430\u043D\u0441\u043E\u0432."
+  previewResource: UI/Hero
+  scenery: forest
+  sceneName: Race_Moscow
+  prerequisiteTrackId: monaco_finish
+  location: "\u041F\u043E\u0434\u043C\u043E\u0441\u043A\u043E\u0432\u044C\u0435 \xB7 1912"

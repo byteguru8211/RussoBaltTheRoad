@@ -2444,6 +2444,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3083331007332272863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5575454106907251137}
+  m_Layer: 0
+  m_Name: RB_DriverSeat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5575454106907251137
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3083331007332272863}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.26999998, y: 0.4199996, z: -0.72}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5074059113495473466}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3092819748307456652
 GameObject:
   m_ObjectHideFlags: 0
@@ -5490,6 +5521,7 @@ GameObject:
   - component: {fileID: 4385367165070997671}
   - component: {fileID: 5162358468441396920}
   - component: {fileID: 1816322505691524851}
+  - component: {fileID: 8578468376623736285}
   m_Layer: 0
   m_Name: network_russo_balt
   m_TagString: Untagged
@@ -5515,6 +5547,8 @@ Transform:
   - {fileID: 811791938221363718}
   - {fileID: 734445587458029319}
   - {fileID: 8245508667725571976}
+  - {fileID: 522453261514764443}
+  - {fileID: 5575454106907251137}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3787305575324336797
@@ -5596,6 +5630,24 @@ MonoBehaviour:
   wheelRadius: 0.44
   surfaceGrip: 1
   isPlayer: 1
+  automaticTransmission: 1
+  idleRpm: 650
+  rpmLimiter: 2300
+  shiftUpRpm: 2050
+  shiftDownRpm: 850
+  torqueCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  frontBrakeShare: 0.6
+  drivelineEfficiency: 0.85
+  dragArea: 0.85
+  downforceCoefficient: 1.25
+  rollingResistance: 0.018
+  speedSensitiveRollStability: 1.8
+  speedSensitiveYawStability: 0.65
   gear: 1
   engineRunning: 0
   rpm: 600
@@ -5634,6 +5686,8 @@ MonoBehaviour:
   roadSource: {fileID: 0}
   windSource: {fileID: 0}
   starterSource: {fileID: 0}
+  gearSource: {fileID: 0}
+  hornSource: {fileID: 0}
 --- !u!114 &9146351210037535429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5647,6 +5701,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
   vehicle: {fileID: 227604523969880905}
+  dustSocket: {fileID: 0}
+  leftExhaustSocket: {fileID: 0}
+  rightExhaustSocket: {fileID: 0}
+  leftHeadlampSocket: {fileID: 0}
+  rightHeadlampSocket: {fileID: 0}
+  automaticHeadlamps: 1
+  headlampIntensity: 3.2
+  headlampRange: 32
+  surfaceMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &4385367165070997671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5659,14 +5724,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1026796792
+  GlobalObjectIdHash: 769003806
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
-  m_InScenePlaced: 1
+  m_InScenePlaced: 0
   ActiveSceneSynchronization: 0
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
@@ -5698,7 +5763,7 @@ MonoBehaviour:
   RotationMaxInterpolationTime: 0.1
   ScaleLerpSmoothing: 1
   ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 1
+  AuthorityMode: 0
   TickSyncChildren: 0
   UseUnreliableDeltas: 0
   SyncPositionX: 1
@@ -5747,6 +5812,90 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  CheckpointIndex:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 1
+  CompletedLaps:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  Finished:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  State:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue:
+      Gear: 0
+      EngineRunning: 0
+      Rpm: 0
+      Throttle: 0
+      Steer: 0
+      Fuel: 0
+      Temperature: 0
+      Damage: 0
+      Distance: 0
+  DisplayName:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue:
+      utf8LengthInBytes: 12
+      bytes:
+        offset0000:
+          byte0000: 208
+          byte0001: 147
+          byte0002: 208
+          byte0003: 190
+          byte0004: 208
+          byte0005: 189
+          byte0006: 209
+          byte0007: 137
+          byte0008: 208
+          byte0009: 184
+          byte0010: 208
+          byte0011: 186
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        byte0016: 0
+        byte0017: 0
+        byte0018: 0
+        byte0019: 0
+        byte0020: 0
+        byte0021: 0
+        byte0022: 0
+        byte0023: 0
+        byte0024: 0
+        byte0025: 0
+        byte0026: 0
+        byte0027: 0
+        byte0028: 0
+        byte0029: 0
+--- !u!114 &8578468376623736285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760085352839964878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkRigidbody
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
+  UseRigidBodyForMotion: 1
+  AutoUpdateKinematicState: 0
+  AutoSetKinematicOnDespawn: 1
 --- !u!1 &7804269256981257234
 GameObject:
   m_ObjectHideFlags: 0
@@ -6503,3 +6652,85 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &4675948117291540139
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5074059113495473466}
+    m_Modifications:
+    - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: seatAnchor
+      value: 
+      objectReference: {fileID: 5575454106907251137}
+    - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: useSeatAnchor
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.26999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.4199996
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5543859520124826762, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: m_Name
+      value: Driver_1912
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+--- !u!4 &522453261514764443 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+  m_PrefabInstance: {fileID: 4675948117291540139}
+  m_PrefabAsset: {fileID: 0}
