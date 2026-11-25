@@ -1,0 +1,51 @@
+{
+  "asset_id": "mercedes_37_90_1912",
+  "display_name": "Mercedes 37/90 1912 Double Phaeton",
+  "historical_status": "research_based_concept",
+  "confirmed": {
+    "engine_cc": 9530,
+    "power_hp_approx": 90,
+    "drive": "RWD enclosed chain",
+    "gears": 4,
+    "steering": "RHD",
+    "brakes": "transmission brake + rear drums",
+    "wheelbase_m": "3.38–3.58"
+  },
+  "assumptions": {
+    "color": "deep green with brass",
+    "dimensions_m": [
+      4.95,
+      1.75,
+      1.75
+    ],
+    "mass_kg": 1950
+  },
+  "stats_detailed": {
+    "meshes": 134,
+    "vertices": 7656,
+    "polygons": 6876,
+    "triangles": 14748,
+    "dimensions_m": [
+      1.77,
+      4.9912,
+      1.998
+    ],
+    "bounds_min_m": [
+      -0.885,
+      -2.7413,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.885,
+      2.2498,
+      1.998
+    ]
+  },
+  "exports": [
+    "Mercedes_37_90_1912_LOD0.fbx",
+    "Mercedes_37_90_1912_LOD1.fbx",
+    "Mercedes_37_90_1912_LOD2.fbx",
+    "Mercedes_37_90_1912_Detailed.fbx",
+    "Mercedes_37_90_1912_Collision.fbx"
+  ]
+}

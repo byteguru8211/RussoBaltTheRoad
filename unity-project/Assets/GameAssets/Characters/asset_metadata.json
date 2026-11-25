@@ -1,0 +1,107 @@
+{
+  "asset_id": "historical_characters_1912",
+  "historical_status": "original_stylized_game_art",
+  "coordinate_system": {
+    "blender": "meters, Z up, front -Y",
+    "unity_fbx": "meters, Y up, forward +Z"
+  },
+  "characters": [
+    {
+      "id": "chr_driver_1912",
+      "file": "Driver_1912.fbx",
+      "actions": [
+        "Idle",
+        "Walk",
+        "Drive"
+      ],
+      "height_m": 1.925,
+      "stats": {
+        "meshes": 1,
+        "vertices": 6764,
+        "polygons": 6850,
+        "triangles": 13244,
+        "dimensions_m": [
+          0.7393,
+          0.36,
+          1.9248
+        ],
+        "bounds_min_m": [
+          -0.3677,
+          -0.21,
+          0.005
+        ],
+        "bounds_max_m": [
+          0.3715,
+          0.15,
+          1.9298
+        ]
+      },
+      "notes": "Humanoid rig with 21 bones; manual weights; 30-frame clips at 30 fps."
+    },
+    {
+      "id": "chr_mechanic_1912",
+      "file": "Mechanic_1912.fbx",
+      "actions": [
+        "Idle",
+        "Walk",
+        "Drive"
+      ],
+      "height_m": 1.92,
+      "stats": {
+        "meshes": 1,
+        "vertices": 6090,
+        "polygons": 6186,
+        "triangles": 11916,
+        "dimensions_m": [
+          0.7393,
+          0.4,
+          1.9198
+        ],
+        "bounds_min_m": [
+          -0.3677,
+          -0.21,
+          0.005
+        ],
+        "bounds_max_m": [
+          0.3715,
+          0.19,
+          1.9248
+        ]
+      },
+      "notes": "Humanoid rig with 21 bones; manual weights; 30-frame clips at 30 fps."
+    },
+    {
+      "id": "chr_lady_1912",
+      "file": "Lady_1912.fbx",
+      "actions": [
+        "Idle",
+        "Walk",
+        "Drive"
+      ],
+      "height_m": 2.022,
+      "stats": {
+        "meshes": 1,
+        "vertices": 6020,
+        "polygons": 6078,
+        "triangles": 11788,
+        "dimensions_m": [
+          0.7415,
+          0.4616,
+          2.0222
+        ],
+        "bounds_min_m": [
+          -0.37,
+          -0.2316,
+          0.005
+        ],
+        "bounds_max_m": [
+          0.3715,
+          0.23,
+          2.0272
+        ]
+      },
+      "notes": "Humanoid rig with 21 bones; manual weights; 30-frame clips at 30 fps."
+    }
+  ],
+  "notes": "Clips are baked into each FBX. Import with Rig > Humanoid and remap bones; use Drive clip for open-car seating."
+}

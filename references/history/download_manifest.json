@@ -1,0 +1,47 @@
+[
+  {
+    "file": "references/history/images/Ivanov_C24_58_Grand_Prix_1913.jpg",
+    "commons_title": "File:Russia Grand Prix 1913 Ivanov.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Russia_Grand_Prix_1913_Ivanov.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "download_url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Russia_Grand_Prix_1913_Ivanov.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "bytes": 128685,
+    "sha256": "78d0e03a9304d4be1625a941b1f52f26f7549807da4ac1657787b4074f8fcdbd",
+    "original_width": 800,
+    "original_height": 518,
+    "license": "Public domain",
+    "license_url": null,
+    "artist": "Unknown author<span style=\"display: none;\">Unknown author</span>",
+    "credit": "Фотографии из журнала «Нива» №25 за 1913 год.",
+    "downloaded": "2026-11-24"
+  },
+  {
+    "file": "references/history/images/RussoBalt_Replica_CC0_2026.jpg",
+    "commons_title": "File:Moscow car show 2026-07-31 Russo-Balt replica 02.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Moscow_car_show_2026-07-31_Russo-Balt_replica_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Moscow_car_show_2026-07-31_Russo-Balt_replica_02.jpg/1920px-Moscow_car_show_2026-07-31_Russo-Balt_replica_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "bytes": 550262,
+    "sha256": "0b626331dbe5cd71cba1587738431d5319461a81b6ecc9344ad6fc089d6d6101",
+    "original_width": 3600,
+    "original_height": 2401,
+    "license": "CC0",
+    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "artist": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Retired_electrician&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Retired electrician (page does not exist)\">Retired electrician</a>",
+    "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+    "downloaded": "2026-11-24"
+  },
+  {
+    "file": "references/history/images/RussoBalt_C24_30_Replica_CC0_2025.jpg",
+    "commons_title": "File:Moscow car show 2025-08-03 Russo-Balt C24-30 1911 02.jpg",
+    "url": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Moscow_car_show_2025-08-03_Russo-Balt_C24-30_1911_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Moscow_car_show_2025-08-03_Russo-Balt_C24-30_1911_02.jpg/1920px-Moscow_car_show_2025-08-03_Russo-Balt_C24-30_1911_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "bytes": 729273,
+    "sha256": "3d572afd728590bafb072855baf89f7d0ed30b01c19e1b7a4913626b8cb40495",
+    "original_width": 4969,
+    "original_height": 3456,
+    "license": "CC0",
+    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "artist": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Retired_electrician&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Retired electrician (page does not exist)\">Retired electrician</a>",
+    "credit": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+    "downloaded": "2026-11-24"
+  }
+]

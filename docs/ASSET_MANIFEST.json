@@ -1,0 +1,809 @@
+{
+  "generated": "2026-11-24",
+  "root": "D:/programming/RussoBaltTheRoad",
+  "counts": {
+    "fbx": 58,
+    "blend": 6,
+    "png": 41,
+    "wav": 16,
+    "manifest_files": 159
+  },
+  "total_bytes": 186157253,
+  "files": [
+    {
+      "file": "game_assets/characters/asset_metadata.json",
+      "bytes": 2436,
+      "sha256": "7835a64da4ecd335a82ce59154321c1bd64dcfff0deb908df703b6233e3f48d1"
+    },
+    {
+      "file": "game_assets/characters/Driver_1912.fbx",
+      "bytes": 2495820,
+      "sha256": "919e716b904e80cc3752c65f080012fcbe3a2c0442b9d2032b5c9d994ec042d8"
+    },
+    {
+      "file": "game_assets/characters/Historical_Characters.blend",
+      "bytes": 5828304,
+      "sha256": "936a85d38478b7dd28cc8af6e74c603ccd2987d64cc80d219c43b9ddbfa3b352"
+    },
+    {
+      "file": "game_assets/characters/Lady_1912.fbx",
+      "bytes": 2971324,
+      "sha256": "46d4b14c24f098f0d5000e71c36c2744b4d40585630f6b3bec905838b5825219"
+    },
+    {
+      "file": "game_assets/characters/Mechanic_1912.fbx",
+      "bytes": 2463804,
+      "sha256": "a585dc0943ad990264cff88f6307ed207abfaf28a823f317529d094883062de8"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/asset_metadata.json",
+      "bytes": 17588,
+      "sha256": "b1a8cfb6f6c022825ff100b8739f5b315d8fc24cb776a09e7153eed8dab06eb5"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Building_Brick_Gatehouse_01_Collision.fbx",
+      "bytes": 22492,
+      "sha256": "a1cbbeb9f3bafe267bcbb5cfa28e60dec0ea88addb1fab9fbe873354c18752c8"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Building_Brick_Gatehouse_01_Detailed.fbx",
+      "bytes": 1710188,
+      "sha256": "680ec7869211f588cfb154b30c6f0fad7dfbc792eff623c7193c1ee2f3a7af42"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Building_Brick_Gatehouse_01_LOD0.fbx",
+      "bytes": 1594588,
+      "sha256": "9820a53686112040826e14bcb3308da8c993bb7ae23bfd0b422a58f03f74c91b"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Building_Brick_Gatehouse_01_LOD1.fbx",
+      "bytes": 1541964,
+      "sha256": "9750593c02021c2f186176b8509f6e695201e1194bbe48f7dc7b8ff7f807d3aa"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Building_Wood_House_01_Collision.fbx",
+      "bytes": 16684,
+      "sha256": "59f8aeba428da90a28a4416780a9121ae85f1551c4f4642da06d3518f3c8d93f"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Building_Wood_House_01_Detailed.fbx",
+      "bytes": 2007532,
+      "sha256": "7c22ebb267727945adc79e20652b1aa5f65dcd39b6da667b777327e21c3efbe4"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Building_Wood_House_01_LOD0.fbx",
+      "bytes": 1736172,
+      "sha256": "055b4cb9147e64d7b887632f5032a21a7532e37553f6bc5ac0326033734cfe93"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Building_Wood_House_01_LOD1.fbx",
+      "bytes": 1643500,
+      "sha256": "c726bc3d4d700ffc29dd5dbc7bea614c82db456faf001913798583ddadbfb4e1"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Fence_Wood_10m_LOD0.fbx",
+      "bytes": 593356,
+      "sha256": "baf2f900d4bebeaba6ca808b90dcaa7c79b86524b340d48dafbfc0128acb6702"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Prop_Barrel_01_LOD0.fbx",
+      "bytes": 561100,
+      "sha256": "1f4dd48c0f26a8b3ce6ff022d2c10e00fd52049aa83aab271c44f6b3f4590e3a"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Prop_Crate_01_LOD0.fbx",
+      "bytes": 556940,
+      "sha256": "56b9a70e0377c969a9fdf062ea77e5fe72b548c0cdcdc9d77a169ac6ccd1b0a7"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Prop_Fuel_Can_01_LOD0.fbx",
+      "bytes": 278460,
+      "sha256": "75fa3c37dd252079d49b20e140ae1a9b34427527339a480e523cce9c07c20f32"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Prop_Hay_Bale_01_LOD0.fbx",
+      "bytes": 113196,
+      "sha256": "db94aa7849a6426e6bca2a1357cdb2e5e38e532be878e6b2196b0357fadfdb2f"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Prop_Horse_Cart_01_LOD0.fbx",
+      "bytes": 694492,
+      "sha256": "587af2d9f04ef947016f39bbe4be05787c9ba367b803462d18c5ea4472357a09"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Prop_Milestone_01_LOD0.fbx",
+      "bytes": 1576412,
+      "sha256": "b11e49e563e828a042a7d9d1e02db1b31a8779a38096cce11d247e307fcbc2f6"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Prop_Roadside_Lantern_01_LOD0.fbx",
+      "bytes": 53260,
+      "sha256": "b8fba34008b7d24ff6a305efba2054894ca30fc26af62ffec44a039ceb427ccb"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Prop_Tool_Chest_01_LOD0.fbx",
+      "bytes": 548364,
+      "sha256": "c2c4ffc1b369cc0c6aec4fde5974d5db9517217fcfd9a90852d4e2a3cde4ed6c"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Road_Cobblestone_25m_LOD0.fbx",
+      "bytes": 738204,
+      "sha256": "6947b092bea41d4ff78ef1a9356d3b8bb86d35c2754e8758a2a4b02e7a8bd56e"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Road_Dirt_100m_LOD0.fbx",
+      "bytes": 1120092,
+      "sha256": "6423f8f84fe54b9bdfcba97a19f8944440c2f95019800910147afe2ec14ad35b"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Road_Snow_100m_LOD0.fbx",
+      "bytes": 1597868,
+      "sha256": "fb65a2a9efda48c1c3444f210b6fea14cf979fb886cb80d3cf7fc33362e9f40c"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Signpost_Russia_1912_LOD0.fbx",
+      "bytes": 1467372,
+      "sha256": "cde19ee65e95efd447103d9e3f53183244e8f43e57f5d3376aa7642ebe80005d"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Telegraph_Pole_01_Detailed.fbx",
+      "bytes": 637564,
+      "sha256": "07d3feed72f1761ff2d9e5cce5038871deab5e44041edf6d0f42856b0b647d11"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Telegraph_Pole_01_LOD0.fbx",
+      "bytes": 579308,
+      "sha256": "5695ed436283129232d601255607b3f42872ffc287aa822f993c52a1bf688ed8"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Telegraph_Pole_01_LOD1.fbx",
+      "bytes": 574668,
+      "sha256": "4ea3fb3cb80d683737fddb4cdc2ea4fe8bcd903833b7cfddcda40d6e022b6ff7"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Tree_Birch_01_Detailed.fbx",
+      "bytes": 193644,
+      "sha256": "5042a48d99a2c415e32fce385ca3abb7d916be7bc816f5f5a49b3ae0efc3cd3c"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Tree_Birch_01_LOD0.fbx",
+      "bytes": 113324,
+      "sha256": "1cdaad68a95b6b834d2bb87d7c9af908a110421f1cac0775da683cb8beea24d3"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Tree_Birch_01_LOD1.fbx",
+      "bytes": 99868,
+      "sha256": "528e2ad31be05f5d2a54bec1ba4414175757d15689f161aa1a8d2912bd4ab530"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Tree_Pine_01_Detailed.fbx",
+      "bytes": 492156,
+      "sha256": "948aa3f385d6b699b9f5ac9832609fb93f06e634b3ca75be3563e2fe10bfa9a6"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Tree_Pine_01_LOD0.fbx",
+      "bytes": 481004,
+      "sha256": "354b05903455952f3c08622322001cefbe41ed60324b0b36968ecf6341a38c82"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/modules/Tree_Pine_01_LOD1.fbx",
+      "bytes": 481020,
+      "sha256": "bdec4d23537fcaac422bbba9f77865139a89ae6507e52150b29d0d0caa19ace6"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/Russia_1912_Modular_Kit.blend",
+      "bytes": 10583251,
+      "sha256": "ddfbceaac099922a5dfc1b1192b8058f2d01fcb035b9406f2b2acbb6938bff0d"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/RussoBalt_The_Road_Hero.blend",
+      "bytes": 8231222,
+      "sha256": "dced6ae02ce1906389747fbe32044b378cc98c01c16579c5ea2df5fba635a08c"
+    },
+    {
+      "file": "game_assets/textures/shared/bark_birch_basecolor.png",
+      "bytes": 81113,
+      "sha256": "02562a46b3354be3747433981dc1a1bf63a67a040d5a185aaa5a1cbd191dc5e9"
+    },
+    {
+      "file": "game_assets/textures/shared/bark_birch_normal.png",
+      "bytes": 369496,
+      "sha256": "884485e13a24e6f42255b0f534ba4dda0c4dbf07043e77689af9a32abdd65c4a"
+    },
+    {
+      "file": "game_assets/textures/shared/bark_birch_roughness.png",
+      "bytes": 920,
+      "sha256": "f1783fb76671112e19c12f1837094f421bfac027f495c31c01b6ffcd3bd5d05d"
+    },
+    {
+      "file": "game_assets/textures/shared/brick_red_basecolor.png",
+      "bytes": 2737,
+      "sha256": "7d6a14757300c0b55a56a77e70aafef0e3d1fba5958f5d5fb007501807d0e246"
+    },
+    {
+      "file": "game_assets/textures/shared/brick_red_normal.png",
+      "bytes": 7128,
+      "sha256": "3f2b5345adf2c3713bc98bb0836fb5ea089e48f0cc1a104420db4b53ee3db0bc"
+    },
+    {
+      "file": "game_assets/textures/shared/brick_red_roughness.png",
+      "bytes": 920,
+      "sha256": "f1783fb76671112e19c12f1837094f421bfac027f495c31c01b6ffcd3bd5d05d"
+    },
+    {
+      "file": "game_assets/textures/shared/fabric_charcoal_basecolor.png",
+      "bytes": 139180,
+      "sha256": "f4c48923ecaa2583f4ae3073eb6aea2ea7f85ab2fcd397f939ce700671100ff2"
+    },
+    {
+      "file": "game_assets/textures/shared/fabric_charcoal_normal.png",
+      "bytes": 472825,
+      "sha256": "df644782207ca07ce37a0731092e5f72b6474ef5a9512382a0e59f1d5b18862f"
+    },
+    {
+      "file": "game_assets/textures/shared/fabric_charcoal_roughness.png",
+      "bytes": 920,
+      "sha256": "a38e6cf16b0dcf1e37ffb744072c99ed2b2ea59a67b5d05fba2cc9bb4f3622e6"
+    },
+    {
+      "file": "game_assets/textures/shared/leather_saddle_basecolor.png",
+      "bytes": 189363,
+      "sha256": "0d210e777a8d0301860e3dc939b6530c9cf59948c07eba4adbabf5274643b6ee"
+    },
+    {
+      "file": "game_assets/textures/shared/leather_saddle_normal.png",
+      "bytes": 684451,
+      "sha256": "76c1816b20c79bf710d399d0964c161b56c7c6935ff0fbb60da00d23080583f0"
+    },
+    {
+      "file": "game_assets/textures/shared/leather_saddle_roughness.png",
+      "bytes": 128902,
+      "sha256": "631e7a966e192b4ed322e30f9d72c08d87d878d799a10deb7d19c13398b8e501"
+    },
+    {
+      "file": "game_assets/textures/shared/manifest.json",
+      "bytes": 6543,
+      "sha256": "9adf7c479d1a47119ffe1f0fd4337c49fbe10473a4559207effb4ad34f8b140e"
+    },
+    {
+      "file": "game_assets/textures/shared/paint_racing_green_basecolor.png",
+      "bytes": 98919,
+      "sha256": "a3b7fbc113b9857b080e155c9140249fb90b94e696b842bbef7863c04c06bdab"
+    },
+    {
+      "file": "game_assets/textures/shared/paint_racing_green_normal.png",
+      "bytes": 293697,
+      "sha256": "e75b9d7af9f9f5b09d97774d4a27c88ff750a8e891e6620d9c3190624053438c"
+    },
+    {
+      "file": "game_assets/textures/shared/paint_racing_green_roughness.png",
+      "bytes": 51564,
+      "sha256": "740a7e2269f56578acff3bdd4fb3c288a7378395fab9b8d51ec5bac212e47733"
+    },
+    {
+      "file": "game_assets/textures/shared/plaster_ochre_basecolor.png",
+      "bytes": 58500,
+      "sha256": "773372d8617c5bc1e56b14f9f2ed042e073098788691095a00e9b12c26d55fa5"
+    },
+    {
+      "file": "game_assets/textures/shared/plaster_ochre_normal.png",
+      "bytes": 512035,
+      "sha256": "d7175518ac0e1ecfd513bc08c34a13d72ce87857dafa6216fa7b840c11484f21"
+    },
+    {
+      "file": "game_assets/textures/shared/plaster_ochre_roughness.png",
+      "bytes": 48645,
+      "sha256": "35a68f1086a0c0104452baeedac25c5e56e4a055767e46ecf6ca0a52faae0da6"
+    },
+    {
+      "file": "game_assets/textures/shared/road_cobblestone_basecolor.png",
+      "bytes": 6402,
+      "sha256": "8d4440ce738999f9305f1cbb6a32720227cd8cda4f9517c30e04efcf2ce9e32c"
+    },
+    {
+      "file": "game_assets/textures/shared/road_cobblestone_normal.png",
+      "bytes": 16042,
+      "sha256": "9c7fa7d7141e7bffe93df890ab3b7ecb86fb3762e526a9b4ae960d5bf52bd48e"
+    },
+    {
+      "file": "game_assets/textures/shared/road_cobblestone_roughness.png",
+      "bytes": 920,
+      "sha256": "3a3dac65b21598cd80a9031de76c7a13db9cdcf116f6fd232ffc716a160a1461"
+    },
+    {
+      "file": "game_assets/textures/shared/road_dirt_basecolor.png",
+      "bytes": 223987,
+      "sha256": "7adda9c068fd2db1aa9ef1dce7e65a9c833ea78e14820ef712360bd5ce281811"
+    },
+    {
+      "file": "game_assets/textures/shared/road_dirt_normal.png",
+      "bytes": 721496,
+      "sha256": "9c6df7b067ae69606e4b36c25267e2dc1ae92246eecad528dd567abdf44abda1"
+    },
+    {
+      "file": "game_assets/textures/shared/road_dirt_roughness.png",
+      "bytes": 51564,
+      "sha256": "dd1410e6ea478e0a99efec37410052a839067b03121574997f52c1b20a90ea14"
+    },
+    {
+      "file": "game_assets/textures/shared/road_snow_basecolor.png",
+      "bytes": 48652,
+      "sha256": "2fc562e5d876cae2f657d92ab28abb9220d4cb09d03c02ed45dd24c66fd929cf"
+    },
+    {
+      "file": "game_assets/textures/shared/road_snow_normal.png",
+      "bytes": 376098,
+      "sha256": "cbd4a311a23e59e4b2549de248d91ad83d0e75e5cafc063ed7dbf753bfedfb76"
+    },
+    {
+      "file": "game_assets/textures/shared/road_snow_roughness.png",
+      "bytes": 45233,
+      "sha256": "349c1e22e713c7d014c21e38339eeb19c207790d71da63dfde138c23af680a4a"
+    },
+    {
+      "file": "game_assets/textures/shared/roof_iron_basecolor.png",
+      "bytes": 4733,
+      "sha256": "067fe5cbfade418aba55d1ab9cdb6b77f1bc80fa32360e0325cb1bd4d31da185"
+    },
+    {
+      "file": "game_assets/textures/shared/roof_iron_normal.png",
+      "bytes": 3837,
+      "sha256": "7fa67790a530e5be950fa85cff3723150a3c4c4a31672ac76708c407bf3104d6"
+    },
+    {
+      "file": "game_assets/textures/shared/roof_iron_roughness.png",
+      "bytes": 920,
+      "sha256": "f7b7df4d28d95f84d5fd68bb2215a482a96753d16deb122aaf06096faa3db83d"
+    },
+    {
+      "file": "game_assets/textures/shared/wood_walnut_basecolor.png",
+      "bytes": 108360,
+      "sha256": "bdcc5cd74b09253ab851609fb6b2ba358d5e1fc840894f326f3fa1b77e01e499"
+    },
+    {
+      "file": "game_assets/textures/shared/wood_walnut_normal.png",
+      "bytes": 345149,
+      "sha256": "15bb465e766571e1bcdb64eb4811b8a316af7a324ee6fd1e9d598f143f31c1c2"
+    },
+    {
+      "file": "game_assets/textures/shared/wood_walnut_roughness.png",
+      "bytes": 54488,
+      "sha256": "93e66abe2dd2b008e659e320aa9892ed761812f4bc76c3908af6fc0c3776f3c0"
+    },
+    {
+      "file": "game_assets/vehicles/Benz_1912_Prototype/asset_metadata.json",
+      "bytes": 1675,
+      "sha256": "2e57473ab119e606cc3c69b28b90f8cc37b378b1685fb54cfc80b2be7678d1c2"
+    },
+    {
+      "file": "game_assets/vehicles/Benz_1912_Prototype/Benz_1912_Racer_Concept.blend",
+      "bytes": 6328389,
+      "sha256": "b9745dd6a88a48d4c92fa3f4c455e3dec9f96283ed714fbc65a80727b70af37d"
+    },
+    {
+      "file": "game_assets/vehicles/Benz_1912_Prototype/Benz_1912_Racer_Concept_Collision.fbx",
+      "bytes": 31580,
+      "sha256": "80500052ac7153e8b987e5d076ed6afddc050bd061ba6007087d1148388c8f75"
+    },
+    {
+      "file": "game_assets/vehicles/Benz_1912_Prototype/Benz_1912_Racer_Concept_Detailed.fbx",
+      "bytes": 4021948,
+      "sha256": "d2e059ae6b5ea77ff6bb253dd2bd3c5876c1abc2bd2f3fc54ee50f305479e04e"
+    },
+    {
+      "file": "game_assets/vehicles/Benz_1912_Prototype/Benz_1912_Racer_Concept_LOD0.fbx",
+      "bytes": 3022380,
+      "sha256": "bef15868f142c09920a63a12fccf09ab569c09bb41c2186845c5bddfc7975a22"
+    },
+    {
+      "file": "game_assets/vehicles/Benz_1912_Prototype/Benz_1912_Racer_Concept_LOD1.fbx",
+      "bytes": 2787468,
+      "sha256": "bbbaa4958551a02b507192560a5197ff2fc78f5c31e594de73ca21e71a5aa371"
+    },
+    {
+      "file": "game_assets/vehicles/Benz_1912_Prototype/Benz_1912_Racer_Concept_LOD2.fbx",
+      "bytes": 2312796,
+      "sha256": "16f025860510eb62ecf7414da62bbeac1b9b4c4c288d53bf195208ad3d7199ad"
+    },
+    {
+      "file": "game_assets/vehicles/Era_Vehicles_1910_1914.blend",
+      "bytes": 6474727,
+      "sha256": "f6ddbce6709cfb25d3e98399eff7df78c45c9e07347326ad3d93cd4df22ae090"
+    },
+    {
+      "file": "game_assets/vehicles/Era_Vehicles_Manifest.json",
+      "bytes": 3880,
+      "sha256": "9045428ea161884e09b74f15c0dc0f276dcf21cf424637c2bd69825bc0757aca"
+    },
+    {
+      "file": "game_assets/vehicles/Fiat_S76_1910/asset_metadata.json",
+      "bytes": 1057,
+      "sha256": "28446512caed16f73299084d8ffd1f707ea926d79e07c93c8fe3d8354a13444b"
+    },
+    {
+      "file": "game_assets/vehicles/Fiat_S76_1910/Fiat_S76_1910_Collision.fbx",
+      "bytes": 31468,
+      "sha256": "04fdd36f499eebcf102683addd7315caa382659e90d11299da9222afd66ec1e7"
+    },
+    {
+      "file": "game_assets/vehicles/Fiat_S76_1910/Fiat_S76_1910_Detailed.fbx",
+      "bytes": 2609948,
+      "sha256": "a8c7bab8120d8ed21507ba936cee098c28ae9b6a39a7a2c276bc08e857e97896"
+    },
+    {
+      "file": "game_assets/vehicles/Fiat_S76_1910/Fiat_S76_1910_LOD0.fbx",
+      "bytes": 2226316,
+      "sha256": "fe6358f7680cd97be1ae645a523bcc339f344e300e26f16a909e33717f4046e9"
+    },
+    {
+      "file": "game_assets/vehicles/Fiat_S76_1910/Fiat_S76_1910_LOD1.fbx",
+      "bytes": 2109772,
+      "sha256": "cf44bdc2457d1ee1435f6e0641cb57dbe1bc0e4b784bcb077c58488a00e1d8db"
+    },
+    {
+      "file": "game_assets/vehicles/Fiat_S76_1910/Fiat_S76_1910_LOD2.fbx",
+      "bytes": 1895468,
+      "sha256": "c6ab9f68a140991c1353c4f24b2aa388b3dae5ccbf1a1e854743388018719c98"
+    },
+    {
+      "file": "game_assets/vehicles/Ford_ModelT_1912/asset_metadata.json",
+      "bytes": 1059,
+      "sha256": "46c2536aaf0dcca056c10811b83b33406688d9402a43bfa73a39ae42ee78ddb6"
+    },
+    {
+      "file": "game_assets/vehicles/Ford_ModelT_1912/Ford_ModelT_1912_Collision.fbx",
+      "bytes": 31388,
+      "sha256": "b1c54fd93ab6f206ad3f90ee40630b0943d1e5a311c1b3d50b98782f56194d65"
+    },
+    {
+      "file": "game_assets/vehicles/Ford_ModelT_1912/Ford_ModelT_1912_Detailed.fbx",
+      "bytes": 2489948,
+      "sha256": "fb68d2174974120ba2a7d3d4ea147c0ffd548a863664d4c767f99ba0736afdaf"
+    },
+    {
+      "file": "game_assets/vehicles/Ford_ModelT_1912/Ford_ModelT_1912_LOD0.fbx",
+      "bytes": 2184380,
+      "sha256": "2e71538b2fb502fbe99f3a659a379be505f59f011e12b4efe1891b8aff1bae25"
+    },
+    {
+      "file": "game_assets/vehicles/Ford_ModelT_1912/Ford_ModelT_1912_LOD1.fbx",
+      "bytes": 2078892,
+      "sha256": "94305173cf77fd31f746911b205f6f1038f190b6782deda3e67d901e9ae10e89"
+    },
+    {
+      "file": "game_assets/vehicles/Ford_ModelT_1912/Ford_ModelT_1912_LOD2.fbx",
+      "bytes": 1884028,
+      "sha256": "88be7628e8c0a6ff60ab6073d033d50b403053b08e85758aed44c5f183b02d96"
+    },
+    {
+      "file": "game_assets/vehicles/Mercedes_37_90_1912/asset_metadata.json",
+      "bytes": 1092,
+      "sha256": "3949e66e244d98d64eab147edb74fe1164dbe6a380d8c26fd7defcac0d8b9315"
+    },
+    {
+      "file": "game_assets/vehicles/Mercedes_37_90_1912/Mercedes_37_90_1912_Collision.fbx",
+      "bytes": 31516,
+      "sha256": "5225482ff107347b13a9bccebe02e4c5d25be5fb56978d08c03cf1ec2a713433"
+    },
+    {
+      "file": "game_assets/vehicles/Mercedes_37_90_1912/Mercedes_37_90_1912_Detailed.fbx",
+      "bytes": 2567564,
+      "sha256": "76b58246174f1efcbfa795b2bce872c3091c203c10f1be06fb5028c1854301f5"
+    },
+    {
+      "file": "game_assets/vehicles/Mercedes_37_90_1912/Mercedes_37_90_1912_LOD0.fbx",
+      "bytes": 2213132,
+      "sha256": "3083132094ffbd2717f49dc6e379e3531ee10efdd004e5d66efb4debf7767b9d"
+    },
+    {
+      "file": "game_assets/vehicles/Mercedes_37_90_1912/Mercedes_37_90_1912_LOD1.fbx",
+      "bytes": 2099932,
+      "sha256": "6a3ce7478c1992c8c59e1e4a602637695423237ee3302c36291e06e06e2d8115"
+    },
+    {
+      "file": "game_assets/vehicles/Mercedes_37_90_1912/Mercedes_37_90_1912_LOD2.fbx",
+      "bytes": 1889004,
+      "sha256": "bcb351afd51e42f321d42e704af5119184730c1a843b685bde7a1a1e2660c24a"
+    },
+    {
+      "file": "game_assets/vehicles/RussoBalt_C24_55/asset_metadata.json",
+      "bytes": 2435,
+      "sha256": "9e3cdc4937888a6d230447d429e35500a32afc763f6379eea744ef54724ee7c6"
+    },
+    {
+      "file": "game_assets/vehicles/RussoBalt_C24_55/RussoBalt_C24_55.blend",
+      "bytes": 6994976,
+      "sha256": "49a78f03e3a504cbba955f2b8b336844e3a5ceb58d8fbc33d52007f142975992"
+    },
+    {
+      "file": "game_assets/vehicles/RussoBalt_C24_55/RussoBalt_C24_55_Collision.fbx",
+      "bytes": 31532,
+      "sha256": "a9871f2af1bec7d075b788ad478e315d11b425d6d0acf2b7040732370a410084"
+    },
+    {
+      "file": "game_assets/vehicles/RussoBalt_C24_55/RussoBalt_C24_55_Detailed.fbx",
+      "bytes": 5920460,
+      "sha256": "c31a75c428c7b2a6910d3be16c14d0f95d0c9c8b67e2bb2f3aec22ebe9ba1bad"
+    },
+    {
+      "file": "game_assets/vehicles/RussoBalt_C24_55/RussoBalt_C24_55_LOD0.fbx",
+      "bytes": 4342972,
+      "sha256": "f1d5b7d91397b2d776987540e15952a23538a785759407ea54706226bf8e9948"
+    },
+    {
+      "file": "game_assets/vehicles/RussoBalt_C24_55/RussoBalt_C24_55_LOD1.fbx",
+      "bytes": 3931788,
+      "sha256": "c1f5cf9f3bfadb7660f40ec51fe1563f5597d7cca641f888e3ce209950bf6881"
+    },
+    {
+      "file": "game_assets/vehicles/RussoBalt_C24_55/RussoBalt_C24_55_LOD2.fbx",
+      "bytes": 3180524,
+      "sha256": "d0eed47936ebf34e811d614655aa9ecbd959c4d778b4fceb0e3198c9a05b0cd5"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_1200rpm.wav",
+      "bytes": 384044,
+      "sha256": "52ee3784d886c056ed1538caeb793b669870395c19e99254c31db52d74737610"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_1500rpm.wav",
+      "bytes": 384044,
+      "sha256": "4219a264b29968b8f4fc40db0c8f6603f337e4eb86d0bfe5753ca110d75f3f9e"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_1800rpm.wav",
+      "bytes": 384044,
+      "sha256": "b28f57890c9ff03c4ea9612bd7b8fa57e1f57723c00384c7ee2e7485b5067cdd"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_2100rpm.wav",
+      "bytes": 384044,
+      "sha256": "d893c0dd10202dec1f92b4997193f1a4c81e3056028372fdbb6f83a1c7c3effa"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_600rpm.wav",
+      "bytes": 384044,
+      "sha256": "32392035d44256924bff3eaf3e2482f393d7f963806ff014afe765f5c0feb53f"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_900rpm.wav",
+      "bytes": 384044,
+      "sha256": "3fac663342f11d478d34590946f3269aa2038d8722accceda502437bfd470da6"
+    },
+    {
+      "file": "audio/LICENSES.md",
+      "bytes": 2249,
+      "sha256": "a3e152a1369b8f3b40591995aceb54b381d2a4e7ea5e824a172428abaa3887c6"
+    },
+    {
+      "file": "audio/manifest.json",
+      "bytes": 10711,
+      "sha256": "a81be7501cecde9684105918502575b916bf106f9f3791a26110a35c55850823"
+    },
+    {
+      "file": "audio/processed/ambience_birds_loop.wav",
+      "bytes": 1536044,
+      "sha256": "300a008ca4f4e86ddd3d839ff43876c1d8ad09b685f79bacbfe3b4c31a5245dd"
+    },
+    {
+      "file": "audio/processed/ambience_crowd_loop.wav",
+      "bytes": 1344044,
+      "sha256": "7faa357e522baa9c7444ec92f2f618218fbca21a504577d623fdd416b3be17d6"
+    },
+    {
+      "file": "audio/processed/ambience_hooves_loop.wav",
+      "bytes": 1344044,
+      "sha256": "19c3867235a99f368451d6f6de6c29a23d5fa9887a5964de006358e2860f0a2e"
+    },
+    {
+      "file": "audio/processed/engine_period_idle_reference_loop.wav",
+      "bytes": 1152044,
+      "sha256": "fb1faaa5ec1f1662ae42948432a675c7f000837a3117569bcb3dbd7aaea6dc8c"
+    },
+    {
+      "file": "audio/processed/gear_lever_clack.wav",
+      "bytes": 153644,
+      "sha256": "98d631cc67078901ee0d31ceb705c2526ccef6fae5d32998a11d34aba5891823"
+    },
+    {
+      "file": "audio/processed/horn_close_era.wav",
+      "bytes": 288044,
+      "sha256": "c74521aaba8c63b8b4cfc4b1e8820cb53a00c7d2480cff06f2156e928d79e5ad"
+    },
+    {
+      "file": "audio/processed/metal_release_clunk.wav",
+      "bytes": 105644,
+      "sha256": "346b0facc3f1fdf91b496b9794105baa21af653ea47b4ed0800802dc1fc93c61"
+    },
+    {
+      "file": "audio/processed/road_gravel_loop.wav",
+      "bytes": 1152044,
+      "sha256": "42863f9bfca55b67b2f7a7b5ab30ec4161e4008f669e6c2c664e2c758b2da093"
+    },
+    {
+      "file": "audio/processed/starter_hand_crank.wav",
+      "bytes": 1728044,
+      "sha256": "93b1c7544482f468ca8fa22ad83cefb76e7573f42372e58cbae7691442af934a"
+    },
+    {
+      "file": "audio/processed/wind_open_cockpit_loop.wav",
+      "bytes": 1152044,
+      "sha256": "54687903675f6b87438ed1c8369ee49b4e9c2609d34b560ca06911c6be414b85"
+    },
+    {
+      "file": "audio/source/birds.mp3",
+      "bytes": 3231432,
+      "sha256": "d7dd12e952e1e2eef6d9f1dba4c52a7b3fb7195177334fb2516818089b57a660"
+    },
+    {
+      "file": "audio/source/crowd.mp3",
+      "bytes": 1471872,
+      "sha256": "314108ecca45259fc9f8a3eadaa203396676d0c3d21850e14bcd4b0efc00bf33"
+    },
+    {
+      "file": "audio/source/gear.wav",
+      "bytes": 4844482,
+      "sha256": "accecf35c3ba34043954a391708fe4fab45291cad2e8313d9c23684130dafe56"
+    },
+    {
+      "file": "audio/source/gravel.mp3",
+      "bytes": 305317,
+      "sha256": "cb93b99fcb6332312e13b8fd901da5d86c6b08e6ccbcd8d4d43fdde228196d85"
+    },
+    {
+      "file": "audio/source/hooves.mp3",
+      "bytes": 1683432,
+      "sha256": "fbaebf8a40dc32324751980dcbbfcd16c3ada0a73aeb3394e89e6f70bfdf6b69"
+    },
+    {
+      "file": "audio/source/horn.mp3",
+      "bytes": 250992,
+      "sha256": "dddf082c6f4efa3897751bedc6bbeb33a724ada257f2df602f0e076e8afe6ca9"
+    },
+    {
+      "file": "audio/source/metal.mp3",
+      "bytes": 145536,
+      "sha256": "f379f70ceacfed2d8550d3e0e5763a4f7cda95f74a926222787f27f3c4e286ee"
+    },
+    {
+      "file": "audio/source/model_t_crank.wav",
+      "bytes": 5041158,
+      "sha256": "f7c34045860e10534d03f1492abe4d4e03c9878bf24e573945d32792de6f9ac9"
+    },
+    {
+      "file": "audio/source/model_t_idle.wav",
+      "bytes": 4944706,
+      "sha256": "322d1f9878e623fd171f2e9a233ad88abf9be059ed251cc1d06fa78ba1ffda26"
+    },
+    {
+      "file": "audio/source/wind.mp3",
+      "bytes": 250102,
+      "sha256": "2149ee9ce9146b6ed092dc59b3b0aa81619bbf790f397095b0e36d5c25697719"
+    },
+    {
+      "file": "previews/Benz_1912_Racer_Concept_preview.png",
+      "bytes": 1242672,
+      "sha256": "f8c8ef41142482a5dedd80d540ee9548b8b212400e5b4139b0385c8fa34298a9"
+    },
+    {
+      "file": "previews/Contact_Sheet.png",
+      "bytes": 1187919,
+      "sha256": "dadc497aa47ae6e75268354a3d10cb0b7f1c5a7c1c7e243b17a95d0c5b3bbc9f"
+    },
+    {
+      "file": "previews/Era_Vehicles_preview.png",
+      "bytes": 1771021,
+      "sha256": "f6d5b68c26dabd798bf3fb194aed1bd3ae59148d7621549d27f14b534671774b"
+    },
+    {
+      "file": "previews/Historical_Characters_preview.png",
+      "bytes": 1103698,
+      "sha256": "f8aa2f01966f721bad04535d379863409df7b3bb2e67eaaced5e3c3b1faee5fa"
+    },
+    {
+      "file": "previews/Russia_1912_Modular_Kit_preview.png",
+      "bytes": 2335027,
+      "sha256": "f81d2844eeb8888b77a583bfd7e421992287f94f0be15195f9ff1731a032e289"
+    },
+    {
+      "file": "previews/RussoBalt_C24_55_preview.png",
+      "bytes": 1261467,
+      "sha256": "ec8ce6393e6f1d23e988565a43036bee7c65e8b2218eec20a2c80cd987141c48"
+    },
+    {
+      "file": "previews/RussoBalt_The_Road_Hero.png",
+      "bytes": 2205694,
+      "sha256": "50039f969a67b716b927c46830b5db85274dbaa5ae5423178cbf429bf8ba5de0"
+    },
+    {
+      "file": "previews/unity/Garage.png",
+      "bytes": 330516,
+      "sha256": "645d7694fbf4583194f71ffe93bda335e746eb6644907c61f0678ddda1c6de81"
+    },
+    {
+      "file": "previews/unity/MainMenu.png",
+      "bytes": 305594,
+      "sha256": "d851872566d54fe96f772bc8ca76ac224cfa3df0d2bd79c37fe1ddd6d2427963"
+    },
+    {
+      "file": "previews/unity/Race_3D.png",
+      "bytes": 365885,
+      "sha256": "23f83480e46006da995f7765b191d9578f4bd4edfc8540fc850bea9757acd3dd"
+    },
+    {
+      "file": "previews/unity/Race_Story.png",
+      "bytes": 396434,
+      "sha256": "e7ec7007903bc87b88c845e6bf4393986363663ad5b1a1761b22caf89526e7ae"
+    },
+    {
+      "file": "previews/Unity_Contact_Sheet.png",
+      "bytes": 400761,
+      "sha256": "cdc8333b7ca924a55ff297688cc136b7af84599455d3724413152e2c5f8fe4d4"
+    },
+    {
+      "file": "docs/ASSET_CATALOG.md",
+      "bytes": 7129,
+      "sha256": "58ac0302710375651e520014e8de0d45e65d1ff1f201736122d8d122a1cd5c7d"
+    },
+    {
+      "file": "docs/AUDIO_MAP.md",
+      "bytes": 3147,
+      "sha256": "2480678cc389227c64aaafe0b6458a84e5c2dc97eea69b8511e4b13a238773f2"
+    },
+    {
+      "file": "docs/FBX_VALIDATION.json",
+      "bytes": 40557,
+      "sha256": "25fc5951415f4f85bc653807be48bbdfd3b75efff877a451d50cb9d3e16dae93"
+    },
+    {
+      "file": "docs/GAME_PRODUCTION_PLAN.md",
+      "bytes": 10511,
+      "sha256": "cb1d3c0a2244e7bda9e2c8981543a7e2424755a2be50bf2c9b45f61e23f0f512"
+    },
+    {
+      "file": "docs/HISTORICAL_RESEARCH.md",
+      "bytes": 8916,
+      "sha256": "6915e82410e906444587e3a260557297ac8c647a18c2558448a682ff7bd0a2cf"
+    },
+    {
+      "file": "docs/UNITY_ASSET_PIPELINE.md",
+      "bytes": 6023,
+      "sha256": "f6b9f7eb87375e2d5c14ba733c8aaba14531b6e266f6fa81c3f3ab2a6df98ba4"
+    },
+    {
+      "file": "docs/UNITY_IMPLEMENTATION.md",
+      "bytes": 5043,
+      "sha256": "28ee5d1a6dccb3b574517ff7e95233b00acb82adc9ab1771004ff715ac4f0c4f"
+    },
+    {
+      "file": "docs/VALIDATION_REPORT.md",
+      "bytes": 3335,
+      "sha256": "eb6e7c49d19165cae5aa1a47b9392ba5665283c20b3ff16aaad6f220bdb6c4b5"
+    },
+    {
+      "file": "references/history/download_manifest.json",
+      "bytes": 3450,
+      "sha256": "6b81d4ce5b347a66383296a5765c684e9fd0baa0f8f0a42c28c27272f6b28198"
+    },
+    {
+      "file": "references/history/images/Ivanov_C24_58_Grand_Prix_1913.jpg",
+      "bytes": 128685,
+      "sha256": "78d0e03a9304d4be1625a941b1f52f26f7549807da4ac1657787b4074f8fcdbd"
+    },
+    {
+      "file": "references/history/images/RussoBalt_C24_30_Replica_CC0_2025.jpg",
+      "bytes": 729273,
+      "sha256": "3d572afd728590bafb072855baf89f7d0ed30b01c19e1b7a4913626b8cb40495"
+    },
+    {
+      "file": "references/history/images/RussoBalt_Replica_CC0_2026.jpg",
+      "bytes": 550262,
+      "sha256": "0b626331dbe5cd71cba1587738431d5319461a81b6ecc9344ad6fc089d6d6101"
+    },
+    {
+      "file": "references/history/REFERENCES.md",
+      "bytes": 2567,
+      "sha256": "721f6c521219645eb140ed43aefb24d698b7a9646dde965a5966fc45bcdba9fd"
+    }
+  ]
+}

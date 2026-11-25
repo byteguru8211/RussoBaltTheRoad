@@ -1,0 +1,206 @@
+{
+  "generated": "2026-11-24",
+  "license": "CC0-1.0",
+  "resolution": 512,
+  "maps": [
+    {
+      "file": "game_assets/textures/shared/paint_racing_green_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/paint_racing_green_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/paint_racing_green_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/leather_saddle_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/leather_saddle_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/leather_saddle_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/wood_walnut_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/wood_walnut_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/wood_walnut_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/road_dirt_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/road_dirt_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/road_dirt_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/road_snow_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/road_snow_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/road_snow_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/plaster_ochre_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/plaster_ochre_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/plaster_ochre_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/fabric_charcoal_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/fabric_charcoal_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/fabric_charcoal_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/bark_birch_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/bark_birch_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/bark_birch_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/road_cobblestone_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/road_cobblestone_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/road_cobblestone_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/brick_red_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/brick_red_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/brick_red_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/roof_iron_basecolor.png",
+      "kind": "basecolor",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/roof_iron_roughness.png",
+      "kind": "roughness",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    },
+    {
+      "file": "game_assets/textures/shared/roof_iron_normal.png",
+      "kind": "normal",
+      "license": "CC0-1.0",
+      "generator": "tools/generate_textures.py"
+    }
+  ],
+  "note": "Original procedural material maps generated for RussoBalt The Road; no third-party imagery."
+}

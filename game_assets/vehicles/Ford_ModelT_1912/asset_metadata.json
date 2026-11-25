@@ -1,0 +1,50 @@
+{
+  "asset_id": "ford_model_t_1912",
+  "display_name": "Ford Model T 1912 Touring",
+  "historical_status": "research_based_concept",
+  "confirmed": {
+    "engine_cc": 2892,
+    "power_hp_approx": 20,
+    "drive": "RWD planetary 2-speed + reverse",
+    "steering": "LHD",
+    "brakes": "transmission band brake + rear drums",
+    "wheelbase_m": 2.54
+  },
+  "assumptions": {
+    "color": "black with brass",
+    "body": "five-seat touring",
+    "dimensions_m": [
+      3.42,
+      1.73,
+      1.95
+    ]
+  },
+  "stats_detailed": {
+    "meshes": 126,
+    "vertices": 7306,
+    "polygons": 6568,
+    "triangles": 14080,
+    "dimensions_m": [
+      1.68,
+      3.555,
+      1.988
+    ],
+    "bounds_min_m": [
+      -0.84,
+      -1.745,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.84,
+      1.81,
+      1.988
+    ]
+  },
+  "exports": [
+    "Ford_ModelT_1912_LOD0.fbx",
+    "Ford_ModelT_1912_LOD1.fbx",
+    "Ford_ModelT_1912_LOD2.fbx",
+    "Ford_ModelT_1912_Detailed.fbx",
+    "Ford_ModelT_1912_Collision.fbx"
+  ]
+}

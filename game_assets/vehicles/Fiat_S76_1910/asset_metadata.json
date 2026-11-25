@@ -1,0 +1,51 @@
+{
+  "asset_id": "fiat_s76_1910",
+  "display_name": "Fiat S76 1910 Record Car",
+  "historical_status": "research_based_concept",
+  "confirmed": {
+    "engine_cc": 28353,
+    "power_hp_approx": "290–300",
+    "drive": "RWD double chain",
+    "gears": 4,
+    "steering": "RHD by photographs",
+    "brakes": "rear drums",
+    "wheelbase_m": 3.7
+  },
+  "assumptions": {
+    "color": "dark red game-art choice; original unproven",
+    "dimensions_m": [
+      3.75,
+      1.3,
+      1.75
+    ],
+    "mass_kg": 1650
+  },
+  "stats_detailed": {
+    "meshes": 141,
+    "vertices": 7934,
+    "polygons": 7024,
+    "triangles": 15284,
+    "dimensions_m": [
+      1.6499,
+      4.65,
+      1.68
+    ],
+    "bounds_min_m": [
+      -0.8249,
+      -2.325,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.8249,
+      2.325,
+      1.68
+    ]
+  },
+  "exports": [
+    "Fiat_S76_1910_LOD0.fbx",
+    "Fiat_S76_1910_LOD1.fbx",
+    "Fiat_S76_1910_LOD2.fbx",
+    "Fiat_S76_1910_Detailed.fbx",
+    "Fiat_S76_1910_Collision.fbx"
+  ]
+}

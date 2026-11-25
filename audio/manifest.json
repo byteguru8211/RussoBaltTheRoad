@@ -1,0 +1,269 @@
+{
+  "prepared": "2026-11-24",
+  "format": {
+    "sample_rate": 48000,
+    "bit_depth": 16,
+    "channels": 1
+  },
+  "license_summary": "All third-party source recordings are CC0-1.0 per source pages; attribution retained for provenance.",
+  "historical_caveat": "No surviving recording of a 1912 Russo-Balt engine was found. Model T and 1933 Austin files are close-era references; synthetic 4-cylinder layers are original stylization.",
+  "sources": [
+    {
+      "id": "model_t_idle",
+      "name": "Model T steady idle",
+      "url": "https://archive.org/download/SSE_Library_VEHICLES/ANTIQUE/VEHAntq_Model%20T%20Ford%20Car%20steady%20idle_CS_USC.wav",
+      "ext": "wav",
+      "creator": "USC Cinema / Sunset Editorial Collection; digitized by Craig Smith, USC; uploaded by Jason Scott",
+      "license": "CC0-1.0",
+      "source_page": "https://archive.org/details/SSE_Library_VEHICLES",
+      "use": "period gasoline reference; not a Russo-Balt recording",
+      "original_file": "audio/source/model_t_idle.wav",
+      "original_sha256": "322d1f9878e623fd171f2e9a233ad88abf9be059ed251cc1d06fa78ba1ffda26"
+    },
+    {
+      "id": "model_t_crank",
+      "name": "Model T crank and start",
+      "url": "https://archive.org/download/Red_Library_Cars_3/R04-24-Model%20T%20Crank%20and%20Start.wav",
+      "ext": "wav",
+      "creator": "USC Cinema / Sunset Editorial Collection; digitized by Craig Smith, USC; uploaded by Jason Scott",
+      "license": "CC0-1.0",
+      "source_page": "https://archive.org/details/Red_Library_Cars_3",
+      "use": "hand-crank starter one-shot",
+      "original_file": "audio/source/model_t_crank.wav",
+      "original_sha256": "f7c34045860e10534d03f1492abe4d4e03c9878bf24e573945d32792de6f9ac9"
+    },
+    {
+      "id": "hooves",
+      "name": "Clatter of hooves",
+      "url": "https://cdn.freesound.org/previews/204/204961_3825705-hq.mp3",
+      "ext": "mp3",
+      "creator": "skitchscharff",
+      "license": "CC0-1.0",
+      "source_page": "https://freesound.org/people/skitchscharff/sounds/204961/",
+      "use": "horse-drawn traffic loop",
+      "original_file": "audio/source/hooves.mp3",
+      "original_sha256": "fbaebf8a40dc32324751980dcbbfcd16c3ada0a73aeb3394e89e6f70bfdf6b69"
+    },
+    {
+      "id": "gravel",
+      "name": "Tires on Gravel Road 1",
+      "url": "https://cdn.freesound.org/previews/251/251661_3719168-hq.mp3",
+      "ext": "mp3",
+      "creator": "OBXJohn",
+      "license": "CC0-1.0",
+      "source_page": "https://freesound.org/people/OBXJohn/sounds/251661/",
+      "use": "gravel/dirt rolling loop",
+      "original_file": "audio/source/gravel.mp3",
+      "original_sha256": "cb93b99fcb6332312e13b8fd901da5d86c6b08e6ccbcd8d4d43fdde228196d85"
+    },
+    {
+      "id": "wind",
+      "name": "Strong Wind Sound Scape",
+      "url": "https://cdn.freesound.org/previews/567/567887_1866048-hq.mp3",
+      "ext": "mp3",
+      "creator": "rentless",
+      "license": "CC0-1.0",
+      "source_page": "https://freesound.org/people/rentless/sounds/567887/",
+      "use": "open-cockpit wind loop",
+      "original_file": "audio/source/wind.mp3",
+      "original_sha256": "2149ee9ce9146b6ed092dc59b3b0aa81619bbf790f397095b0e36d5c25697719"
+    },
+    {
+      "id": "crowd",
+      "name": "Crowd talking / murmur",
+      "url": "https://cdn.freesound.org/previews/546/546676_5637404-hq.mp3",
+      "ext": "mp3",
+      "creator": "trezz77",
+      "license": "CC0-1.0",
+      "source_page": "https://freesound.org/people/trezz77/sounds/546676/",
+      "use": "race-side crowd ambience",
+      "original_file": "audio/source/crowd.mp3",
+      "original_sha256": "314108ecca45259fc9f8a3eadaa203396676d0c3d21850e14bcd4b0efc00bf33"
+    },
+    {
+      "id": "birds",
+      "name": "Sussex Woodland & Meadow Bird Sounds, Evening",
+      "url": "https://cdn.freesound.org/previews/269/269559_5126800-hq.mp3",
+      "ext": "mp3",
+      "creator": "Vonora",
+      "license": "CC0-1.0",
+      "source_page": "https://freesound.org/people/Vonora/sounds/269559/",
+      "use": "rural evening ambience",
+      "original_file": "audio/source/birds.mp3",
+      "original_sha256": "d7dd12e952e1e2eef6d9f1dba4c52a7b3fb7195177334fb2516818089b57a660"
+    },
+    {
+      "id": "gear",
+      "name": "Car gear shift lever",
+      "url": "https://archive.org/download/SSE_Library_VEHICLES/MISC/VEHMisc_Car%20gear%20shift%20lever_CS_USC.wav",
+      "ext": "wav",
+      "creator": "USC Cinema / Sunset Editorial Collection; digitized by Craig Smith, USC; uploaded by Jason Scott",
+      "license": "CC0-1.0",
+      "source_page": "https://archive.org/details/SSE_Library_VEHICLES",
+      "use": "mechanical gear lever reference",
+      "original_file": "audio/source/gear.wav",
+      "original_sha256": "accecf35c3ba34043954a391708fe4fab45291cad2e8313d9c23684130dafe56"
+    },
+    {
+      "id": "metal",
+      "name": "Metallic attach, release",
+      "url": "https://cdn.freesound.org/previews/575/575907_3036029-hq.mp3",
+      "ext": "mp3",
+      "creator": "zeteny_zpx",
+      "license": "CC0-1.0",
+      "source_page": "https://freesound.org/people/zeteny_zpx/sounds/575907/",
+      "use": "metal attachment/release one-shot",
+      "original_file": "audio/source/metal.mp3",
+      "original_sha256": "f379f70ceacfed2d8550d3e0e5763a4f7cda95f74a926222787f27f3c4e286ee"
+    },
+    {
+      "id": "horn",
+      "name": "1933 Austin 10 Clifton Roadster horn",
+      "url": "https://cdn.freesound.org/previews/828/828939_1480854-hq.mp3",
+      "ext": "mp3",
+      "creator": "SpliceSound",
+      "license": "CC0-1.0",
+      "source_page": "https://freesound.org/people/SpliceSound/sounds/828939/",
+      "use": "close-era horn stylization; not 1912-authentic",
+      "original_file": "audio/source/horn.mp3",
+      "original_sha256": "dddf082c6f4efa3897751bedc6bbeb33a724ada257f2df602f0e076e8afe6ca9"
+    }
+  ],
+  "outputs": [
+    {
+      "file": "audio/processed/engine_period_idle_reference_loop.wav",
+      "samples": 576000,
+      "duration_s": 12.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "fb1faaa5ec1f1662ae42948432a675c7f000837a3117569bcb3dbd7aaea6dc8c"
+    },
+    {
+      "file": "audio/processed/starter_hand_crank.wav",
+      "samples": 864000,
+      "duration_s": 18.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "93b1c7544482f468ca8fa22ad83cefb76e7573f42372e58cbae7691442af934a"
+    },
+    {
+      "file": "audio/processed/ambience_hooves_loop.wav",
+      "samples": 672000,
+      "duration_s": 14.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "19c3867235a99f368451d6f6de6c29a23d5fa9887a5964de006358e2860f0a2e"
+    },
+    {
+      "file": "audio/processed/road_gravel_loop.wav",
+      "samples": 576000,
+      "duration_s": 12.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "42863f9bfca55b67b2f7a7b5ab30ec4161e4008f669e6c2c664e2c758b2da093"
+    },
+    {
+      "file": "audio/processed/wind_open_cockpit_loop.wav",
+      "samples": 576000,
+      "duration_s": 12.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "54687903675f6b87438ed1c8369ee49b4e9c2609d34b560ca06911c6be414b85"
+    },
+    {
+      "file": "audio/processed/ambience_crowd_loop.wav",
+      "samples": 672000,
+      "duration_s": 14.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "7faa357e522baa9c7444ec92f2f618218fbca21a504577d623fdd416b3be17d6"
+    },
+    {
+      "file": "audio/processed/ambience_birds_loop.wav",
+      "samples": 768000,
+      "duration_s": 16.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "300a008ca4f4e86ddd3d839ff43876c1d8ad09b685f79bacbfe3b4c31a5245dd"
+    },
+    {
+      "file": "audio/processed/gear_lever_clack.wav",
+      "samples": 76800,
+      "duration_s": 1.6,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "98d631cc67078901ee0d31ceb705c2526ccef6fae5d32998a11d34aba5891823"
+    },
+    {
+      "file": "audio/processed/metal_release_clunk.wav",
+      "samples": 52800,
+      "duration_s": 1.1,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "346b0facc3f1fdf91b496b9794105baa21af653ea47b4ed0800802dc1fc93c61"
+    },
+    {
+      "file": "audio/processed/horn_close_era.wav",
+      "samples": 144000,
+      "duration_s": 3.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "c74521aaba8c63b8b4cfc4b1e8820cb53a00c7d2480cff06f2156e928d79e5ad"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_600rpm.wav",
+      "samples": 192000,
+      "duration_s": 4.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "32392035d44256924bff3eaf3e2482f393d7f963806ff014afe765f5c0feb53f"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_900rpm.wav",
+      "samples": 192000,
+      "duration_s": 4.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "3fac663342f11d478d34590946f3269aa2038d8722accceda502437bfd470da6"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_1200rpm.wav",
+      "samples": 192000,
+      "duration_s": 4.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "52ee3784d886c056ed1538caeb793b669870395c19e99254c31db52d74737610"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_1500rpm.wav",
+      "samples": 192000,
+      "duration_s": 4.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "4219a264b29968b8f4fc40db0c8f6603f337e4eb86d0bfe5753ca110d75f3f9e"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_1800rpm.wav",
+      "samples": 192000,
+      "duration_s": 4.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "b28f57890c9ff03c4ea9612bd7b8fa57e1f57723c00384c7ee2e7485b5067cdd"
+    },
+    {
+      "file": "audio/engine/engine_synthetic_4cyl_2100rpm.wav",
+      "samples": 192000,
+      "duration_s": 4.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "d893c0dd10202dec1f92b4997193f1a4c81e3056028372fdbb6f83a1c7c3effa"
+    }
+  ],
+  "unity_mapping": {
+    "engine": "Crossfade adjacent synthetic RPM layers by normalized RPM; add starter_hand_crank before engine loop.",
+    "road": "Layer road_gravel_loop with speed and surface grip; pitch 0.85–1.20.",
+    "wind": "Layer wind_open_cockpit_loop with speed; low-pass at low speed.",
+    "ambience": "Use crowd near start/finish, hooves near NPC carriages, birds in rural chapters.",
+    "one_shots": "gear_lever_clack, metal_release_clunk, horn_close_era, starter_hand_crank"
+  }
+}

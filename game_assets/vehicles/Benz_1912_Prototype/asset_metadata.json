@@ -1,0 +1,68 @@
+{
+  "asset_id": "benz_1912_racer_concept",
+  "display_name": "Blitzen Benz 1911 — original racing concept",
+  "historical_status": "concept_not_exact_replica",
+  "inspiration": "Blitzen Benz 1911–1912: black long bonnet, exposed four-cylinder engine, individual exhaust stacks, chain drive and rear fuel tank; no claim of exact reconstruction",
+  "assumptions": {
+    "length_m": 4.8,
+    "width_m": 1.7,
+    "wheelbase_m": 3.35,
+    "drive": "RWD chain drive visualization",
+    "brakes": "rear-only mechanical",
+    "steering": "left-hand drive"
+  },
+  "coordinate_system": {
+    "blender": "meters, Z up, front -Y",
+    "unity_fbx": "meters, Y up, forward +Z"
+  },
+  "stats": {
+    "meshes": 44,
+    "vertices": 34150,
+    "polygons": 32298,
+    "triangles": 66796,
+    "dimensions_m": [
+      1.67,
+      4.857,
+      1.455
+    ],
+    "bounds_min_m": [
+      -0.835,
+      -2.497,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.835,
+      2.36,
+      1.455
+    ]
+  },
+  "stats_detailed": {
+    "meshes": 355,
+    "vertices": 13998,
+    "polygons": 12146,
+    "triangles": 26492,
+    "dimensions_m": [
+      1.67,
+      4.857,
+      1.455
+    ],
+    "bounds_min_m": [
+      -0.835,
+      -2.497,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.835,
+      2.36,
+      1.455
+    ]
+  },
+  "exports": [
+    "Benz_1912_Racer_Concept_LOD0.fbx",
+    "Benz_1912_Racer_Concept_LOD1.fbx",
+    "Benz_1912_Racer_Concept_LOD2.fbx",
+    "Benz_1912_Racer_Concept_Detailed.fbx",
+    "Benz_1912_Racer_Concept_Collision.fbx"
+  ],
+  "textures": "game_assets/textures/shared (CC0 procedural maps, packed into BLEND/FBX)"
+}

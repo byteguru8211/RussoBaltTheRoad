@@ -1,0 +1,157 @@
+{
+  "generated": "2026-11-25",
+  "vehicles": [
+    {
+      "asset_id": "ford_model_t_1912",
+      "display_name": "Ford Model T 1912 Touring",
+      "historical_status": "research_based_concept",
+      "confirmed": {
+        "engine_cc": 2892,
+        "power_hp_approx": 20,
+        "drive": "RWD planetary 2-speed + reverse",
+        "steering": "LHD",
+        "brakes": "transmission band brake + rear drums",
+        "wheelbase_m": 2.54
+      },
+      "assumptions": {
+        "color": "black with brass",
+        "body": "five-seat touring",
+        "dimensions_m": [
+          3.42,
+          1.73,
+          1.95
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 126,
+        "vertices": 7306,
+        "polygons": 6568,
+        "triangles": 14080,
+        "dimensions_m": [
+          1.68,
+          3.555,
+          1.988
+        ],
+        "bounds_min_m": [
+          -0.84,
+          -1.745,
+          0.0
+        ],
+        "bounds_max_m": [
+          0.84,
+          1.81,
+          1.988
+        ]
+      },
+      "exports": [
+        "Ford_ModelT_1912_LOD0.fbx",
+        "Ford_ModelT_1912_LOD1.fbx",
+        "Ford_ModelT_1912_LOD2.fbx",
+        "Ford_ModelT_1912_Detailed.fbx",
+        "Ford_ModelT_1912_Collision.fbx"
+      ]
+    },
+    {
+      "asset_id": "fiat_s76_1910",
+      "display_name": "Fiat S76 1910 Record Car",
+      "historical_status": "research_based_concept",
+      "confirmed": {
+        "engine_cc": 28353,
+        "power_hp_approx": "290–300",
+        "drive": "RWD double chain",
+        "gears": 4,
+        "steering": "RHD by photographs",
+        "brakes": "rear drums",
+        "wheelbase_m": 3.7
+      },
+      "assumptions": {
+        "color": "dark red game-art choice; original unproven",
+        "dimensions_m": [
+          3.75,
+          1.3,
+          1.75
+        ],
+        "mass_kg": 1650
+      },
+      "stats_detailed": {
+        "meshes": 141,
+        "vertices": 7934,
+        "polygons": 7024,
+        "triangles": 15284,
+        "dimensions_m": [
+          1.6499,
+          4.65,
+          1.68
+        ],
+        "bounds_min_m": [
+          -0.8249,
+          -2.325,
+          0.0
+        ],
+        "bounds_max_m": [
+          0.8249,
+          2.325,
+          1.68
+        ]
+      },
+      "exports": [
+        "Fiat_S76_1910_LOD0.fbx",
+        "Fiat_S76_1910_LOD1.fbx",
+        "Fiat_S76_1910_LOD2.fbx",
+        "Fiat_S76_1910_Detailed.fbx",
+        "Fiat_S76_1910_Collision.fbx"
+      ]
+    },
+    {
+      "asset_id": "mercedes_37_90_1912",
+      "display_name": "Mercedes 37/90 1912 Double Phaeton",
+      "historical_status": "research_based_concept",
+      "confirmed": {
+        "engine_cc": 9530,
+        "power_hp_approx": 90,
+        "drive": "RWD enclosed chain",
+        "gears": 4,
+        "steering": "RHD",
+        "brakes": "transmission brake + rear drums",
+        "wheelbase_m": "3.38–3.58"
+      },
+      "assumptions": {
+        "color": "deep green with brass",
+        "dimensions_m": [
+          4.95,
+          1.75,
+          1.75
+        ],
+        "mass_kg": 1950
+      },
+      "stats_detailed": {
+        "meshes": 134,
+        "vertices": 7656,
+        "polygons": 6876,
+        "triangles": 14748,
+        "dimensions_m": [
+          1.77,
+          4.9912,
+          1.998
+        ],
+        "bounds_min_m": [
+          -0.885,
+          -2.7413,
+          0.0
+        ],
+        "bounds_max_m": [
+          0.885,
+          2.2498,
+          1.998
+        ]
+      },
+      "exports": [
+        "Mercedes_37_90_1912_LOD0.fbx",
+        "Mercedes_37_90_1912_LOD1.fbx",
+        "Mercedes_37_90_1912_LOD2.fbx",
+        "Mercedes_37_90_1912_Detailed.fbx",
+        "Mercedes_37_90_1912_Collision.fbx"
+      ]
+    }
+  ]
+}

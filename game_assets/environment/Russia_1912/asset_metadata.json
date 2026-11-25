@@ -1,0 +1,877 @@
+{
+  "asset_id": "russia_1912_modular_kit",
+  "historical_status": "era_inspired_modular_environment",
+  "scope": "Russian Empire roadside architecture and props, circa 1912; stylized realistic game-art reconstruction, not a surveyed historical building",
+  "coordinate_system": {
+    "blender": "meters, Z up",
+    "unity_fbx": "meters, Y up"
+  },
+  "module_count": 18,
+  "modules": [
+    {
+      "id": "Road_Dirt_100m",
+      "stats": {
+        "meshes": 1,
+        "vertices": 2541,
+        "polygons": 2412,
+        "triangles": 4824,
+        "dimensions_m": [
+          9.2,
+          100.0,
+          0.075
+        ],
+        "bounds_min_m": [
+          -4.6,
+          -50.0,
+          -0.065
+        ],
+        "bounds_max_m": [
+          4.6,
+          50.0,
+          0.01
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 3,
+        "vertices": 2541,
+        "polygons": 2412,
+        "dimensions_m": [
+          9.2,
+          100.0,
+          0.075
+        ],
+        "bounds_min_m": [
+          -4.6,
+          -50.0,
+          -0.065
+        ],
+        "bounds_max_m": [
+          4.6,
+          50.0,
+          0.01
+        ]
+      },
+      "exports": [
+        "Road_Dirt_100m_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Road_Snow_100m",
+      "stats": {
+        "meshes": 2,
+        "vertices": 2557,
+        "polygons": 2424,
+        "triangles": 4848,
+        "dimensions_m": [
+          9.2,
+          100.0,
+          0.075
+        ],
+        "bounds_min_m": [
+          -4.6,
+          -50.0,
+          -0.065
+        ],
+        "bounds_max_m": [
+          4.6,
+          50.0,
+          0.01
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 5,
+        "vertices": 2557,
+        "polygons": 2424,
+        "dimensions_m": [
+          9.2,
+          100.0,
+          0.075
+        ],
+        "bounds_min_m": [
+          -4.6,
+          -50.0,
+          -0.065
+        ],
+        "bounds_max_m": [
+          4.6,
+          50.0,
+          0.01
+        ]
+      },
+      "exports": [
+        "Road_Snow_100m_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Road_Cobblestone_25m",
+      "stats": {
+        "meshes": 2,
+        "vertices": 2920,
+        "polygons": 2814,
+        "triangles": 5628,
+        "dimensions_m": [
+          6.84,
+          25.97,
+          0.24
+        ],
+        "bounds_min_m": [
+          -3.42,
+          -12.5,
+          -0.08
+        ],
+        "bounds_max_m": [
+          3.42,
+          13.47,
+          0.16
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 53,
+        "vertices": 424,
+        "polygons": 318,
+        "dimensions_m": [
+          6.84,
+          25.97,
+          0.24
+        ],
+        "bounds_min_m": [
+          -3.42,
+          -12.5,
+          -0.08
+        ],
+        "bounds_max_m": [
+          3.42,
+          13.47,
+          0.16
+        ]
+      },
+      "exports": [
+        "Road_Cobblestone_25m_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Building_Wood_House_01",
+      "stats": {
+        "meshes": 7,
+        "vertices": 14910,
+        "polygons": 13717,
+        "triangles": 26758,
+        "dimensions_m": [
+          8.2379,
+          7.7685,
+          5.4638
+        ],
+        "bounds_min_m": [
+          -4.1189,
+          -4.3185,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.1189,
+          3.45,
+          5.4638
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 88,
+        "vertices": 14910,
+        "polygons": 13717,
+        "triangles": 26758,
+        "dimensions_m": [
+          8.254,
+          7.7726,
+          5.4718
+        ],
+        "bounds_min_m": [
+          -4.127,
+          -4.3226,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.127,
+          3.45,
+          5.4718
+        ]
+      },
+      "exports": [
+        "Building_Wood_House_01_LOD0.fbx",
+        "Building_Wood_House_01_LOD1.fbx",
+        "Building_Wood_House_01_Detailed.fbx",
+        "Building_Wood_House_01_Collision.fbx"
+      ]
+    },
+    {
+      "id": "Building_Brick_Gatehouse_01",
+      "stats": {
+        "meshes": 6,
+        "vertices": 11606,
+        "polygons": 10837,
+        "triangles": 20276,
+        "dimensions_m": [
+          5.35,
+          4.55,
+          3.96
+        ],
+        "bounds_min_m": [
+          -2.675,
+          -2.3,
+          -0.0
+        ],
+        "bounds_max_m": [
+          2.675,
+          2.25,
+          3.96
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 33,
+        "vertices": 11606,
+        "polygons": 10837,
+        "triangles": 20276,
+        "dimensions_m": [
+          5.35,
+          4.55,
+          3.96
+        ],
+        "bounds_min_m": [
+          -2.675,
+          -2.3,
+          -0.0
+        ],
+        "bounds_max_m": [
+          2.675,
+          2.25,
+          3.96
+        ]
+      },
+      "exports": [
+        "Building_Brick_Gatehouse_01_LOD0.fbx",
+        "Building_Brick_Gatehouse_01_LOD1.fbx",
+        "Building_Brick_Gatehouse_01_Detailed.fbx",
+        "Building_Brick_Gatehouse_01_Collision.fbx"
+      ]
+    },
+    {
+      "id": "Fence_Wood_10m",
+      "stats": {
+        "meshes": 1,
+        "vertices": 2397,
+        "polygons": 2313,
+        "triangles": 4590,
+        "dimensions_m": [
+          10.1838,
+          0.1838,
+          1.85
+        ],
+        "bounds_min_m": [
+          -5.0919,
+          -0.0919,
+          -0.0
+        ],
+        "bounds_max_m": [
+          5.0919,
+          0.0919,
+          1.85
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 51,
+        "vertices": 381,
+        "polygons": 297,
+        "dimensions_m": [
+          10.3677,
+          0.3677,
+          1.85
+        ],
+        "bounds_min_m": [
+          -5.1838,
+          -0.1838,
+          0.0
+        ],
+        "bounds_max_m": [
+          5.1838,
+          0.1838,
+          1.85
+        ]
+      },
+      "exports": [
+        "Fence_Wood_10m_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Telegraph_Pole_01",
+      "stats": {
+        "meshes": 3,
+        "vertices": 1320,
+        "polygons": 1302,
+        "triangles": 2556,
+        "dimensions_m": [
+          2.15,
+          0.34,
+          8.0
+        ],
+        "bounds_min_m": [
+          -1.075,
+          -0.17,
+          -0.0
+        ],
+        "bounds_max_m": [
+          1.075,
+          0.17,
+          8.0
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 21,
+        "vertices": 1320,
+        "polygons": 1302,
+        "triangles": 2556,
+        "dimensions_m": [
+          2.15,
+          0.34,
+          8.0
+        ],
+        "bounds_min_m": [
+          -1.075,
+          -0.17,
+          -0.0
+        ],
+        "bounds_max_m": [
+          1.075,
+          0.17,
+          8.0
+        ]
+      },
+      "exports": [
+        "Telegraph_Pole_01_LOD0.fbx",
+        "Telegraph_Pole_01_LOD1.fbx",
+        "Telegraph_Pole_01_Detailed.fbx"
+      ]
+    },
+    {
+      "id": "Signpost_Russia_1912",
+      "stats": {
+        "meshes": 3,
+        "vertices": 25858,
+        "polygons": 23961,
+        "triangles": 44316,
+        "dimensions_m": [
+          3.44,
+          0.18,
+          3.3
+        ],
+        "bounds_min_m": [
+          -1.72,
+          -0.09,
+          -0.0
+        ],
+        "bounds_max_m": [
+          1.72,
+          0.09,
+          3.3
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 7,
+        "vertices": 25714,
+        "polygons": 23817,
+        "dimensions_m": [
+          3.44,
+          0.18,
+          3.3
+        ],
+        "bounds_min_m": [
+          -1.72,
+          -0.09,
+          0.0
+        ],
+        "bounds_max_m": [
+          1.72,
+          0.09,
+          3.3
+        ]
+      },
+      "exports": [
+        "Signpost_Russia_1912_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Prop_Fuel_Can_01",
+      "stats": {
+        "meshes": 4,
+        "vertices": 6856,
+        "polygons": 6340,
+        "triangles": 11800,
+        "dimensions_m": [
+          0.42,
+          0.237,
+          0.7482
+        ],
+        "bounds_min_m": [
+          -0.21,
+          -0.127,
+          0.03
+        ],
+        "bounds_max_m": [
+          0.21,
+          0.11,
+          0.7782
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 6,
+        "vertices": 6648,
+        "polygons": 6132,
+        "dimensions_m": [
+          0.42,
+          0.237,
+          0.7482
+        ],
+        "bounds_min_m": [
+          -0.21,
+          -0.127,
+          0.03
+        ],
+        "bounds_max_m": [
+          0.21,
+          0.11,
+          0.7782
+        ]
+      },
+      "exports": [
+        "Prop_Fuel_Can_01_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Prop_Tool_Chest_01",
+      "stats": {
+        "meshes": 3,
+        "vertices": 296,
+        "polygons": 278,
+        "triangles": 572,
+        "dimensions_m": [
+          0.79,
+          0.46,
+          0.578
+        ],
+        "bounds_min_m": [
+          -0.395,
+          -0.23,
+          0.05
+        ],
+        "bounds_max_m": [
+          0.395,
+          0.23,
+          0.628
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 5,
+        "vertices": 56,
+        "polygons": 38,
+        "dimensions_m": [
+          0.79,
+          0.46,
+          0.578
+        ],
+        "bounds_min_m": [
+          -0.395,
+          -0.23,
+          0.05
+        ],
+        "bounds_max_m": [
+          0.395,
+          0.23,
+          0.628
+        ]
+      },
+      "exports": [
+        "Prop_Tool_Chest_01_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Prop_Barrel_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 848,
+        "polygons": 826,
+        "triangles": 1692,
+        "dimensions_m": [
+          0.734,
+          0.734,
+          0.86
+        ],
+        "bounds_min_m": [
+          -0.367,
+          -0.367,
+          0.05
+        ],
+        "bounds_max_m": [
+          0.367,
+          0.367,
+          0.91
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 4,
+        "vertices": 752,
+        "polygons": 730,
+        "dimensions_m": [
+          0.734,
+          0.734,
+          0.86
+        ],
+        "bounds_min_m": [
+          -0.367,
+          -0.367,
+          0.05
+        ],
+        "bounds_max_m": [
+          0.367,
+          0.367,
+          0.91
+        ]
+      },
+      "exports": [
+        "Prop_Barrel_01_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Prop_Crate_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 784,
+        "polygons": 756,
+        "triangles": 1512,
+        "dimensions_m": [
+          0.76,
+          0.6675,
+          0.72
+        ],
+        "bounds_min_m": [
+          -0.38,
+          -0.3375,
+          0.02
+        ],
+        "bounds_max_m": [
+          0.38,
+          0.33,
+          0.74
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 14,
+        "vertices": 112,
+        "polygons": 84,
+        "dimensions_m": [
+          0.76,
+          0.6675,
+          0.72
+        ],
+        "bounds_min_m": [
+          -0.38,
+          -0.3375,
+          0.02
+        ],
+        "bounds_max_m": [
+          0.38,
+          0.33,
+          0.74
+        ]
+      },
+      "exports": [
+        "Prop_Crate_01_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Prop_Hay_Bale_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 1988,
+        "polygons": 1904,
+        "triangles": 3860,
+        "dimensions_m": [
+          1.25,
+          0.73,
+          0.93
+        ],
+        "bounds_min_m": [
+          -0.625,
+          -0.365,
+          0.015
+        ],
+        "bounds_max_m": [
+          0.625,
+          0.365,
+          0.945
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 29,
+        "vertices": 284,
+        "polygons": 200,
+        "dimensions_m": [
+          1.25,
+          0.73,
+          0.93
+        ],
+        "bounds_min_m": [
+          -0.625,
+          -0.365,
+          0.015
+        ],
+        "bounds_max_m": [
+          0.625,
+          0.365,
+          0.945
+        ]
+      },
+      "exports": [
+        "Prop_Hay_Bale_01_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Prop_Roadside_Lantern_01",
+      "stats": {
+        "meshes": 3,
+        "vertices": 818,
+        "polygons": 776,
+        "triangles": 1600,
+        "dimensions_m": [
+          0.4243,
+          0.4243,
+          2.87
+        ],
+        "bounds_min_m": [
+          -0.2121,
+          -0.2121,
+          -0.0
+        ],
+        "bounds_max_m": [
+          0.2121,
+          0.2121,
+          2.87
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 9,
+        "vertices": 258,
+        "polygons": 216,
+        "dimensions_m": [
+          0.8485,
+          0.8485,
+          2.87
+        ],
+        "bounds_min_m": [
+          -0.4243,
+          -0.4243,
+          0.0
+        ],
+        "bounds_max_m": [
+          0.4243,
+          0.4243,
+          2.87
+        ]
+      },
+      "exports": [
+        "Prop_Roadside_Lantern_01_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Prop_Milestone_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 25611,
+        "polygons": 23772,
+        "triangles": 43902,
+        "dimensions_m": [
+          0.42,
+          0.3394,
+          1.41
+        ],
+        "bounds_min_m": [
+          -0.21,
+          -0.1697,
+          -0.0
+        ],
+        "bounds_max_m": [
+          0.21,
+          0.1697,
+          1.41
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 3,
+        "vertices": 25563,
+        "polygons": 23724,
+        "dimensions_m": [
+          0.6788,
+          0.6788,
+          1.41
+        ],
+        "bounds_min_m": [
+          -0.3394,
+          -0.3394,
+          0.0
+        ],
+        "bounds_max_m": [
+          0.3394,
+          0.3394,
+          1.41
+        ]
+      },
+      "exports": [
+        "Prop_Milestone_01_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Prop_Horse_Cart_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 4240,
+        "polygons": 4056,
+        "triangles": 8352,
+        "dimensions_m": [
+          2.0,
+          4.6737,
+          1.523
+        ],
+        "bounds_min_m": [
+          -1.0,
+          -3.1487,
+          0.032
+        ],
+        "bounds_max_m": [
+          1.0,
+          1.525,
+          1.555
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 36,
+        "vertices": 1520,
+        "polygons": 1336,
+        "dimensions_m": [
+          2.0,
+          4.6745,
+          1.523
+        ],
+        "bounds_min_m": [
+          -1.0,
+          -3.1495,
+          0.032
+        ],
+        "bounds_max_m": [
+          1.0,
+          1.525,
+          1.555
+        ]
+      },
+      "exports": [
+        "Prop_Horse_Cart_01_LOD0.fbx"
+      ]
+    },
+    {
+      "id": "Tree_Birch_01",
+      "stats": {
+        "meshes": 4,
+        "vertices": 2184,
+        "polygons": 2190,
+        "triangles": 4260,
+        "dimensions_m": [
+          4.6185,
+          4.5373,
+          6.8
+        ],
+        "bounds_min_m": [
+          -2.2474,
+          -2.2687,
+          -0.0
+        ],
+        "bounds_max_m": [
+          2.3712,
+          2.2687,
+          6.8
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 27,
+        "vertices": 2184,
+        "polygons": 2190,
+        "triangles": 4260,
+        "dimensions_m": [
+          4.6185,
+          4.5373,
+          6.8
+        ],
+        "bounds_min_m": [
+          -2.2474,
+          -2.2687,
+          -0.0
+        ],
+        "bounds_max_m": [
+          2.3712,
+          2.2687,
+          6.8
+        ]
+      },
+      "exports": [
+        "Tree_Birch_01_LOD0.fbx",
+        "Tree_Birch_01_LOD1.fbx",
+        "Tree_Birch_01_Detailed.fbx"
+      ]
+    },
+    {
+      "id": "Tree_Pine_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 99,
+        "polygons": 89,
+        "triangles": 174,
+        "dimensions_m": [
+          3.8997,
+          4.0,
+          6.65
+        ],
+        "bounds_min_m": [
+          -1.9499,
+          -2.0,
+          -0.0
+        ],
+        "bounds_max_m": [
+          1.9499,
+          2.0,
+          6.65
+        ]
+      },
+      "stats_detailed": {
+        "meshes": 6,
+        "vertices": 99,
+        "polygons": 89,
+        "triangles": 174,
+        "dimensions_m": [
+          3.8997,
+          4.0,
+          6.65
+        ],
+        "bounds_min_m": [
+          -1.9499,
+          -2.0,
+          -0.0
+        ],
+        "bounds_max_m": [
+          1.9499,
+          2.0,
+          6.65
+        ]
+      },
+      "exports": [
+        "Tree_Pine_01_LOD0.fbx",
+        "Tree_Pine_01_LOD1.fbx",
+        "Tree_Pine_01_Detailed.fbx"
+      ]
+    }
+  ],
+  "textures": "game_assets/textures/shared (CC0 procedural maps)",
+  "notes": "FBX module roots are exported at local origin. The BLEND arranges modules into a test street for browsing."
+}

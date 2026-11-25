@@ -1,0 +1,99 @@
+{
+  "asset_id": "russo_balt_c24_55_1912",
+  "display_name": "Russo-Balt C24/55 «Monako» — research reconstruction",
+  "historical_status": "reconstruction",
+  "source_basis": [
+    "1912 Monte Carlo public-domain photograph",
+    "1913 C24/58 race photograph",
+    "CC0 film replicas",
+    "museum and motorsport histories"
+  ],
+  "confirmed": {
+    "engine_cc": 4939,
+    "power_hp_approx": 55,
+    "drive": "RWD",
+    "gears": 3,
+    "brakes": "rear mechanical drums",
+    "steering": "right-hand drive",
+    "suspension": "solid axles, semi-elliptic leaf springs",
+    "tire_size_mm": "880x120"
+  },
+  "assumptions": {
+    "length_m": 4.435,
+    "width_body_m": 1.544,
+    "height_m": 1.23,
+    "wheelbase_m": 3.2,
+    "mass_kg": 1300,
+    "paint": "film-inspired racing green; original rally color unproven"
+  },
+  "coordinate_system": {
+    "blender": "meters, Z up, front -Y",
+    "unity_fbx": "meters, Y up, forward +Z",
+    "pivot": "ground center between axles"
+  },
+  "unity_nodes": [
+    "Wheel_FL_Steer",
+    "Wheel_FR_Steer",
+    "Wheel_FL_Spin",
+    "Wheel_FR_Spin",
+    "Wheel_RL_Spin",
+    "Wheel_RR_Spin",
+    "SteeringWheel_Pivot",
+    "Clutch_Pedal_Pivot",
+    "Brake_Pedal_Pivot",
+    "Throttle_Pedal_Pivot",
+    "GearLever_Pivot",
+    "Windshield_Pivot"
+  ],
+  "stats": {
+    "meshes": 59,
+    "vertices": 56304,
+    "polygons": 54039,
+    "triangles": 108912,
+    "dimensions_m": [
+      1.63,
+      4.631,
+      1.41
+    ],
+    "bounds_min_m": [
+      -0.815,
+      -2.296,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.815,
+      2.335,
+      1.41
+    ]
+  },
+  "stats_detailed": {
+    "meshes": 553,
+    "vertices": 25200,
+    "polygons": 22935,
+    "triangles": 46704,
+    "dimensions_m": [
+      1.63,
+      4.631,
+      1.41
+    ],
+    "bounds_min_m": [
+      -0.815,
+      -2.296,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.815,
+      2.335,
+      1.41
+    ]
+  },
+  "exports": [
+    "RussoBalt_C24_55_LOD0.fbx",
+    "RussoBalt_C24_55_LOD1.fbx",
+    "RussoBalt_C24_55_LOD2.fbx",
+    "RussoBalt_C24_55_Detailed.fbx",
+    "RussoBalt_C24_55_Collision.fbx"
+  ],
+  "textures": "game_assets/textures/shared (CC0 procedural maps, packed into BLEND/FBX)",
+  "notes": "Windshield is folded for rally configuration; rotate RB_Windshield_Pivot to 0 radians for road configuration. Spare wheel is rear-mounted."
+}

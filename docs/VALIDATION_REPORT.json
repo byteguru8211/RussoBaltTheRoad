@@ -1,0 +1,1111 @@
+{
+  "validated": "2026-11-24",
+  "status": "passed",
+  "counts": {
+    "fbx": 58,
+    "blend": 6,
+    "png": 41,
+    "wav": 16,
+    "manifest_files": 159
+  },
+  "total_bytes": 186157253,
+  "errors": [],
+  "warnings": [],
+  "wav_stats": {
+    "audio/processed/ambience_birds_loop.wav": {
+      "duration_s": 16.0,
+      "peak": 0.89,
+      "rms": 0.1123
+    },
+    "audio/processed/ambience_crowd_loop.wav": {
+      "duration_s": 14.0,
+      "peak": 0.89,
+      "rms": 0.1414
+    },
+    "audio/processed/ambience_hooves_loop.wav": {
+      "duration_s": 14.0,
+      "peak": 0.89,
+      "rms": 0.0761
+    },
+    "audio/processed/engine_period_idle_reference_loop.wav": {
+      "duration_s": 12.0,
+      "peak": 0.89,
+      "rms": 0.2589
+    },
+    "audio/processed/gear_lever_clack.wav": {
+      "duration_s": 1.6,
+      "peak": 0.89,
+      "rms": 0.0697
+    },
+    "audio/processed/horn_close_era.wav": {
+      "duration_s": 3.0,
+      "peak": 0.89,
+      "rms": 0.1871
+    },
+    "audio/processed/metal_release_clunk.wav": {
+      "duration_s": 1.1,
+      "peak": 0.89,
+      "rms": 0.0268
+    },
+    "audio/processed/road_gravel_loop.wav": {
+      "duration_s": 12.0,
+      "peak": 0.89,
+      "rms": 0.1978
+    },
+    "audio/processed/starter_hand_crank.wav": {
+      "duration_s": 18.0,
+      "peak": 0.89,
+      "rms": 0.0624
+    },
+    "audio/processed/wind_open_cockpit_loop.wav": {
+      "duration_s": 12.0,
+      "peak": 0.89,
+      "rms": 0.1851
+    },
+    "audio/engine/engine_synthetic_4cyl_1200rpm.wav": {
+      "duration_s": 4.0,
+      "peak": 0.89,
+      "rms": 0.276
+    },
+    "audio/engine/engine_synthetic_4cyl_1500rpm.wav": {
+      "duration_s": 4.0,
+      "peak": 0.89,
+      "rms": 0.2538
+    },
+    "audio/engine/engine_synthetic_4cyl_1800rpm.wav": {
+      "duration_s": 4.0,
+      "peak": 0.89,
+      "rms": 0.2315
+    },
+    "audio/engine/engine_synthetic_4cyl_2100rpm.wav": {
+      "duration_s": 4.0,
+      "peak": 0.89,
+      "rms": 0.2406
+    },
+    "audio/engine/engine_synthetic_4cyl_600rpm.wav": {
+      "duration_s": 4.0,
+      "peak": 0.89,
+      "rms": 0.2833
+    },
+    "audio/engine/engine_synthetic_4cyl_900rpm.wav": {
+      "duration_s": 4.0,
+      "peak": 0.89,
+      "rms": 0.2596
+    }
+  },
+  "checks": [
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55.blend"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept.blend"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\environment\\Russia_1912\\Russia_1912_Modular_Kit.blend"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\characters\\Historical_Characters.blend"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\characters\\Driver_1912.fbx"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\characters\\Mechanic_1912.fbx"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\characters\\Lady_1912.fbx"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: game_assets\\environment\\Russia_1912\\RussoBalt_The_Road_Hero.blend"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: previews\\RussoBalt_The_Road_Hero.png"
+    },
+    {
+      "ok": true,
+      "message": "Expected file: audio\\manifest.json"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\characters\\Driver_1912.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\characters\\Driver_1912.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\characters\\Lady_1912.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\characters\\Lady_1912.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\characters\\Mechanic_1912.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\characters\\Mechanic_1912.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Building_Brick_Gatehouse_01_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Building_Brick_Gatehouse_01_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Building_Brick_Gatehouse_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Building_Brick_Gatehouse_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Building_Brick_Gatehouse_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Building_Brick_Gatehouse_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Building_Brick_Gatehouse_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Building_Brick_Gatehouse_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Building_Wood_House_01_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Building_Wood_House_01_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Building_Wood_House_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Building_Wood_House_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Building_Wood_House_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Building_Wood_House_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Building_Wood_House_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Building_Wood_House_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Fence_Wood_10m_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Fence_Wood_10m_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Prop_Barrel_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Prop_Barrel_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Prop_Crate_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Prop_Crate_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Prop_Fuel_Can_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Prop_Fuel_Can_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Prop_Hay_Bale_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Prop_Hay_Bale_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Prop_Horse_Cart_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Prop_Horse_Cart_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Prop_Milestone_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Prop_Milestone_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Prop_Roadside_Lantern_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Prop_Roadside_Lantern_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Prop_Tool_Chest_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Prop_Tool_Chest_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Road_Cobblestone_25m_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Road_Cobblestone_25m_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Road_Dirt_100m_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Road_Dirt_100m_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Road_Snow_100m_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Road_Snow_100m_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Signpost_Russia_1912_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Signpost_Russia_1912_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Telegraph_Pole_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Telegraph_Pole_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Telegraph_Pole_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Telegraph_Pole_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Telegraph_Pole_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Telegraph_Pole_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Tree_Birch_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Tree_Birch_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Tree_Birch_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Tree_Birch_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Tree_Birch_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Tree_Birch_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Tree_Pine_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Tree_Pine_01_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Tree_Pine_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Tree_Pine_01_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\environment\\Russia_1912\\modules\\Tree_Pine_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\environment\\Russia_1912\\modules\\Tree_Pine_01_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Fiat_S76_1910\\Fiat_S76_1910_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Ford_ModelT_1912\\Ford_ModelT_1912_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\Mercedes_37_90_1912\\Mercedes_37_90_1912_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_Collision.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_Detailed.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_LOD0.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_LOD1.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX header: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "FBX non-empty: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55_LOD2.fbx"
+    },
+    {
+      "ok": true,
+      "message": "BLEND header: game_assets\\characters\\Historical_Characters.blend"
+    },
+    {
+      "ok": true,
+      "message": "BLEND header: game_assets\\environment\\Russia_1912\\Russia_1912_Modular_Kit.blend"
+    },
+    {
+      "ok": true,
+      "message": "BLEND header: game_assets\\environment\\Russia_1912\\RussoBalt_The_Road_Hero.blend"
+    },
+    {
+      "ok": true,
+      "message": "BLEND header: game_assets\\vehicles\\Benz_1912_Prototype\\Benz_1912_Racer_Concept.blend"
+    },
+    {
+      "ok": true,
+      "message": "BLEND header: game_assets\\vehicles\\Era_Vehicles_1910_1914.blend"
+    },
+    {
+      "ok": true,
+      "message": "BLEND header: game_assets\\vehicles\\RussoBalt_C24_55\\RussoBalt_C24_55.blend"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\bark_birch_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\bark_birch_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\bark_birch_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\brick_red_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\brick_red_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\brick_red_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\fabric_charcoal_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\fabric_charcoal_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\fabric_charcoal_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\leather_saddle_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\leather_saddle_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\leather_saddle_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\paint_racing_green_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\paint_racing_green_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\paint_racing_green_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\plaster_ochre_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\plaster_ochre_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\plaster_ochre_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\road_cobblestone_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\road_cobblestone_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\road_cobblestone_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\road_dirt_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\road_dirt_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\road_dirt_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\road_snow_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\road_snow_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\road_snow_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\roof_iron_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\roof_iron_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\roof_iron_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\wood_walnut_basecolor.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\wood_walnut_normal.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: game_assets\\textures\\shared\\wood_walnut_roughness.png 512x512"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\Benz_1912_Racer_Concept_preview.png 1400x900"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\Contact_Sheet.png 1600x1500"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\Era_Vehicles_preview.png 1800x900"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\Historical_Characters_preview.png 1400x900"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\Russia_1912_Modular_Kit_preview.png 1600x1000"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\RussoBalt_C24_55_preview.png 1400x900"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\RussoBalt_The_Road_Hero.png 1600x1000"
+    },
+    {
+      "ok": true,
+      "message": "PNG resolution: previews\\Unity_Contact_Sheet.png 1600x1000"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\ambience_birds_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\ambience_birds_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\ambience_birds_loop.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\ambience_birds_loop.wav rms=0.1123"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\ambience_crowd_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\ambience_crowd_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\ambience_crowd_loop.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\ambience_crowd_loop.wav rms=0.1414"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\ambience_hooves_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\ambience_hooves_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\ambience_hooves_loop.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\ambience_hooves_loop.wav rms=0.0761"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\engine_period_idle_reference_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\engine_period_idle_reference_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\engine_period_idle_reference_loop.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\engine_period_idle_reference_loop.wav rms=0.2589"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\gear_lever_clack.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\gear_lever_clack.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\gear_lever_clack.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\gear_lever_clack.wav rms=0.0697"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\horn_close_era.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\horn_close_era.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\horn_close_era.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\horn_close_era.wav rms=0.1871"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\metal_release_clunk.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\metal_release_clunk.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\metal_release_clunk.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\metal_release_clunk.wav rms=0.0268"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\road_gravel_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\road_gravel_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\road_gravel_loop.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\road_gravel_loop.wav rms=0.1978"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\starter_hand_crank.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\starter_hand_crank.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\starter_hand_crank.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\starter_hand_crank.wav rms=0.0624"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\processed\\wind_open_cockpit_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\processed\\wind_open_cockpit_loop.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\processed\\wind_open_cockpit_loop.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\processed\\wind_open_cockpit_loop.wav rms=0.1851"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\engine\\engine_synthetic_4cyl_1200rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\engine\\engine_synthetic_4cyl_1200rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\engine\\engine_synthetic_4cyl_1200rpm.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\engine\\engine_synthetic_4cyl_1200rpm.wav rms=0.2760"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\engine\\engine_synthetic_4cyl_1500rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\engine\\engine_synthetic_4cyl_1500rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\engine\\engine_synthetic_4cyl_1500rpm.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\engine\\engine_synthetic_4cyl_1500rpm.wav rms=0.2538"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\engine\\engine_synthetic_4cyl_1800rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\engine\\engine_synthetic_4cyl_1800rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\engine\\engine_synthetic_4cyl_1800rpm.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\engine\\engine_synthetic_4cyl_1800rpm.wav rms=0.2315"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\engine\\engine_synthetic_4cyl_2100rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\engine\\engine_synthetic_4cyl_2100rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\engine\\engine_synthetic_4cyl_2100rpm.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\engine\\engine_synthetic_4cyl_2100rpm.wav rms=0.2406"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\engine\\engine_synthetic_4cyl_600rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\engine\\engine_synthetic_4cyl_600rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\engine\\engine_synthetic_4cyl_600rpm.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\engine\\engine_synthetic_4cyl_600rpm.wav rms=0.2833"
+    },
+    {
+      "ok": true,
+      "message": "WAV sample rate: audio\\engine\\engine_synthetic_4cyl_900rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV format: audio\\engine\\engine_synthetic_4cyl_900rpm.wav"
+    },
+    {
+      "ok": true,
+      "message": "WAV peak below clipping: audio\\engine\\engine_synthetic_4cyl_900rpm.wav peak=0.890"
+    },
+    {
+      "ok": true,
+      "message": "WAV not silent: audio\\engine\\engine_synthetic_4cyl_900rpm.wav rms=0.2596"
+    },
+    {
+      "ok": true,
+      "message": "JSON parse: game_assets\\characters\\asset_metadata.json"
+    },
+    {
+      "ok": true,
+      "message": "JSON parse: game_assets\\environment\\Russia_1912\\asset_metadata.json"
+    },
+    {
+      "ok": true,
+      "message": "JSON parse: game_assets\\vehicles\\Benz_1912_Prototype\\asset_metadata.json"
+    },
+    {
+      "ok": true,
+      "message": "JSON parse: game_assets\\vehicles\\Fiat_S76_1910\\asset_metadata.json"
+    },
+    {
+      "ok": true,
+      "message": "JSON parse: game_assets\\vehicles\\Ford_ModelT_1912\\asset_metadata.json"
+    },
+    {
+      "ok": true,
+      "message": "JSON parse: game_assets\\vehicles\\Mercedes_37_90_1912\\asset_metadata.json"
+    },
+    {
+      "ok": true,
+      "message": "JSON parse: game_assets\\vehicles\\RussoBalt_C24_55\\asset_metadata.json"
+    },
+    {
+      "ok": true,
+      "message": "JSON parse: audio\\manifest.json"
+    },
+    {
+      "ok": true,
+      "message": "JSON parse: references\\history\\download_manifest.json"
+    }
+  ],
+  "limitations": [
+    "Unity is not installed; in-engine import, physics and rendering were not tested.",
+    "FBX animation clips are validated by Blender import in the companion headless report.",
+    "Historical reconstruction contains documented assumptions."
+  ]
+}
