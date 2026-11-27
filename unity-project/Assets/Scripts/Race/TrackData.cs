@@ -158,11 +158,18 @@ public class TrackData : ScriptableObject
     {
         get
         {
-            if (waypoints == null || waypoints.Length < 2) return 0f;
-            float length = 0f;
-            for (int i = 0; i < waypoints.Length; i++)
-                length += Vector3.Distance(waypoints[i], waypoints[(i + 1) % waypoints.Length]);
-            return length;
+            if (waypoints == null || waypoints.Length < 4) return 0f;
+            try
+            {
+                return new TrackRoute(this).Length;
+            }
+            catch (ArgumentException)
+            {
+                float length = 0f;
+                for (int i = 0; i < waypoints.Length; i++)
+                    length += Vector3.Distance(waypoints[i], waypoints[(i + 1) % waypoints.Length]);
+                return length;
+            }
         }
     }
 }

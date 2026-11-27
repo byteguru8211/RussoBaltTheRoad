@@ -166,7 +166,7 @@ public class RaceManager : MonoBehaviour
 
     public static float GridReleaseDelay(int slot)
     {
-        // Both columns of a row release together; every peer derives the same delay from GridSlot.
+        // Local AI rows may release together; the player and every LAN car use the shared start time.
         return Mathf.Max(0, slot) / 2 * 0.7f;
     }
 
@@ -313,7 +313,7 @@ public class RaceManager : MonoBehaviour
         ReleaseGrid();
         HUD?.SetCountdown("СТАРТ!");
         Invoke(nameof(ClearNetworkCountdown), 0.8f);
-        HUD?.SetMessage("Двигатель заведён · W — газ · R — задний ход", 4f);
+        HUD?.SetMessage("Двигатель заведён · W — газ · R — задний ход · N · усиление", 4f);
     }
 
     private void ClearNetworkCountdown()
@@ -334,7 +334,7 @@ public class RaceManager : MonoBehaviour
         State = RaceState.Racing;
         Elapsed = 0f;
         ReleaseGrid();
-        HUD?.SetMessage("Старт по рядам · W — газ · R — задний ход", 4f);
+        HUD?.SetMessage("W — газ · R — задний ход · N · усиление", 4f);
         yield return new WaitForSeconds(0.8f);
         HUD?.SetCountdown("");
     }
@@ -359,9 +359,30 @@ public class RaceManager : MonoBehaviour
         localGrid.Clear();
         releasedNetworkCars.Clear();
         if (networkMode)
+        {
+            // LAN has no staggered rows: the server unlocks every car and every owner enables input
+            // in the same frame that the shared countdown reaches zero.
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
+            {
+                PruneNetworkCars();
+                foreach (NetworkPlayerCar car in networkCars)
+                {
+                    if (car == null || car.GridSlot.Value < 0)
+                        continue;
+                    car.SetGridPhase(false);
+                    releasedNetworkCars.Add(car);
+                }
+            }
+            EnablePlayerInput();
             return;
+        }
+
+        // Keep the player's actual grid transform and slot, but release it without its row delay.
         if (Player != null)
-            localGrid.Add(new GridEntry { vehicle = Player, slot = PlayerGridSlot });
+        {
+            ReleaseLocalVehicle(Player);
+            EnablePlayerInput();
+        }
         foreach (AIDriver1912 ai in AI)
         {
             if (ai != null && ai.vehicle != null)
@@ -379,8 +400,6 @@ public class RaceManager : MonoBehaviour
             ReleaseLocalVehicle(entry.vehicle);
             entry.released = true;
             localGrid[i] = entry;
-            if (entry.vehicle == Player)
-                EnablePlayerInput();
         }
     }
 
@@ -398,7 +417,7 @@ public class RaceManager : MonoBehaviour
 
     private void UpdateNetworkGridRelease()
     {
-        if (!NetworkManager.Singleton.IsServer)
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
             return;
         PruneNetworkCars();
         double now = NetworkManager.Singleton.ServerTime.Time;
@@ -406,7 +425,7 @@ public class RaceManager : MonoBehaviour
         {
             if (car == null || releasedNetworkCars.Contains(car) || car.GridSlot.Value < 0)
                 continue;
-            if (now + 0.0001d < networkStartTime + GridReleaseDelay(car.GridSlot.Value))
+            if (now + 0.0001d < networkStartTime)
                 continue;
             car.SetGridPhase(false);
             releasedNetworkCars.Add(car);
@@ -427,8 +446,7 @@ public class RaceManager : MonoBehaviour
         }
         if (PlayerGridSlot < 0)
             return;
-        double releaseTime = networkStartTime + GridReleaseDelay(PlayerGridSlot);
-        if (NetworkManager.Singleton.ServerTime.Time >= releaseTime)
+        if (NetworkManager.Singleton.ServerTime.Time >= networkStartTime)
             EnablePlayerInput();
     }
 

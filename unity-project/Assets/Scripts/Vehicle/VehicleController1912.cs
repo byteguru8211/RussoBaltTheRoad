@@ -14,6 +14,7 @@ public class VehicleController1912 : MonoBehaviour
         public float steer;
         public float clutch;
         public float handbrake;
+        public bool boost;
     }
 
     [Header("Wheels")]
@@ -53,6 +54,7 @@ public class VehicleController1912 : MonoBehaviour
     [Header("Transmission")]
     public bool automaticTransmission = true;
     public float idleRpm = 650f;
+    public float launchRpm = 1200f;
     public float rpmLimiter = 2300f;
     public float shiftUpRpm = 2050f;
     public float shiftDownRpm = 850f;
@@ -84,6 +86,11 @@ public class VehicleController1912 : MonoBehaviour
     private const float FrontSideStiffness = 1.55f;
     private const float RearSideStiffness = 1.65f;
     private const float AirDensity = 1.225f;
+    private const float LaunchAssistMaxSpeedMps = 2f;
+    private const float BoostDrainPerSecond = 0.35f;
+    private const float BoostRechargePerSecond = 0.08f;
+    private const float BoostRechargeDelay = 1.2f;
+    private const float BoostTorqueMultiplier = 1.25f;
 
     private Rigidbody body;
     private VehicleInput input;
@@ -94,6 +101,9 @@ public class VehicleController1912 : MonoBehaviour
     private float shiftCooldown;
     private bool simulationEnabled = true;
     private int requestedGear = 1;
+    private float boostCharge = 1f;
+    private float boostRechargeTimer;
+    private bool boostActive;
     private Quaternion steeringWheelRestRotation;
     private TrackSurface1912.SurfaceKind currentSurface = TrackSurface1912.SurfaceKind.Dirt;
     private float surfaceRollingMultiplier = 1f;
@@ -124,6 +134,8 @@ public class VehicleController1912 : MonoBehaviour
     public float GearDisplay => gear < 0 ? 0f : gear;
     public bool Reverse => gear < 0;
     public bool SimulationEnabled => simulationEnabled;
+    public float BoostCharge => Mathf.Clamp01(Finite(boostCharge));
+    public bool BoostActive => boostActive;
     public int ShiftRequestId { get; private set; }
     public int RequestedGear => requestedGear;
     public int StartRequestId { get; private set; }
@@ -142,6 +154,11 @@ public class VehicleController1912 : MonoBehaviour
         body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         lastPosition = body.position;
         requestedGear = gear;
+        boostCharge = 1f;
+        boostActive = false;
+        boostRechargeTimer = 0f;
+        if (launchRpm <= 0f)
+            launchRpm = 1200f;
         if (torqueCurve == null || torqueCurve.length == 0)
         {
             // A broad, naturally aspirated period torque curve, followed by a soft rev limit.
@@ -278,7 +295,8 @@ public class VehicleController1912 : MonoBehaviour
             brake = SanitizeAxis(value.brake),
             steer = Mathf.Clamp(Finite(value.steer), -1f, 1f),
             clutch = SanitizeAxis(value.clutch),
-            handbrake = SanitizeAxis(value.handbrake)
+            handbrake = SanitizeAxis(value.handbrake),
+            boost = value.boost
         };
     }
 
@@ -298,6 +316,7 @@ public class VehicleController1912 : MonoBehaviour
         if (!value)
         {
             SetInput(default);
+            boostActive = false;
             ClearWheelControls();
         }
     }
@@ -309,15 +328,20 @@ public class VehicleController1912 : MonoBehaviour
     }
 
     public void ApplyNetworkState(int networkGear, bool running, float networkRpm, float networkThrottle,
-        float networkFuel = 100f, float networkTemperature = 20f, float networkDamage = 0f, float networkSteer = 0f, float networkDistance = 0f)
+        float networkFuel = 100f, float networkTemperature = 20f, float networkDamage = 0f, float networkSteer = 0f, float networkDistance = 0f,
+        int networkRequestedGear = int.MinValue, float networkBoostCharge = 1f, bool networkBoostActive = false)
     {
         gear = Mathf.Clamp(networkGear, -1, 4);
+        requestedGear = networkRequestedGear >= -1 ? Mathf.Clamp(networkRequestedGear, -1, 4) : gear;
         engineRunning = running;
         rpm = Mathf.Clamp(networkRpm, 0f, rpmLimiter);
         fuel = Mathf.Clamp(networkFuel, 0f, 100f);
         temperature = Mathf.Clamp(networkTemperature, 20f, 150f);
         damage = Mathf.Clamp(networkDamage, 0f, 100f);
         distanceSinceReset = Mathf.Max(0f, networkDistance);
+        boostCharge = Mathf.Clamp01(Finite(networkBoostCharge));
+        boostActive = networkBoostActive && boostCharge > 0f;
+        boostRechargeTimer = 0f;
         if (running)
             handCrankTimer = 0f;
         input.throttle = SanitizeAxis(networkThrottle);
@@ -363,15 +387,15 @@ public class VehicleController1912 : MonoBehaviour
     public void ShiftTo(int nextGear)
     {
         nextGear = Mathf.Clamp(nextGear, -1, 4);
-        if (nextGear == gear)
+        if (nextGear == gear && nextGear == requestedGear)
             return;
         ShiftRequestId++;
-        requestedGear = nextGear;
         ShiftGear(nextGear);
     }
 
     private void ShiftGear(int nextGear)
     {
+        requestedGear = nextGear;
         if (nextGear == gear)
             return;
         gear = nextGear;
@@ -445,6 +469,9 @@ public class VehicleController1912 : MonoBehaviour
 
         if (!simulationEnabled || body.isKinematic)
         {
+            // Disabled client copies only mirror replicated boost state; they never spend or regenerate it.
+            if (simulationEnabled)
+                boostActive = false;
             ClearWheelControls();
             if (isPlayer)
             {
@@ -485,17 +512,22 @@ public class VehicleController1912 : MonoBehaviour
         float targetRpm = idleRpm + Mathf.Abs(wheelRpm * ratio * finalDrive);
         if (input.clutch > 0.7f && engineRunning)
             targetRpm = idleRpm + input.throttle * (rpmLimiter - idleRpm) * 0.78f;
+        bool launchAssist = gear == 1 && Mathf.Abs(forwardSpeed) < LaunchAssistMaxSpeedMps
+            && input.throttle > 0.05f && input.brake <= 0.05f && input.handbrake <= 0.05f && shiftCooldown <= 0f;
+        if (launchAssist)
+            targetRpm = Mathf.Max(targetRpm, launchRpm);
         targetRpm = Mathf.Clamp(targetRpm, idleRpm, rpmLimiter);
         rpm = Mathf.Lerp(rpm, targetRpm, dt * 6f);
 
         if (fuel <= 0f || temperature >= 118f)
             engineRunning = false;
 
+        UpdateBoost(dt);
         float torqueFactor = Mathf.Clamp(1f - damage / 140f, 0.35f, 1f);
         float curveTorque = torqueCurve != null ? torqueCurve.Evaluate(rpm) : 1f;
         float limiterFactor = rpm >= rpmLimiter * 0.995f ? 0f : 1f;
         float engineTorqueNow = engineRunning
-            ? engineTorque * Mathf.Max(0f, curveTorque) * torqueFactor * input.throttle * clutchEngagement * limiterFactor
+            ? engineTorque * Mathf.Max(0f, curveTorque) * torqueFactor * input.throttle * clutchEngagement * limiterFactor * (boostActive ? BoostTorqueMultiplier : 1f)
             : 0f;
         float motorTorque = engineTorqueNow * ratio * finalDrive * drivelineEfficiency;
         float rearMotorTorque = motorTorque * 0.5f;
@@ -541,9 +573,30 @@ public class VehicleController1912 : MonoBehaviour
         UpdateVisuals(dt);
     }
 
+    private void UpdateBoost(float dt)
+    {
+        bool canBoost = input.boost && engineRunning && input.throttle > 0.05f && gear > 0
+            && input.brake <= 0.05f && input.handbrake <= 0.05f && shiftCooldown <= 0f
+            && simulationEnabled && body != null && !body.isKinematic && boostCharge > 0f;
+        boostActive = canBoost;
+        if (boostActive)
+        {
+            boostCharge = Mathf.Max(0f, boostCharge - BoostDrainPerSecond * dt);
+            boostRechargeTimer = 0f;
+            if (boostCharge <= 0f)
+                boostActive = false;
+        }
+        else
+        {
+            boostRechargeTimer = Mathf.Min(BoostRechargeDelay, boostRechargeTimer + dt);
+            if (boostRechargeTimer >= BoostRechargeDelay)
+                boostCharge = Mathf.Min(1f, boostCharge + BoostRechargePerSecond * dt);
+        }
+    }
+
     private void UpdateAutomaticTransmission(float forwardSpeed)
     {
-        if (!automaticTransmission || shiftCooldown > 0f)
+        if (!automaticTransmission)
             return;
         if (gear == 0 && input.throttle > 0.05f)
         {
@@ -561,10 +614,27 @@ public class VehicleController1912 : MonoBehaviour
         float ratio = GearRatio(gear);
         float wheelRpm = Mathf.Abs(forwardSpeed) / Mathf.Max(0.1f, wheelRadius) * 60f / (2f * Mathf.PI);
         float coupledRpm = idleRpm + wheelRpm * ratio * finalDrive;
+        if (coupledRpm < shiftDownRpm && gear > 1)
+        {
+            // Select the highest lower gear that keeps the engine above the downshift threshold.
+            // This can skip several ratios in one physics step instead of waiting for each cooldown.
+            int targetGear = 1;
+            for (int candidate = gear - 1; candidate >= 1; candidate--)
+            {
+                float candidateRpm = idleRpm + wheelRpm * GearRatio(candidate) * finalDrive;
+                if (candidateRpm >= shiftDownRpm)
+                {
+                    targetGear = candidate;
+                    break;
+                }
+            }
+            ShiftGear(targetGear);
+            return;
+        }
+        if (shiftCooldown > 0f)
+            return;
         if (coupledRpm >= shiftUpRpm && gear < 4 && input.throttle > 0.05f)
             ShiftGear(gear + 1);
-        else if (coupledRpm < shiftDownRpm && gear > 1)
-            ShiftGear(gear - 1);
     }
 
     private static float GearRatio(int selectedGear)

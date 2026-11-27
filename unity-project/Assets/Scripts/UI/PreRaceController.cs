@@ -17,6 +17,7 @@ public class PreRaceController : MonoBehaviour
     private TrackData track;
     private VehicleController1912 showcaseVehicle;
     private Camera stageCamera;
+    private Color showroomClearColor = new Color(0.12f, 0.18f, 0.21f);
     private Canvas canvas;
     private Image orbitSurface;
     private GameObject selectionPanel;
@@ -56,15 +57,6 @@ public class PreRaceController : MonoBehaviour
 
     private void SetupAtmosphere()
     {
-        RenderSettings.fog = true;
-        RenderSettings.fogMode = FogMode.Exponential;
-        RenderSettings.fogDensity = 0.018f;
-        RenderSettings.fogColor = new Color(0.025f, 0.045f, 0.052f);
-        RenderSettings.ambientMode = AmbientMode.Flat;
-        RenderSettings.ambientSkyColor = new Color(0.16f, 0.22f, 0.24f);
-        RenderSettings.ambientEquatorColor = new Color(0.08f, 0.11f, 0.12f);
-        RenderSettings.ambientGroundColor = new Color(0.025f, 0.03f, 0.03f);
-
         VolumeProfile profile = ScriptableObject.CreateInstance<VolumeProfile>();
         Bloom bloom = ScriptableObject.CreateInstance<Bloom>();
         bloom.intensity.value = 0.65f;
@@ -84,14 +76,116 @@ public class PreRaceController : MonoBehaviour
         Volume volume = volumeObject.AddComponent<Volume>();
         volume.profile = profile;
         volume.isGlobal = true;
+        ApplyShowroomConditions();
+    }
 
-        Light sun = FindAnyObjectByType<Light>();
+    private void ApplyShowroomConditions()
+    {
+        SettingsData settings = GameManager.Instance.Settings;
+        WeatherPreset weather = settings.weather;
+        TimeOfDayPreset time = settings.timeOfDay;
+        if (weather == WeatherPreset.Auto)
+        {
+            weather = track.id switch
+            {
+                "winter_departure" or "moscow_highway" => WeatherPreset.Snow,
+                "finland_coast" or "alps_pass" => WeatherPreset.Fog,
+                "tver_forest" => WeatherPreset.Rain,
+                "riga_speedway" => WeatherPreset.Cloudy,
+                _ => WeatherPreset.Clear
+            };
+        }
+        if (time == TimeOfDayPreset.Auto)
+        {
+            time = track.id switch
+            {
+                "moscow_highway" or "finland_coast" => TimeOfDayPreset.Dawn,
+                "monaco_finish" or "crimean_coast" => TimeOfDayPreset.Sunset,
+                _ => TimeOfDayPreset.Day
+            };
+        }
+
+        Color fog = new Color(0.55f, 0.62f, 0.65f);
+        Color clear = new Color(0.12f, 0.18f, 0.21f);
+        float density = 0f;
+        float sunFactor = 1f;
+        switch (weather)
+        {
+            case WeatherPreset.Cloudy:
+                fog = new Color(0.48f, 0.54f, 0.57f);
+                clear = new Color(0.1f, 0.14f, 0.17f);
+                density = 0.006f;
+                sunFactor = 0.75f;
+                break;
+            case WeatherPreset.Rain:
+                fog = new Color(0.36f, 0.43f, 0.48f);
+                clear = new Color(0.065f, 0.095f, 0.12f);
+                density = 0.012f;
+                sunFactor = 0.45f;
+                break;
+            case WeatherPreset.Snow:
+                fog = new Color(0.72f, 0.78f, 0.82f);
+                clear = new Color(0.16f, 0.21f, 0.25f);
+                density = 0.009f;
+                sunFactor = 0.6f;
+                break;
+            case WeatherPreset.Fog:
+                fog = new Color(0.58f, 0.63f, 0.64f);
+                clear = new Color(0.22f, 0.27f, 0.28f);
+                density = 0.028f;
+                sunFactor = 0.35f;
+                break;
+        }
+        Color sunColor = new Color(0.72f, 0.82f, 0.9f);
+        float sunIntensity = 0.55f;
+        Vector3 sunRotation = new Vector3(48f, -32f, 0f);
+        switch (time)
+        {
+            case TimeOfDayPreset.Dawn:
+                fog = Color.Lerp(fog, new Color(0.72f, 0.58f, 0.55f), 0.28f);
+                sunColor = new Color(1f, 0.68f, 0.46f);
+                sunIntensity = 0.48f;
+                sunRotation = new Vector3(24f, -72f, 0f);
+                break;
+            case TimeOfDayPreset.Sunset:
+                fog = Color.Lerp(fog, new Color(0.78f, 0.46f, 0.3f), 0.38f);
+                clear = Color.Lerp(clear, new Color(0.19f, 0.1f, 0.12f), 0.55f);
+                sunColor = new Color(1f, 0.48f, 0.24f);
+                sunIntensity = 0.52f;
+                sunRotation = new Vector3(18f, 68f, 0f);
+                break;
+            case TimeOfDayPreset.Night:
+                fog = Color.Lerp(fog, new Color(0.035f, 0.055f, 0.09f), 0.9f);
+                clear = new Color(0.012f, 0.02f, 0.035f);
+                sunColor = new Color(0.42f, 0.58f, 0.82f);
+                sunIntensity = 0.16f;
+                sunRotation = new Vector3(58f, 142f, 0f);
+                break;
+        }
+
+        RenderSettings.fog = density > 0f;
+        RenderSettings.fogMode = FogMode.ExponentialSquared;
+        RenderSettings.fogDensity = density;
+        RenderSettings.fogColor = fog;
+        RenderSettings.ambientMode = AmbientMode.Flat;
+        RenderSettings.ambientSkyColor = Color.Lerp(fog, Color.white, 0.12f) * (time == TimeOfDayPreset.Night ? 0.35f : 0.72f);
+        RenderSettings.ambientEquatorColor = fog * 0.5f;
+        RenderSettings.ambientGroundColor = fog * 0.28f;
+        showroomClearColor = clear;
+        if (stageCamera != null) stageCamera.backgroundColor = clear;
+        Light sun = null;
+        foreach (Light light in FindObjectsByType<Light>(FindObjectsInactive.Include))
+        {
+            if (light.type != LightType.Directional) continue;
+            sun = light;
+            break;
+        }
         if (sun != null)
         {
             sun.type = LightType.Directional;
-            sun.color = new Color(0.52f, 0.68f, 0.78f);
-            sun.intensity = 0.45f;
-            sun.transform.rotation = Quaternion.Euler(48f, -32f, 0f);
+            sun.color = sunColor;
+            sun.intensity = sunIntensity * sunFactor;
+            sun.transform.rotation = Quaternion.Euler(sunRotation);
         }
     }
 
@@ -105,7 +199,7 @@ public class PreRaceController : MonoBehaviour
             stageCamera = cameraObject.GetComponent<Camera>();
         }
         stageCamera.clearFlags = CameraClearFlags.SolidColor;
-        stageCamera.backgroundColor = new Color(0.018f, 0.032f, 0.04f);
+        stageCamera.backgroundColor = showroomClearColor;
         stageCamera.fieldOfView = 47f;
         stageCamera.nearClipPlane = 0.1f;
         stageCamera.farClipPlane = 120f;
@@ -205,7 +299,7 @@ public class PreRaceController : MonoBehaviour
         loadingText = UIUtils.Text(loadingPanel.transform, "Status", "Подготовка трассы…", 22, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.25f, 0.48f), new Vector2(0.75f, 0.53f), Vector2.zero, Vector2.zero);
         UIUtils.Panel(loadingPanel.transform, "ProgressBack", UITheme.Panel, new Vector2(0.25f, 0.405f), new Vector2(0.75f, 0.425f), Vector2.zero, Vector2.zero, false);
         loadingFill = UIUtils.Panel(loadingPanel.transform, "ProgressFill", UITheme.Brass, new Vector2(0.25f, 0.405f), new Vector2(0.25f, 0.425f), Vector2.zero, Vector2.zero, false);
-        UIUtils.Text(loadingPanel.transform, "Tip", "Двигатель уже заведён · C — камера · R — задний ход.", 18, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.2f, 0.31f), new Vector2(0.8f, 0.36f), Vector2.zero, Vector2.zero);
+        UIUtils.Text(loadingPanel.transform, "Tip", "Двигатель уже заведён · C — камера · R — задний ход · N — усиление.", 18, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.2f, 0.31f), new Vector2(0.8f, 0.36f), Vector2.zero, Vector2.zero);
         BuildConditionPanel();
     }
 
@@ -225,6 +319,7 @@ public class PreRaceController : MonoBehaviour
         SettingsData settings = GameManager.Instance.Settings;
         settings.weather = (WeatherPreset)(((int)settings.weather + 1) % Enum.GetValues(typeof(WeatherPreset)).Length);
         RefreshConditionLabels();
+        ApplyShowroomConditions();
         GameManager.Instance.Save();
     }
 
@@ -233,6 +328,7 @@ public class PreRaceController : MonoBehaviour
         SettingsData settings = GameManager.Instance.Settings;
         settings.timeOfDay = (TimeOfDayPreset)(((int)settings.timeOfDay + 1) % Enum.GetValues(typeof(TimeOfDayPreset)).Length);
         RefreshConditionLabels();
+        ApplyShowroomConditions();
         GameManager.Instance.Save();
     }
 

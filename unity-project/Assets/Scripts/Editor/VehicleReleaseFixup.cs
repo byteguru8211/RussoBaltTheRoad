@@ -16,6 +16,8 @@ public static class VehicleReleaseFixup
         public Vector3 cockpit;
         public Vector3 cockpitLook;
         public float orbit;
+        public bool singleRightExhaust;
+        public Vector3 singleExhaustPosition;
     }
 
     private static readonly Mount RussoBalt = new Mount
@@ -23,7 +25,8 @@ public static class VehicleReleaseFixup
         axis = new Vector3(0f, 0.777f, 0.630f), rimPitch = -50.9f,
         chase = new Vector3(0f, 2.65f, -6.5f), chaseLook = new Vector3(0f, 0.95f, 2.1f),
         hood = new Vector3(0.31f, 1.58f, 0.62f), hoodLook = new Vector3(0.31f, 1.36f, 14f),
-        cockpit = new Vector3(0.27f, 1.55f, 0.10f), cockpitLook = new Vector3(0.27f, 1.38f, 15f), orbit = 7.6f
+        cockpit = new Vector3(0.27f, 1.55f, 0.10f), cockpitLook = new Vector3(0.27f, 1.38f, 15f), orbit = 7.6f,
+        singleRightExhaust = true, singleExhaustPosition = new Vector3(0.70f, 0.35f, -1.82f)
     };
 
     private static readonly Mount Benz = new Mount
@@ -61,29 +64,33 @@ public static class VehicleReleaseFixup
     [MenuItem("RussoBalt/Apply Vehicle Release Fixes")]
     public static void Apply()
     {
-        ApplyDriverPrefab("Assets/Resources/Characters/Driver_1912.prefab");
-        ApplyVehicle("Assets/Resources/Vehicles/russo_balt_c24_55.prefab", RussoBalt);
-        ApplyVehicle("Assets/Resources/Vehicles/benz_1912_racer_concept.prefab", Benz);
-        ApplyVehicle("Assets/Resources/Vehicles/ford_model_t_1912.prefab", Ford);
-        ApplyVehicle("Assets/Resources/Vehicles/fiat_s76_1910.prefab", Fiat);
-        ApplyVehicle("Assets/Resources/Vehicles/mercedes_37_90_1912.prefab", Mercedes);
-        ApplyVehicle("Assets/Resources/Vehicles/network_russo_balt.prefab", RussoBalt);
+        AnimationClip seatedClip = DriverPrefabInstaller.FindDriveClip(DriverPrefabInstaller.DriverModelPath);
+        if (seatedClip == null)
+            Debug.LogWarning("Drive animation clip not found; static driver mode will keep the imported bind pose.");
+
+        ApplyDriverPrefab("Assets/Resources/Characters/Driver_1912.prefab", seatedClip);
+        ApplyVehicle("Assets/Resources/Vehicles/russo_balt_c24_55.prefab", RussoBalt, seatedClip);
+        ApplyVehicle("Assets/Resources/Vehicles/benz_1912_racer_concept.prefab", Benz, seatedClip);
+        ApplyVehicle("Assets/Resources/Vehicles/ford_model_t_1912.prefab", Ford, seatedClip);
+        ApplyVehicle("Assets/Resources/Vehicles/fiat_s76_1910.prefab", Fiat, seatedClip);
+        ApplyVehicle("Assets/Resources/Vehicles/mercedes_37_90_1912.prefab", Mercedes, seatedClip);
+        ApplyVehicle("Assets/Resources/Vehicles/network_russo_balt.prefab", RussoBalt, seatedClip);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         Debug.Log("Vehicle release fixes applied");
     }
 
-    private static void ApplyDriverPrefab(string path)
+    private static void ApplyDriverPrefab(string path, AnimationClip seatedClip)
     {
         if (!File.Exists(path)) return;
         GameObject root = PrefabUtility.LoadPrefabContents(path);
         DriverRigController[] controllers = root.GetComponentsInChildren<DriverRigController>(true);
-        foreach (DriverRigController controller in controllers) ConfigureDriver(controller, root.transform);
+        foreach (DriverRigController controller in controllers) ConfigureDriver(controller, root.transform, seatedClip);
         PrefabUtility.SaveAsPrefabAsset(root, path);
         PrefabUtility.UnloadPrefabContents(root);
     }
 
-    private static void ApplyVehicle(string path, Mount mount)
+    private static void ApplyVehicle(string path, Mount mount, AnimationClip seatedClip)
     {
         if (!File.Exists(path)) return;
         GameObject root = PrefabUtility.LoadPrefabContents(path);
@@ -124,7 +131,7 @@ public static class VehicleReleaseFixup
         }
 
         DriverRigController[] drivers = root.GetComponentsInChildren<DriverRigController>(true);
-        foreach (DriverRigController driver in drivers) ConfigureDriver(driver, root.transform);
+        foreach (DriverRigController driver in drivers) ConfigureDriver(driver, root.transform, seatedClip);
 
         VehicleEffects1912 effects = root.GetComponent<VehicleEffects1912>();
         if (effects != null)
@@ -134,18 +141,34 @@ public static class VehicleReleaseFixup
             float rear = -length * 0.43f;
             float rearAxle = controller != null && controller.rearLeft != null ? controller.rearLeft.transform.localPosition.z : rear;
             effects.dustSocket = EnsureSocket(root.transform, "DustTrail", new Vector3(0f, 0.16f, rearAxle));
-            effects.leftExhaustSocket = EnsureSocket(root.transform, "ExhaustSmoke_Left", new Vector3(-0.40f, 0.38f, rear));
-            effects.rightExhaustSocket = EnsureSocket(root.transform, "ExhaustSmoke_Right", new Vector3(0.40f, 0.38f, rear));
             effects.leftHeadlampSocket = EnsureSocket(root.transform, "Headlamp_Left", new Vector3(-0.52f, 0.78f, length * 0.44f));
             effects.rightHeadlampSocket = EnsureSocket(root.transform, "Headlamp_Right", new Vector3(0.52f, 0.78f, length * 0.44f));
+
+            if (mount.singleRightExhaust)
+            {
+                effects.leftExhaustSocket = null;
+                Transform legacyLeft = FindContains(root.transform, "ExhaustSmoke_Left");
+                if (legacyLeft != null)
+                    Object.DestroyImmediate(legacyLeft.gameObject);
+                effects.rightExhaustSocket = EnsureSocket(root.transform, "ExhaustSmoke_Right", mount.singleExhaustPosition);
+                effects.rightExhaustSocket.localPosition = mount.singleExhaustPosition;
+                effects.rightExhaustSocket.localRotation = Quaternion.identity;
+            }
+            else
+            {
+                effects.leftExhaustSocket = EnsureSocket(root.transform, "ExhaustSmoke_Left", new Vector3(-0.40f, 0.38f, rear));
+                effects.rightExhaustSocket = EnsureSocket(root.transform, "ExhaustSmoke_Right", new Vector3(0.40f, 0.38f, rear));
+            }
         }
 
         PrefabUtility.SaveAsPrefabAsset(root, path);
         PrefabUtility.UnloadPrefabContents(root);
     }
 
-    private static void ConfigureDriver(DriverRigController driver, Transform root)
+    private static void ConfigureDriver(DriverRigController driver, Transform root, AnimationClip seatedClip)
     {
+        driver.staticSeatedPose = true;
+        if (seatedClip != null) driver.seatedClip = seatedClip;
         driver.useSeatAnchor = true;
         driver.hideHeadInCockpit = true;
         driver.leftGripLocal = new Vector3(-0.22f, 0f, 0f);

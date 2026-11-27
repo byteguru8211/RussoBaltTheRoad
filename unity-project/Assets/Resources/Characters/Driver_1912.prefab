@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70e94fcafba717848afcdf7ad2c93fee, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DriverRigController
   vehicle: {fileID: 0}
   input: {fileID: 0}
@@ -119,6 +119,8 @@ MonoBehaviour:
   rightKneeTarget: {fileID: 0}
   leftFootTarget: {fileID: 0}
   rightFootTarget: {fileID: 0}
+  staticSeatedPose: 1
+  seatedClip: {fileID: -8711807234874214708, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
   boneAxis: {x: 0, y: 1, z: 0}
   leftGripLocal: {x: -0.22, y: 0, z: 0}
   rightGripLocal: {x: 0.22, y: 0, z: 0}
@@ -157,7 +159,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage:
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0

@@ -26,6 +26,7 @@ public class NetworkPlayerCar : NetworkBehaviour
         public int RequestedGear;
         public int StartRequestId;
         public int ResetRequestId;
+        public bool Boost;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
@@ -38,6 +39,7 @@ public class NetworkPlayerCar : NetworkBehaviour
             serializer.SerializeValue(ref RequestedGear);
             serializer.SerializeValue(ref StartRequestId);
             serializer.SerializeValue(ref ResetRequestId);
+            serializer.SerializeValue(ref Boost);
         }
     }
 
@@ -53,6 +55,9 @@ public class NetworkPlayerCar : NetworkBehaviour
         public float Temperature;
         public float Damage;
         public float Distance;
+        public int RequestedGear;
+        public float BoostCharge;
+        public bool BoostActive;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
@@ -65,6 +70,9 @@ public class NetworkPlayerCar : NetworkBehaviour
             serializer.SerializeValue(ref Temperature);
             serializer.SerializeValue(ref Damage);
             serializer.SerializeValue(ref Distance);
+            serializer.SerializeValue(ref RequestedGear);
+            serializer.SerializeValue(ref BoostCharge);
+            serializer.SerializeValue(ref BoostActive);
         }
     }
 
@@ -185,7 +193,8 @@ public class NetworkPlayerCar : NetworkBehaviour
     private void OnVehicleStateChanged(VehicleNetworkState previous, VehicleNetworkState current)
     {
         vehicle?.ApplyNetworkState(current.Gear, current.EngineRunning, current.Rpm, current.Throttle,
-            current.Fuel, current.Temperature, current.Damage, current.Steer, current.Distance);
+            current.Fuel, current.Temperature, current.Damage, current.Steer, current.Distance,
+            current.RequestedGear, current.BoostCharge, current.BoostActive);
     }
 
     private void FixedUpdate()
@@ -228,6 +237,7 @@ public class NetworkPlayerCar : NetworkBehaviour
                 Steer = controls.steer,
                 Clutch = controls.clutch,
                 Handbrake = controls.handbrake,
+                Boost = controls.boost,
                 ShiftRequestId = vehicle.ShiftRequestId,
                 RequestedGear = vehicle.RequestedGear,
                 StartRequestId = vehicle.StartRequestId,
@@ -291,6 +301,7 @@ public class NetworkPlayerCar : NetworkBehaviour
             Steer = controls.steer,
             Clutch = controls.clutch,
             Handbrake = controls.handbrake,
+            Boost = controls.boost,
             ShiftRequestId = vehicle.ShiftRequestId,
             RequestedGear = vehicle.RequestedGear,
             StartRequestId = vehicle.StartRequestId,
@@ -306,7 +317,8 @@ public class NetworkPlayerCar : NetworkBehaviour
             brake = controls.Brake,
             steer = controls.Steer,
             clutch = controls.Clutch,
-            handbrake = controls.Handbrake
+            handbrake = controls.Handbrake,
+            boost = controls.Boost
         };
     }
 
@@ -553,7 +565,10 @@ public class NetworkPlayerCar : NetworkBehaviour
             Fuel = vehicle.fuel,
             Temperature = vehicle.temperature,
             Damage = vehicle.damage,
-            Distance = vehicle.distanceSinceReset
+            Distance = vehicle.distanceSinceReset,
+            RequestedGear = vehicle.RequestedGear,
+            BoostCharge = vehicle.BoostCharge,
+            BoostActive = vehicle.BoostActive
         };
     }
 }

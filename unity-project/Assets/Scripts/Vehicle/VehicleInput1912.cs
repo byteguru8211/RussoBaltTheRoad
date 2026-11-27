@@ -51,6 +51,7 @@ public class VehicleInput1912 : MonoBehaviour
         float steer = keyboard != null ? (keyboard.dKey.isPressed ? 1f : 0f) - (keyboard.aKey.isPressed ? 1f : 0f) : 0f;
         float clutch = keyboard != null && keyboard.leftShiftKey.isPressed ? 1f : 0f;
         float handbrake = keyboard != null && keyboard.spaceKey.isPressed ? 1f : 0f;
+        bool boost = keyboard != null && keyboard.nKey.isPressed;
 
         if (pad != null)
         {
@@ -74,7 +75,8 @@ public class VehicleInput1912 : MonoBehaviour
             brake = Mathf.Clamp01(brake),
             steer = Mathf.Clamp(steer * sensitivity, -1f, 1f),
             clutch = Mathf.Clamp01(clutch),
-            handbrake = Mathf.Clamp01(handbrake)
+            handbrake = Mathf.Clamp01(handbrake),
+            boost = boost
         };
         vehicle.SetInput(currentInput);
 

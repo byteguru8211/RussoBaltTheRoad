@@ -1,0 +1,152 @@
+{
+  "generator": "tools/build_track_layouts.py",
+  "blender_version": "5.2",
+  "route_sampling": "closed uniform Catmull-Rom; 48 runtime samples per control segment",
+  "clearance_rule": "minimum 3D centerline distance for portions >=60 m apart along route",
+  "tracks": [
+    {
+      "id": "winter_departure",
+      "length_m": 636.263,
+      "dense_length_m": 636.261,
+      "minimum_radius_m": 18.461,
+      "maximum_grade_percent": 1.972,
+      "nonlocal_clearance_m": 53.999,
+      "self_intersections": 0,
+      "start_straight_m": 70.027,
+      "start_max_deviation_m": 0.0,
+      "bounds_m": [
+        232.01,
+        156.285
+      ],
+      "elevation_range_m": 2.001,
+      "control_points": 106,
+      "road_width_m": 9.0
+    },
+    {
+      "id": "alps_pass",
+      "length_m": 886.259,
+      "dense_length_m": 886.255,
+      "minimum_radius_m": 19.308,
+      "maximum_grade_percent": 13.233,
+      "nonlocal_clearance_m": 44.295,
+      "self_intersections": 0,
+      "start_straight_m": 70.6,
+      "start_max_deviation_m": 0.0048,
+      "bounds_m": [
+        190.876,
+        205.631
+      ],
+      "elevation_range_m": 45.076,
+      "control_points": 147,
+      "road_width_m": 9.0
+    },
+    {
+      "id": "monaco_finish",
+      "length_m": 588.922,
+      "dense_length_m": 588.919,
+      "minimum_radius_m": 18.771,
+      "maximum_grade_percent": 0.0,
+      "nonlocal_clearance_m": 46.104,
+      "self_intersections": 0,
+      "start_straight_m": 70.112,
+      "start_max_deviation_m": 0.0,
+      "bounds_m": [
+        250.543,
+        90.656
+      ],
+      "elevation_range_m": 0.0,
+      "control_points": 98,
+      "road_width_m": 9.0
+    },
+    {
+      "id": "moscow_highway",
+      "length_m": 862.945,
+      "dense_length_m": 862.943,
+      "minimum_radius_m": 23.594,
+      "maximum_grade_percent": 2.618,
+      "nonlocal_clearance_m": 53.987,
+      "self_intersections": 0,
+      "start_straight_m": 70.408,
+      "start_max_deviation_m": 0.0,
+      "bounds_m": [
+        329.168,
+        173.154
+      ],
+      "elevation_range_m": 3.002,
+      "control_points": 144,
+      "road_width_m": 10.0
+    },
+    {
+      "id": "finland_coast",
+      "length_m": 1098.556,
+      "dense_length_m": 1098.552,
+      "minimum_radius_m": 18.393,
+      "maximum_grade_percent": 1.142,
+      "nonlocal_clearance_m": 51.228,
+      "self_intersections": 0,
+      "start_straight_m": 70.036,
+      "start_max_deviation_m": 0.0,
+      "bounds_m": [
+        392.525,
+        227.314
+      ],
+      "elevation_range_m": 2.001,
+      "control_points": 183,
+      "road_width_m": 9.0
+    },
+    {
+      "id": "tver_forest",
+      "length_m": 794.442,
+      "dense_length_m": 794.439,
+      "minimum_radius_m": 22.614,
+      "maximum_grade_percent": 4.365,
+      "nonlocal_clearance_m": 51.381,
+      "self_intersections": 0,
+      "start_straight_m": 70.2,
+      "start_max_deviation_m": 0.0,
+      "bounds_m": [
+        265.815,
+        164.691
+      ],
+      "elevation_range_m": 4.003,
+      "control_points": 132,
+      "road_width_m": 8.5
+    },
+    {
+      "id": "riga_speedway",
+      "length_m": 1057.418,
+      "dense_length_m": 1057.416,
+      "minimum_radius_m": 31.801,
+      "maximum_grade_percent": 0.0,
+      "nonlocal_clearance_m": 53.872,
+      "self_intersections": 0,
+      "start_straight_m": 100.134,
+      "start_max_deviation_m": 0.0,
+      "bounds_m": [
+        473.14,
+        119.671
+      ],
+      "elevation_range_m": 0.0,
+      "control_points": 176,
+      "road_width_m": 12.0
+    },
+    {
+      "id": "crimean_coast",
+      "length_m": 995.302,
+      "dense_length_m": 995.299,
+      "minimum_radius_m": 22.096,
+      "maximum_grade_percent": 8.662,
+      "nonlocal_clearance_m": 53.459,
+      "self_intersections": 0,
+      "start_straight_m": 70.461,
+      "start_max_deviation_m": 0.0,
+      "bounds_m": [
+        327.947,
+        228.09
+      ],
+      "elevation_range_m": 15.0,
+      "control_points": 166,
+      "road_width_m": 8.5
+    }
+  ]
+}

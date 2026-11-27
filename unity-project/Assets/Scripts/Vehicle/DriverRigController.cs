@@ -1,11 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Procedural seated-driver pose for the project's Generic rigs. The authored bone names are
-/// Root, Pelvis, Spine, Chest, Neck, Head, Clavicle.L/R, UpperArm.L/R, Forearm.L/R, Hand.L/R,
-/// Thigh.L/R, Shin.L/R and Foot.L/R. Mixamo and Humanoid aliases are also resolved.
-/// </summary>
 [DefaultExecutionOrder(100)]
 [DisallowMultipleComponent]
 public class DriverRigController : MonoBehaviour
@@ -61,6 +56,8 @@ public class DriverRigController : MonoBehaviour
     public Transform rightFootTarget;
 
     [Header("Seated pose")]
+    public bool staticSeatedPose = true;
+    public AnimationClip seatedClip;
     public Vector3 boneAxis = Vector3.up;
     public Vector3 leftGripLocal = new Vector3(-0.22f, 0f, 0f);
     public Vector3 rightGripLocal = new Vector3(0.22f, 0f, 0f);
@@ -94,6 +91,8 @@ public class DriverRigController : MonoBehaviour
     private bool handPositionsInitialized;
     private int lastGear;
     private float shiftTimer;
+    private bool staticPoseApplied;
+    private CameraController1912 viewCamera;
 
     public bool CanPoseArms => leftUpperArm != null && leftForearm != null && leftHand != null
         && rightUpperArm != null && rightForearm != null && rightHand != null;
@@ -103,6 +102,7 @@ public class DriverRigController : MonoBehaviour
     private void Awake()
     {
         Rebind();
+        ApplyStaticSeatedPose();
         lastGear = vehicle != null ? vehicle.gear : 0;
         previousVelocity = Vector3.zero;
         if (vehicle != null)
@@ -111,8 +111,31 @@ public class DriverRigController : MonoBehaviour
             if (body != null)
                 previousVelocity = body.linearVelocity;
         }
+    }
+
+    private void ApplyStaticSeatedPose()
+    {
+        if (staticPoseApplied)
+            return;
         if (animator != null)
             animator.applyRootMotion = false;
+        if (!staticSeatedPose)
+            return;
+        staticPoseApplied = true;
+
+        if (animator != null)
+        {
+            if (seatedClip != null)
+            {
+                // The imported clip is bound to the model root, while the controller usually lives on its rig child.
+                seatedClip.SampleAnimation(animator.gameObject, 0f);
+            }
+            animator.enabled = false;
+        }
+        else if (seatedClip != null && rigRoot != null)
+        {
+            seatedClip.SampleAnimation(rigRoot.gameObject, 0f);
+        }
     }
 
     public void Rebind()
@@ -194,6 +217,10 @@ public class DriverRigController : MonoBehaviour
     {
         if (vehicle == null)
             return;
+        UpdateHeadVisibility();
+        if (staticSeatedPose)
+            return;
+
         float deltaTime = Mathf.Max(0.0001f, Time.unscaledDeltaTime);
         float steer = input != null ? input.SteeringVisualAngle : vehicle.frontLeft != null ? vehicle.frontLeft.steerAngle : 0f;
         steer = Mathf.Clamp(steer, -maximumSteerAngle, maximumSteerAngle);
@@ -213,7 +240,6 @@ public class DriverRigController : MonoBehaviour
         if (CanPoseArms && (steeringWheel != null || (leftHandTarget != null && rightHandTarget != null)))
             ApplyArms(deltaTime, steerNormalized, speedRatio);
         ApplyGearLever(deltaTime);
-        UpdateHeadVisibility();
     }
 
     private void ApplyBodyMotion(float deltaTime, float steer, float speedRatio)
@@ -352,8 +378,8 @@ public class DriverRigController : MonoBehaviour
     {
         if (headRenderer == null)
             return;
-        CameraController1912 camera = FindAnyObjectByType<CameraController1912>();
-        bool hidden = hideHeadInCockpit && camera != null && camera.CurrentMode == CameraMode.Cockpit;
+        if (viewCamera == null) viewCamera = FindAnyObjectByType<CameraController1912>();
+        bool hidden = hideHeadInCockpit && viewCamera != null && viewCamera.CurrentMode == CameraMode.Cockpit;
         if (headRenderer.enabled != !hidden)
             headRenderer.enabled = !hidden;
     }

@@ -6,7 +6,7 @@ public sealed class RegionalKitPostprocessor : AssetPostprocessor
 {
     private const string MaterialFolder = "Assets/Materials/Regional";
 
-    private void OnPreprocessModel(GameObject root)
+    private void OnPreprocessModel()
     {
         if (!assetPath.StartsWith("Assets/Resources/Environment/RegionalKit/")) return;
         ModelImporter importer = assetImporter as ModelImporter;

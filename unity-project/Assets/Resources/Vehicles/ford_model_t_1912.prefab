@@ -1400,13 +1400,13 @@ Transform:
   - {fileID: 529017274933852936}
   - {fileID: 8970600311864371326}
   - {fileID: 6980074041116150243}
-  - {fileID: 2575117669369427528}
-  - {fileID: 8106910995173503435}
   - {fileID: 6484459975846779313}
   - {fileID: 5879658699957644732}
   - {fileID: 1333748361935441328}
   - {fileID: 1885931569930105981}
   - {fileID: 8347656284158039091}
+  - {fileID: 7223840500290869698}
+  - {fileID: 207494454128148065}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4890473510703632748
@@ -1467,7 +1467,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14ab0e01a2a5edc4ab6b649fa36568fc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleController1912
   frontLeft: {fileID: 5556853050831051737}
   frontRight: {fileID: 5276249147931609847}
@@ -1499,6 +1499,7 @@ MonoBehaviour:
   isPlayer: 1
   automaticTransmission: 1
   idleRpm: 650
+  launchRpm: 1200
   rpmLimiter: 2300
   shiftUpRpm: 2050
   shiftDownRpm: 850
@@ -1533,7 +1534,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3f3c5ccbe1da5b4293dcba24042441c, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleInput1912
   vehicle: {fileID: 8192063229721675953}
   cameraController: {fileID: 0}
@@ -1547,7 +1548,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0927af18703a5b348bda5b74b2e83d31, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EngineAudio1912
   vehicle: {fileID: 8192063229721675953}
   roadSource: {fileID: 0}
@@ -1565,7 +1566,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9152df5a30b70d439461654d44fcffb, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
   vehicle: {fileID: 8192063229721675953}
   dustSocket: {fileID: 6484459975846779313}
@@ -1576,6 +1577,7 @@ MonoBehaviour:
   automaticHeadlamps: 1
   headlampIntensity: 3.2
   headlampRange: 32
+  headlampEmissionColor: {r: 3.2, g: 1.15, b: 0.26, a: 1}
   surfaceMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1669,7 +1671,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4185871589389151987
+--- !u!1 &3922038128563499004
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1677,7 +1679,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8106910995173503435}
+  - component: {fileID: 207494454128148065}
   m_Layer: 0
   m_Name: RB_DriverSeat
   m_TagString: Untagged
@@ -1685,13 +1687,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8106910995173503435
+--- !u!4 &207494454128148065
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4185871589389151987}
+  m_GameObject: {fileID: 3922038128563499004}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.19999999, y: 0.5899998, z: -0.58000004}
@@ -3411,7 +3413,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &7212736425939032184
+--- !u!1001 &2586283180846725106
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -3421,16 +3423,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: vehicle
-      value:
+      value: 
       objectReference: {fileID: 8192063229721675953}
     - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: seatAnchor
-      value:
-      objectReference: {fileID: 8106910995173503435}
-    - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
-      propertyPath: useSeatAnchor
-      value: 1
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 207494454128148065}
     - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.72
@@ -3492,8 +3490,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
---- !u!4 &2575117669369427528 stripped
+--- !u!4 &7223840500290869698 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
-  m_PrefabInstance: {fileID: 7212736425939032184}
+  m_PrefabInstance: {fileID: 2586283180846725106}
   m_PrefabAsset: {fileID: 0}

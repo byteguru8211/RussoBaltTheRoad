@@ -2,13 +2,13 @@
   "generated": "2026-11-24",
   "root": "D:/programming/RussoBaltTheRoad",
   "counts": {
-    "fbx": 58,
-    "blend": 7,
-    "png": 47,
-    "wav": 16,
-    "manifest_files": 169
+    "fbx": 114,
+    "blend": 17,
+    "png": 56,
+    "wav": 18,
+    "manifest_files": 279
   },
-  "total_bytes": 194561540,
+  "total_bytes": 297624793,
   "files": [
     {
       "file": "game_assets/characters/asset_metadata.json",
@@ -39,6 +39,196 @@
       "file": "game_assets/characters/Mechanic_1912.fbx",
       "bytes": 1379740,
       "sha256": "9591503ab3918df77a33853d30be6dae4d0ecaf8b3444da40a20622463d99f46"
+    },
+    {
+      "file": "game_assets/environment/release/Building_Log_Cabin_Detailed_01_Detailed.fbx",
+      "bytes": 1319644,
+      "sha256": "972f8d25a24d6d005aba0036d1dbed8c7644cf31911a8a7dd768841bf4840063"
+    },
+    {
+      "file": "game_assets/environment/release/Building_Log_Cabin_Detailed_01_LOD0.fbx",
+      "bytes": 725500,
+      "sha256": "7d4e4e4cd280542cea0f4439c4d12d9a5501e9f6d6d2e6199574c9e71af59997"
+    },
+    {
+      "file": "game_assets/environment/release/Building_Townhouse_Detailed_01_Detailed.fbx",
+      "bytes": 709708,
+      "sha256": "15274a744b77f8db0163526fc81dea401046af36c58de3a993a13e4721641703"
+    },
+    {
+      "file": "game_assets/environment/release/Building_Townhouse_Detailed_01_LOD0.fbx",
+      "bytes": 224252,
+      "sha256": "83a1a55da1cd7d34ba3b5b558374fa53365c4dea615a644afe971579491d0734"
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_01_Detailed.fbx",
+      "bytes": 153484,
+      "sha256": "6e5c1c8b9abdb051a5e66dcaf3179df099e2d5d78118ed3e7abaa206d533b03c"
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_01_LOD0.fbx",
+      "bytes": 123500,
+      "sha256": "6765f05993650007261246c8fb08fb4c34eea3497265c9b7375dc136b4e015c2"
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_02_Detailed.fbx",
+      "bytes": 153420,
+      "sha256": "87a6531046cb8883651158e8f1040ecd51caf2d7199cf1d0d72b01809f4a2555"
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_02_LOD0.fbx",
+      "bytes": 123628,
+      "sha256": "d4012b86f99d888623cef5f837f0fb2d640152a301a598b3d585a2f055760ee1"
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_03_Detailed.fbx",
+      "bytes": 153388,
+      "sha256": "f0f495b2c2409a2113b8788dc6beb5e04771443f8f360fcea3821997bbed0337"
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_03_LOD0.fbx",
+      "bytes": 123356,
+      "sha256": "172a78927047e03780e065fb73a36b5c66389dd879977b32ffca34cbe17a7550"
+    },
+    {
+      "file": "game_assets/environment/release/metadata.json",
+      "bytes": 18196,
+      "sha256": "6a2c44e2d3ff8dded3306b56e958631ab80589fd32cc402037038f9166b4c6f5"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Cart_Detailed_01_Detailed.fbx",
+      "bytes": 317068,
+      "sha256": "2fbab5dbef94049e666988057681dc2509f5970117fd407a9623f3581bdcd2ef"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Cart_Detailed_01_LOD0.fbx",
+      "bytes": 158444,
+      "sha256": "712334c75d8e026ccbd2838c9b91c39e5b525c26cef974a928e6a8428fda4f4e"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Fence_10m_01_Detailed.fbx",
+      "bytes": 283596,
+      "sha256": "1fc199cb7bc65ca554744a5a3b08d8621f444df9929e3e6521229faf6a07bc39"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Fence_10m_01_LOD0.fbx",
+      "bytes": 79116,
+      "sha256": "baf20067d4406f6c8563d983ccccc00a1192f59b8c66a3774260a408fe0693fc"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Haystack_01_Detailed.fbx",
+      "bytes": 53724,
+      "sha256": "3494ca853ca4ca185d9e5d6cbe2d90e971dacdab3bb615a4a9bd40375196b295"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Haystack_01_LOD0.fbx",
+      "bytes": 45612,
+      "sha256": "cd8cc0f6b8e137c1befa87b1ab95024c6e384e0d77f1a4732bd058c00cb16176"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Milestone_01_Detailed.fbx",
+      "bytes": 189052,
+      "sha256": "604f3a1ebe42a5980413eff674699201257088041d60251e19bdae53a35453e6"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Milestone_01_LOD0.fbx",
+      "bytes": 180956,
+      "sha256": "1881de94ea6b5079d496a29dc4588165e55d64cac9b56684c09e9a27b7b64bfe"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Rock_Cluster_01_Detailed.fbx",
+      "bytes": 87884,
+      "sha256": "f8cdc4747c460d1838360e8ff95237d529369cb27dce4f1034db3d7166dbf5c7"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Rock_Cluster_01_LOD0.fbx",
+      "bytes": 70828,
+      "sha256": "f73a2b1e42206022884582ecdadb90479b08437af40b69b1b3266151fbfd8312"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Start_Arch_1912_Detailed.fbx",
+      "bytes": 1321884,
+      "sha256": "190e1064d84fc7d0ccb9d7a21daccec6205fb0de8dd0fdc76b4118bf6c5bb1b8"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Start_Arch_1912_LOD0.fbx",
+      "bytes": 1263836,
+      "sha256": "299298d814c7ebd7e16dc76d17ad0a1b1ed68ce74078b2e09a4816d57570edb6"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Telegraph_Pole_01_Detailed.fbx",
+      "bytes": 232988,
+      "sha256": "a2184565e60a09494a5f996f4825e5645c64a8a9f5eece79f282e82f44c14d01"
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Telegraph_Pole_01_LOD0.fbx",
+      "bytes": 121676,
+      "sha256": "1788cca0f2ccfba4667d854632a6c876f5085332d7c3543a71c2d1c0a1eec28e"
+    },
+    {
+      "file": "game_assets/environment/release/Track_Scenery_Detailed.blend",
+      "bytes": 12601022,
+      "sha256": "a95e89eea0cf7a2d0ca8c2854ce45d4e2dca4719ba60d8fef95b642b9324c84f"
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Birch_Detailed_01_Detailed.fbx",
+      "bytes": 405708,
+      "sha256": "14231ac3d615c33d02d1e580c007fb1ddc95df7c9d27b2f9f1ca20b2b751ca6d"
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Birch_Detailed_01_LOD0.fbx",
+      "bytes": 242380,
+      "sha256": "e068cf5be0bd6c1df39bf831822ed722313d5a79fbe74a9e4b59c806a70cf84c"
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Conifer_Detailed_01_Detailed.fbx",
+      "bytes": 162332,
+      "sha256": "26d08338eae6e9172060714d46b27f78e360236a2b1525ab99770c95b7493971"
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Conifer_Detailed_01_LOD0.fbx",
+      "bytes": 92780,
+      "sha256": "58392a12efedd35f1023422abc91dbb9533cc6bb2a7f1d1fb3040626832156cd"
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Oak_Detailed_01_Detailed.fbx",
+      "bytes": 484988,
+      "sha256": "5f365bb960f39de027636ca5994c6543571b25b4b14384ef984bc6d8e671aeaf"
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Oak_Detailed_01_LOD0.fbx",
+      "bytes": 305132,
+      "sha256": "fca85a9af54aac4a609ea28f5a15088a9a235d6ec18b5b6e370db5a5e66672ed"
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Byteguru_Emblem_Detailed.fbx",
+      "bytes": 173036,
+      "sha256": "af4b3394a8497c1aa2148cd04c3aaf861280b4e3798971c97d18edd3db0a50f1"
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Byteguru_Emblem_LOD0.fbx",
+      "bytes": 93724,
+      "sha256": "5affaf38ed6d1d1f3cf2c03cbd6c8433bbe3d789cbc402ec8400aa7f465494cd"
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Heckercat_Emblem_Detailed.fbx",
+      "bytes": 205244,
+      "sha256": "8f4f851239ed322e790c9a37f0d9c396fa2b280ee998e39754d37f47c743ca85"
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Heckercat_Emblem_LOD0.fbx",
+      "bytes": 129916,
+      "sha256": "767773af74df04dc8a359442b388852d54e234edc7ab354ac299693fd81ab67c"
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Workshop_Stage_Detailed.fbx",
+      "bytes": 2707676,
+      "sha256": "3a50e54b95c61e404d194f79ce98c1a415671448dc2d14728d036112b4f372d5"
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Workshop_Stage_LOD0.fbx",
+      "bytes": 2415084,
+      "sha256": "57ee7a36f14fc6a946c3cb1a5df7acb57c9aaf9419e59305fc57d2a636cca222"
     },
     {
       "file": "game_assets/environment/Russia_1912/asset_metadata.json",
@@ -202,8 +392,128 @@
     },
     {
       "file": "game_assets/environment/Russia_1912/RussoBalt_The_Road_Hero.blend",
+      "bytes": 7499820,
+      "sha256": "e0c061e3daff08c353c56ae8e51ffadaa22ee15b18c5e9fb6dff0b82c96fcd4e"
+    },
+    {
+      "file": "game_assets/environment/Russia_1912/RussoBalt_The_Road_Hero.blend1",
       "bytes": 8231222,
       "sha256": "dced6ae02ce1906389747fbe32044b378cc98c01c16579c5ea2df5fba635a08c"
+    },
+    {
+      "file": "game_assets/environment/variety/Building_Alpine_Chalet_01_Detailed.fbx",
+      "bytes": 232636,
+      "sha256": "cb461f615377c5d7a4d40f37b9d49c9afa169ec56fab5894c026b1528c2a9f06"
+    },
+    {
+      "file": "game_assets/environment/variety/Building_Alpine_Chalet_01_LOD1.fbx",
+      "bytes": 191804,
+      "sha256": "9925f8f5068c4062be557d07d2be648208911add2c9ccaec33390b5d94193a49"
+    },
+    {
+      "file": "game_assets/environment/variety/Building_Coastal_Cottage_01_Detailed.fbx",
+      "bytes": 166796,
+      "sha256": "1312a3e2e7c4aef17c85aff9832de3f0e9e3392736225fba4ba48feab18420e4"
+    },
+    {
+      "file": "game_assets/environment/variety/Building_Coastal_Cottage_01_LOD1.fbx",
+      "bytes": 138812,
+      "sha256": "e6efb59a23695a865533b6b4daece41dbd9a8e4053fb8643f0c49fdb582c3780"
+    },
+    {
+      "file": "game_assets/environment/variety/metadata.json",
+      "bytes": 611,
+      "sha256": "943d5b25acec95bbf557ea05ff0507b2bf18f5390b3ad3ff38639d2d3e8bb8d7"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Alpine_Cliff_01_Detailed.fbx",
+      "bytes": 125388,
+      "sha256": "7a06abbb702443a1b78de671951524cf9956c4e96d6fab9525050ef13e201521"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Alpine_Cliff_01_LOD1.fbx",
+      "bytes": 108716,
+      "sha256": "e54c599e0ef55a67127b265827c9564dbae2850d954b59e11200da7d531ef2d0"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Cobbled_Road_10m_01_Detailed.fbx",
+      "bytes": 944460,
+      "sha256": "cde5b41248e7971c0043e7814dd3bfec6ee10886703f2d70a5782ad4e150b1c5"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Cobbled_Road_10m_01_LOD1.fbx",
+      "bytes": 771852,
+      "sha256": "4dd543f953cf158f0ceb73c0fc353083083622136b5ab6239c5f322068cc2a91"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Mediterranean_Cypress_01_Detailed.fbx",
+      "bytes": 75388,
+      "sha256": "dc628a503c0e4f7785034f3b75c1443f31e68359724a72a23bf6d591ab902aca"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Mediterranean_Cypress_01_LOD1.fbx",
+      "bytes": 66028,
+      "sha256": "7c4300fa925c0047c5d00f8245fd2b67985a2c4553a0da97cd86c122f6ffb88b"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Race_Grandstand_01_Detailed.fbx",
+      "bytes": 644828,
+      "sha256": "ed839437def44e2df864a9856c392a315cdef4b66939c990b8e1857687a7216e"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Race_Grandstand_01_LOD1.fbx",
+      "bytes": 497500,
+      "sha256": "47488f5ec5b5773bc9d21e5cff2c3433f13a1fb8b24d3ec9ea34d853bc4e6687"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Reed_Cluster_01_Detailed.fbx",
+      "bytes": 554620,
+      "sha256": "10fa6e3d8f616059aeba226d8fc295a330ce696a4da3440629424f179bbb4e72"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Reed_Cluster_01_LOD1.fbx",
+      "bytes": 442780,
+      "sha256": "64abd3a6e8693b4f3fc1d68c6447fa3a10e31fe9726a95fae227ced8ae5b8d38"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Roadside_Shrine_01_Detailed.fbx",
+      "bytes": 90860,
+      "sha256": "0333a93e27c526b7c1d3667a69978d9cfdd20e1600c5a3db12088173ced5ec13"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Roadside_Shrine_01_LOD1.fbx",
+      "bytes": 76316,
+      "sha256": "c9e44ad0857000920510c4f4f8dac529f516a2f0c94410f8c679c67396b1fa00"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Stone_Bridge_01_Detailed.fbx",
+      "bytes": 126844,
+      "sha256": "bd46f61bc32e6bf7e422bc9c5ffe5226b35673ef30e8661a971f27144315a064"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Stone_Bridge_01_LOD1.fbx",
+      "bytes": 105644,
+      "sha256": "c1762ba6452bc9611b72766f01627ca85f5ea95de8a95ed156570ab1d393b8ef"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Vineyard_Rows_01_Detailed.fbx",
+      "bytes": 607500,
+      "sha256": "de513ad1c0a0b9bbaca77f151b9ce09452535e920c6a94aab7901d69e33f2285"
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Vineyard_Rows_01_LOD1.fbx",
+      "bytes": 489980,
+      "sha256": "5840970418a0ffcfe195f52adc6b17b2c2f6177fc5eac420dff88f631171b989"
+    },
+    {
+      "file": "game_assets/environment/variety/Regional_Variety.blend",
+      "bytes": 421315,
+      "sha256": "923c1e9de90076b051fe2a3e5ba33eee45ed9b0d2d3e0d8f3ea33841b4a83b07"
+    },
+    {
+      "file": "game_assets/environment/variety/Regional_Variety.blend1",
+      "bytes": 421354,
+      "sha256": "72598423393cba76a63d54e86f30db4d607d25e644fa5fb9ba8ffe56c084cad4"
     },
     {
       "file": "game_assets/pre_race/PreRace_Paddock.blend",
@@ -384,6 +694,51 @@
       "file": "game_assets/textures/shared/wood_walnut_roughness.png",
       "bytes": 54488,
       "sha256": "93e66abe2dd2b008e659e320aa9892ed761812f4bc76c3908af6fc0c3776f3c0"
+    },
+    {
+      "file": "game_assets/tracks/alps_pass/alps_pass_layout.blend",
+      "bytes": 838218,
+      "sha256": "4e3ad2e2d6870cb5c8a9165d98fd1f8cc8bb759bcdedbb9950fadfa0e4f5746b"
+    },
+    {
+      "file": "game_assets/tracks/crimean_coast/crimean_coast_layout.blend",
+      "bytes": 870891,
+      "sha256": "375c40ab65395adf7208623acbf6c24b264fd1b45c799da4b2db31df8ddcec92"
+    },
+    {
+      "file": "game_assets/tracks/finland_coast/finland_coast_layout.blend",
+      "bytes": 907698,
+      "sha256": "6627cda4de30b6bc55877ca30f771f792864cab4c730260ee464b8eb81f70e6e"
+    },
+    {
+      "file": "game_assets/tracks/layout_metrics.json",
+      "bytes": 4134,
+      "sha256": "6133f7d6353975cb99f4101034e26fcb9d7943e78994dc23ae1a30d257318a3b"
+    },
+    {
+      "file": "game_assets/tracks/monaco_finish/monaco_finish_layout.blend",
+      "bytes": 528278,
+      "sha256": "e2945abd15444060e7e7da138200bf21e1cee377b60a1fe09f2845b4b666e691"
+    },
+    {
+      "file": "game_assets/tracks/moscow_highway/moscow_highway_layout.blend",
+      "bytes": 826166,
+      "sha256": "6fdb465d03a69ee89cfabc39215549b2e3003ecff6516c167789da8964ea5988"
+    },
+    {
+      "file": "game_assets/tracks/riga_speedway/riga_speedway_layout.blend",
+      "bytes": 938743,
+      "sha256": "f24c5078080d07286d714f5e07b42a80f366d5c4965fbb3032e69d3fa6a3f305"
+    },
+    {
+      "file": "game_assets/tracks/tver_forest/tver_forest_layout.blend",
+      "bytes": 750783,
+      "sha256": "8349e9ba445301fabbb22e223c226a4238144f33325ba34fd99d03be9933a469"
+    },
+    {
+      "file": "game_assets/tracks/winter_departure/winter_departure_layout.blend",
+      "bytes": 665885,
+      "sha256": "7f989e15e03f142c41fbe0b727e37573fc441d2a3e3fa3ba9116b66f0a85cd5d"
     },
     {
       "file": "game_assets/vehicles/Benz_1912_Prototype/asset_metadata.json",
@@ -592,8 +947,8 @@
     },
     {
       "file": "audio/manifest.json",
-      "bytes": 10711,
-      "sha256": "a81be7501cecde9684105918502575b916bf106f9f3791a26110a35c55850823"
+      "bytes": 10987,
+      "sha256": "b71e920a28b600653fddd02130259c35b6889b88ac1668b443eeef1de6a5a4c6"
     },
     {
       "file": "audio/menu_1912_original.wav",
@@ -631,9 +986,19 @@
       "sha256": "c74521aaba8c63b8b4cfc4b1e8820cb53a00c7d2480cff06f2156e928d79e5ad"
     },
     {
+      "file": "audio/processed/logo_chime_1912.wav",
+      "bytes": 384044,
+      "sha256": "dbff3125747fd06e1ebebf358e6a29c3278a5b3794bf5f3c8f3a4a77a07d733a"
+    },
+    {
       "file": "audio/processed/metal_release_clunk.wav",
       "bytes": 105644,
       "sha256": "346b0facc3f1fdf91b496b9794105baa21af653ea47b4ed0800802dc1fc93c61"
+    },
+    {
+      "file": "audio/processed/rain_soft_loop.wav",
+      "bytes": 576044,
+      "sha256": "7116be209133b0ee169a0318bd25e7f6eded0f563479be53f4d0aff4c9fb3754"
     },
     {
       "file": "audio/processed/road_gravel_loop.wav",
@@ -712,8 +1077,8 @@
     },
     {
       "file": "previews/Contact_Sheet.png",
-      "bytes": 1188092,
-      "sha256": "99a6e7e6703cd8b167acb51639ce3e5d9ad15af36367dec576d294d3b66ee817"
+      "bytes": 1187071,
+      "sha256": "45c3a3b514afe416c9b6a4c37ebae097df662869187b132fab0195ada5860f86"
     },
     {
       "file": "previews/Driver_HD_Final.png",
@@ -746,6 +1111,26 @@
       "sha256": "10134197a8925fb3d7d69d5d7e04f9d97e10717b0eae51ab53dc57cd631f3fa7"
     },
     {
+      "file": "previews/Release_Alpine_Chalet.png",
+      "bytes": 236014,
+      "sha256": "448c42f0d95344f8a8103497c17bbb3731e40bcc4612a5a0213d3dfca3fa0f79"
+    },
+    {
+      "file": "previews/Release_Boot_Stage.png",
+      "bytes": 1020152,
+      "sha256": "16ed2fa18278eb87ba3f0772d034ef2c5f7376df7537e585d999504df9226832"
+    },
+    {
+      "file": "previews/Release_Boot_Test.png",
+      "bytes": 570644,
+      "sha256": "220eae402eb7be168ce5183eb096c801a6ea5092e5a6ba6b455f12cc4b20aec2"
+    },
+    {
+      "file": "previews/Release_Regional_Kit.png",
+      "bytes": 286873,
+      "sha256": "ac91ca5ebab38cd7734ad5c400dcbd6df1a7cd5e6280a83cda15e13f7688c696"
+    },
+    {
       "file": "previews/Russia_1912_Modular_Kit_preview.png",
       "bytes": 2335027,
       "sha256": "f81d2844eeb8888b77a583bfd7e421992287f94f0be15195f9ff1731a032e289"
@@ -757,8 +1142,113 @@
     },
     {
       "file": "previews/RussoBalt_The_Road_Hero.png",
-      "bytes": 2205694,
-      "sha256": "50039f969a67b716b927c46830b5db85274dbaa5ae5423178cbf429bf8ba5de0"
+      "bytes": 2201522,
+      "sha256": "93c3e955df39303e510fbfb5fc56ec88558584002f8b85a7ccc4c88b494f2942"
+    },
+    {
+      "file": "previews/Standalone_Intro_Heckercat_Full.png",
+      "bytes": 938415,
+      "sha256": "0eebfa88d23c915d80a2b82828bc1b845b3f1789057e37ea5f5042f802dcdd53"
+    },
+    {
+      "file": "previews/Standalone_MainMenu_Clean.png",
+      "bytes": 586278,
+      "sha256": "f5c1ad58b9928b1fe702bbbdf55e967e1ada3538ed93250199d38bb96ab5155a"
+    },
+    {
+      "file": "previews/Standalone_PreRace.png",
+      "bytes": 213472,
+      "sha256": "d5b05587653de3c54f58569771dcf1b80c1d39ac3ebb7dece70d345001240ee2"
+    },
+    {
+      "file": "previews/Standalone_Race_Gameplay.png",
+      "bytes": 485092,
+      "sha256": "3df0cf786872fa5fb64f12bb89c7862c393839d601c15f5f748a4abe134363df"
+    },
+    {
+      "file": "previews/Standalone_RaceSelection.png",
+      "bytes": 197871,
+      "sha256": "be1705ad0fc934b37f401080d9732b484925b332a25d3c246929faf06e500d18"
+    },
+    {
+      "file": "previews/tracks/alps_pass_perspective.png",
+      "bytes": 1943320,
+      "sha256": "ba28b7e54ef147c6517e82513a986f8235aee2467ec6c8c50935ef52b0c4d538"
+    },
+    {
+      "file": "previews/tracks/alps_pass_top.png",
+      "bytes": 1909182,
+      "sha256": "3dc7f5a2a2c8f25fc3a7b627f685d0acabf75d00093f68f91b92478ce2192711"
+    },
+    {
+      "file": "previews/tracks/crimean_coast_perspective.png",
+      "bytes": 1803144,
+      "sha256": "087ce93eeb8069f4e22421b30c377e4eea092f2157d5f7f133adcd9b2ad3ecf2"
+    },
+    {
+      "file": "previews/tracks/crimean_coast_top.png",
+      "bytes": 1799660,
+      "sha256": "8cd6200d0c336aa7970d1b756b4628762b34434bdfaf1f60769d7b72505b12e2"
+    },
+    {
+      "file": "previews/tracks/finland_coast_perspective.png",
+      "bytes": 1607826,
+      "sha256": "2969fccf65ec31083cdfce76f46d3fbf4aec953a8012a8fa17a66a10524f7088"
+    },
+    {
+      "file": "previews/tracks/finland_coast_top.png",
+      "bytes": 1647347,
+      "sha256": "6b620d9a84984aa208e5e357dc3151b8f7a30cc6ac9797bd1b39e1b04c297619"
+    },
+    {
+      "file": "previews/tracks/monaco_finish_perspective.png",
+      "bytes": 1759501,
+      "sha256": "cb2c8aefa2a470e63fe3c68e7524fdd27f5a7367495278a2ca5ed3c0be5f9b4f"
+    },
+    {
+      "file": "previews/tracks/monaco_finish_top.png",
+      "bytes": 1583282,
+      "sha256": "64c27f320a13877d1426cca675c84a80a9e452ed448e1dace9ac1df2fdc9975b"
+    },
+    {
+      "file": "previews/tracks/moscow_highway_perspective.png",
+      "bytes": 1707932,
+      "sha256": "870a26d40d263ee4ae9e2820070e0a8b578a626a4353896dfdce59912f07cc7a"
+    },
+    {
+      "file": "previews/tracks/moscow_highway_top.png",
+      "bytes": 1716298,
+      "sha256": "3b02e437869b5e20e9d76e3c325f0fb629c4533cedc7df112f5f122916d301f0"
+    },
+    {
+      "file": "previews/tracks/riga_speedway_perspective.png",
+      "bytes": 1666737,
+      "sha256": "5c74059fc36dcc2f9ef7777e71ba1fa4a082d1b8c279c70dda3c80d55f9b3f8a"
+    },
+    {
+      "file": "previews/tracks/riga_speedway_top.png",
+      "bytes": 1640083,
+      "sha256": "74f28627a2c101b85706d3769a46bfcf68f58e4161b4d96cff6f6e6c99dde0c8"
+    },
+    {
+      "file": "previews/tracks/tver_forest_perspective.png",
+      "bytes": 1807963,
+      "sha256": "e95053efa6a367ee75dc8722c4b3a531c4f0e70d298fbb15f5bfee6cd5358c81"
+    },
+    {
+      "file": "previews/tracks/tver_forest_top.png",
+      "bytes": 1716845,
+      "sha256": "308e73256787f51d14720b3d55172f7bd98a0ff78b63031bfa1af826531606d2"
+    },
+    {
+      "file": "previews/tracks/winter_departure_perspective.png",
+      "bytes": 1799734,
+      "sha256": "fd4e73d4babfe43cd8de35203421b22e2c933cfe59907855344abd48b8a27e76"
+    },
+    {
+      "file": "previews/tracks/winter_departure_top.png",
+      "bytes": 1779413,
+      "sha256": "428eb1245290f9c2a40b2d5f64fe87c06605f0e4e1a377dff28dd3f59a76f8c3"
     },
     {
       "file": "previews/unity/Garage.png",
@@ -786,19 +1276,79 @@
       "sha256": "cdc8333b7ca924a55ff297688cc136b7af84599455d3724413152e2c5f8fe4d4"
     },
     {
+      "file": "previews/v0.8.0/01-main-menu.png",
+      "bytes": 2131911,
+      "sha256": "ff119f1a860d6bbe462cd52b6094b9c5af994ddc43b3206d34d34ea50feef45d"
+    },
+    {
+      "file": "previews/v0.8.0/02-prerace.png",
+      "bytes": 669199,
+      "sha256": "f9b5d7de12453f214362ab2640be70b2f20e759106e99a3d7cdfc98776673d6d"
+    },
+    {
+      "file": "previews/v0.8.0/03-driver-static.png",
+      "bytes": 805182,
+      "sha256": "6fcc2d6286edc93c0c7a65374586e0b4be8f58549951169159656b0ef649409b"
+    },
+    {
+      "file": "previews/v0.8.0/04-race-countdown.png",
+      "bytes": 2798120,
+      "sha256": "e68e104038eb1d21eb6ba84d064783d168e230e778ec116eadf211a234574565"
+    },
+    {
+      "file": "previews/v0.8.0/05-race-hud-boost.png",
+      "bytes": 1313096,
+      "sha256": "679c21d1ab71f7e7b0a9cefae99e2e9adc37d4c4d481b8146d2557e2f2363c0c"
+    },
+    {
+      "file": "previews/v0.8.0/06-rear-headlights.png",
+      "bytes": 1367166,
+      "sha256": "e706bb68438e0a5fcf540df0d30d6af18fd9d8e2b8b5da53fc1f0b596bf66779"
+    },
+    {
+      "file": "previews/v0.8.0/07-rain-night-new-track.png",
+      "bytes": 3067475,
+      "sha256": "d7ae4bf3b823b6b0d1479ea34ba614ff002aa36f259f09f60089ea3ddc2ff4b0"
+    },
+    {
+      "file": "previews/v0.8.0/08-fog-night.png",
+      "bytes": 1773961,
+      "sha256": "8a624f9504a7da79c73ec8f7adfb6f4b798e88b7e9701d03664744cb4791465b"
+    },
+    {
+      "file": "previews/v0.8.0/09-dust-exhaust.png",
+      "bytes": 1720820,
+      "sha256": "93358e721e433e6762cf9b0b79034e902a5becd3ba42dd32eb42e264800cfc40"
+    },
+    {
+      "file": "previews/v0.8.0/10-alps-new-track.png",
+      "bytes": 2724819,
+      "sha256": "3ca77cf80ba6a6fa88fc26dd103f70bba0ca74f4aafadd2af8d4af6c43827063"
+    },
+    {
+      "file": "previews/v0.8.0/11-monaco-new-track.png",
+      "bytes": 1542069,
+      "sha256": "de630d8acccc558b5cb7410cef4996dc5799fb881228b33a3ddde8149a1a3190"
+    },
+    {
+      "file": "previews/v0.8.0/track-layout-contact-sheet.png",
+      "bytes": 346611,
+      "sha256": "a00cba6caf903430e3b3d3e37a0c1a287ac24365a88b8e2c9c423c664ba56b36"
+    },
+    {
       "file": "docs/ASSET_CATALOG.md",
       "bytes": 7277,
       "sha256": "0d9eb8c7ea28e6f8d07aa16fb1a782b405cd1c0d43066d70b5441bda99e1363b"
     },
     {
       "file": "docs/AUDIO_MAP.md",
-      "bytes": 3147,
-      "sha256": "2480678cc389227c64aaafe0b6458a84e5c2dc97eea69b8511e4b13a238773f2"
+      "bytes": 3368,
+      "sha256": "470f350cde3b2868ccb6cfea52889da487d53616337103034cc52294f598dc9d"
     },
     {
       "file": "docs/FBX_VALIDATION.json",
-      "bytes": 41259,
-      "sha256": "8d35fbace175d10b1866dc4ec4e95ff5593260cf9a06a0778e9783f4dc031432"
+      "bytes": 78752,
+      "sha256": "abae22e0b9dda6895b31392ffaaca078f8005c4eb2fb362bf923aab28aa50045"
     },
     {
       "file": "docs/GAME_PRODUCTION_PLAN.md",
@@ -817,8 +1367,8 @@
     },
     {
       "file": "docs/UNITY_ASSET_PIPELINE.md",
-      "bytes": 6839,
-      "sha256": "9acbea30342bfb20eb31c156a13c2cd9b364fad77ae908ee177c37ba431fee81"
+      "bytes": 7290,
+      "sha256": "2f29968ad1b3b71b10b542dd088c86a487bc2f982fa5b692e789bc7857a546ba"
     },
     {
       "file": "docs/UNITY_IMPLEMENTATION.md",

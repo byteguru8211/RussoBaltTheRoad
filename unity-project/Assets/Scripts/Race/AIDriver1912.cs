@@ -12,7 +12,9 @@ public class AIDriver1912 : MonoBehaviour
     public float laneOffset;
     public int gridSlot = -1;
     public LayerMask vehiclePerceptionMask = Physics.DefaultRaycastLayers & ~((1 << 4) | (1 << 5));
-    public LayerMask recoveryGroundMask = Physics.DefaultRaycastLayers;
+    private const int CheckpointFrameLayer = 1 << 6;
+    public LayerMask checkpointFrameMask = CheckpointFrameLayer;
+    public LayerMask recoveryGroundMask = Physics.DefaultRaycastLayers & ~CheckpointFrameLayer;
 
     private const float StartProtectionMeters = 15f;
     private const float StartProtectionSeconds = 2.5f;
@@ -20,6 +22,8 @@ public class AIDriver1912 : MonoBehaviour
     private const float MinimumFollowingGap = 2.2f;
     private const float ChassisGroundProbeDistance = 3f;
     private const float ChassisGroundContactDistance = 1.75f;
+    private const float CheckpointFrameSafetyMargin = 0.45f;
+    private const float CheckpointFrameSideCommitmentSeconds = 0.75f;
     // Recovery may move the physical pose backwards, never advance credited race progress.
     private static readonly float[] RecoveryProgressOffsets = { 0f, -4f, -8f, -12f };
 
@@ -53,6 +57,14 @@ public class AIDriver1912 : MonoBehaviour
         public bool blocked;
     }
 
+    private struct CheckpointFrameInfo
+    {
+        public bool detected;
+        public float safeSpeedMps;
+        public float brake;
+        public int side;
+    }
+
     private TrackRoute route;
     private Rigidbody body;
     private float continuousProgress;
@@ -72,6 +84,8 @@ public class AIDriver1912 : MonoBehaviour
     private float laneTarget;
     private int avoidanceSide;
     private float sideCommitment;
+    private int checkpointFrameAvoidanceSide;
+    private float checkpointFrameSideCommitment;
     private int recoveryCount;
     private bool recoveryPending;
     private bool settling;
@@ -84,6 +98,8 @@ public class AIDriver1912 : MonoBehaviour
 
     private void Start()
     {
+        // Keep older serialized masks safe after checkpoint frames move to their own layer.
+        recoveryGroundMask = recoveryGroundMask.value & ~checkpointFrameMask.value;
         seed = Mathf.Abs(name.GetHashCode()) % 1000f;
         skill = Mathf.Clamp(skill, 0.35f, 1f);
         if (vehicle == null || track == null || track.track == null)
@@ -136,6 +152,7 @@ public class AIDriver1912 : MonoBehaviour
         Vector3 forward = Horizontal(track.TangentAt(progress));
         Vector3 right = track.RightAt(progress);
         TrafficInfo traffic = EvaluateTraffic(forward, right);
+        CheckpointFrameInfo checkpointFrame = EvaluateCheckpointFrameAvoidance(forward, right, laneOffset);
         float chassisGroundDistance = FindChassisGroundDistance();
         bool chassisNearGround = chassisGroundDistance <= ChassisGroundContactDistance;
         float planarSpeed = vehicle.PlanarSpeedMps;
@@ -144,7 +161,8 @@ public class AIDriver1912 : MonoBehaviour
 
         bool offRoadStuck = nearestDistance > track.track.roadWidth * 0.72f && chassisNearGround && planarSpeed < 0.9f;
         bool blockedStuck = progressStallTimer > 6f && traffic.blocked && chassisNearGround && planarSpeed < 0.7f;
-        bool genuinelyStuck = offRoadStuck || blockedStuck;
+        bool stalledStuck = !IsStartProtected() && progressStallTimer > 8f && chassisNearGround && planarSpeed < 0.7f;
+        bool genuinelyStuck = offRoadStuck || blockedStuck || stalledStuck;
         stuckTimer = genuinelyStuck ? stuckTimer + dt : Mathf.Max(0f, stuckTimer - dt * 2f);
 
         if (rolloverTimer > 1.2f && recoveryCooldown <= 0f)
@@ -207,7 +225,7 @@ public class AIDriver1912 : MonoBehaviour
             avoidanceSide = 0;
             sideCommitment = 0f;
         }
-        UpdateLaneTarget(dt, traffic, startProtected);
+        UpdateLaneTarget(dt, traffic, checkpointFrame, startProtected);
 
         float lookaheadMeters = Mathf.Clamp(9f + speed * 0.3f, 11f, 22f);
         float targetProgress = continuousProgress + lookaheadMeters / Mathf.Max(1f, route.Length);
@@ -217,7 +235,9 @@ public class AIDriver1912 : MonoBehaviour
         float releaseAge = race != null ? race.Elapsed - RaceManager.GridReleaseDelay(gridSlot) : StartProtectionSeconds;
         float ramp = Mathf.Clamp01(releaseAge / 2.4f);
         float throttleCap = Mathf.Lerp(0.22f, 1f, ramp);
-        ApplySpeedTarget(steer, targetSpeed, throttleCap, traffic.brake, traffic.safeSpeedMps);
+        ApplySpeedTarget(steer, targetSpeed, throttleCap,
+            Mathf.Max(traffic.brake, checkpointFrame.brake),
+            Mathf.Min(traffic.safeSpeedMps, checkpointFrame.safeSpeedMps));
 
         if (race != null && race.TrackData != null && continuousProgress >= GameManager.Instance.GetRaceLaps() + 0.002f)
             BeginFinished();
@@ -369,6 +389,70 @@ public class AIDriver1912 : MonoBehaviour
         return result;
     }
 
+    private CheckpointFrameInfo EvaluateCheckpointFrameAvoidance(Vector3 forward, Vector3 right, float baseLane)
+    {
+        CheckpointFrameInfo result = new CheckpointFrameInfo { safeSpeedMps = float.PositiveInfinity };
+        float detectionRange = Mathf.Clamp(8f + vehicle.PlanarSpeedMps * 0.5f, 8f, 18f);
+        float ownHalfLength = EstimateHalfLength(vehicle, forward);
+        float ownHalfWidth = EstimateHalfWidth(vehicle, right);
+        float castRadius = Mathf.Clamp(ownHalfWidth + CheckpointFrameSafetyMargin, 0.75f, 1.3f);
+        Vector3 origin = body.position + forward * ownHalfLength + Vector3.up * 0.65f;
+        if (!Physics.SphereCast(origin, castRadius, forward, out RaycastHit hit, detectionRange,
+                checkpointFrameMask, QueryTriggerInteraction.Ignore))
+            return result;
+
+        result.detected = true;
+        float gap = Mathf.Max(0f, hit.distance - CheckpointFrameSafetyMargin);
+        result.safeSpeedMps = Mathf.Sqrt(2f * EstimateBrakeDeceleration() * gap);
+
+        float obstacleLateral = Vector3.Dot(hit.point - body.position, right);
+        int preferredSide = obstacleLateral > 0.05f ? -1 : obstacleLateral < -0.05f ? 1 : (baseLane >= 0f ? -1 : 1);
+        if (checkpointFrameAvoidanceSide != 0 &&
+            IsCheckpointFramePassLaneClear(checkpointFrameAvoidanceSide, baseLane, forward, right,
+                detectionRange, ownHalfLength, ownHalfWidth, castRadius))
+            preferredSide = checkpointFrameAvoidanceSide;
+
+        if (IsCheckpointFramePassLaneClear(preferredSide, baseLane, forward, right,
+                detectionRange, ownHalfLength, ownHalfWidth, castRadius))
+            result.side = preferredSide;
+        else if (IsCheckpointFramePassLaneClear(-preferredSide, baseLane, forward, right,
+                detectionRange, ownHalfLength, ownHalfWidth, castRadius))
+            result.side = -preferredSide;
+        else if (gap < 3f)
+            result.brake = Mathf.Lerp(1f, 0.25f, Mathf.Clamp01(gap / 3f));
+        return result;
+    }
+
+    private bool IsCheckpointFramePassLaneClear(int side, float baseLane, Vector3 forward, Vector3 right,
+        float detectionRange, float ownHalfLength, float ownHalfWidth, float castRadius)
+    {
+        float targetLane = CheckpointFrameLaneForSide(side, baseLane, right);
+        float currentLane = Vector3.Dot(body.position - track.PointAt(progress), right);
+        Vector3 origin = body.position + right * (targetLane - currentLane) + forward * ownHalfLength + Vector3.up * 0.65f;
+        if (Physics.SphereCast(origin, castRadius, forward, out _, detectionRange,
+                checkpointFrameMask, QueryTriggerInteraction.Ignore))
+            return false;
+
+        float relativeTargetLane = targetLane - currentLane;
+        for (int i = 0; i < perceived.Count; i++)
+        {
+            PerceivedVehicle other = perceived[i];
+            if (other.gap < -3f || other.gap > detectionRange + ownHalfLength)
+                continue;
+            float clearance = ownHalfWidth + other.halfWidth + 0.45f;
+            if (Mathf.Abs(relativeTargetLane - other.lateral) < clearance)
+                return false;
+        }
+        return true;
+    }
+
+    private float CheckpointFrameLaneForSide(int side, float baseLane, Vector3 right)
+    {
+        float limit = RoadLaneLimit();
+        float avoidanceOffset = Mathf.Clamp(EstimateHalfWidth(vehicle, right) + 0.55f, 1.25f, 1.8f);
+        return Mathf.Clamp(baseLane + side * avoidanceOffset, -limit, limit);
+    }
+
     private int PreferredPassSide(PerceivedVehicle obstacle, float ownHalfWidth)
     {
         float sameLaneClearance = ownHalfWidth + obstacle.halfWidth + 0.35f;
@@ -404,9 +488,10 @@ public class AIDriver1912 : MonoBehaviour
         return Mathf.Clamp(laneOffset + side * passOffset, -limit, limit);
     }
 
-    private void UpdateLaneTarget(float dt, TrafficInfo traffic, bool startProtected)
+    private void UpdateLaneTarget(float dt, TrafficInfo traffic, CheckpointFrameInfo checkpointFrame, bool startProtected)
     {
         sideCommitment = Mathf.Max(0f, sideCommitment - dt);
+        UpdateCheckpointFrameAvoidance(dt, checkpointFrame);
         if (startProtected)
         {
             avoidanceSide = 0;
@@ -424,9 +509,28 @@ public class AIDriver1912 : MonoBehaviour
             avoidanceSide = 0;
         }
 
-        float desiredLane = avoidanceSide != 0 ? LaneForSide(avoidanceSide) : laneOffset;
+        float desiredLane;
+        if (checkpointFrame.detected && checkpointFrame.side == 0)
+            desiredLane = laneTarget;
+        else if (checkpointFrameAvoidanceSide != 0)
+            desiredLane = CheckpointFrameLaneForSide(checkpointFrameAvoidanceSide, laneOffset, track.RightAt(progress));
+        else
+            desiredLane = avoidanceSide != 0 ? LaneForSide(avoidanceSide) : laneOffset;
         desiredLane = Mathf.Clamp(desiredLane, -RoadLaneLimit(), RoadLaneLimit());
         laneTarget = Mathf.MoveTowards(laneTarget, desiredLane, dt * LaneChangeRate);
+    }
+
+    private void UpdateCheckpointFrameAvoidance(float dt, CheckpointFrameInfo checkpointFrame)
+    {
+        if (checkpointFrame.detected)
+        {
+            checkpointFrameAvoidanceSide = checkpointFrame.side;
+            checkpointFrameSideCommitment = checkpointFrame.side != 0 ? CheckpointFrameSideCommitmentSeconds : 0f;
+            return;
+        }
+        checkpointFrameSideCommitment = Mathf.Max(0f, checkpointFrameSideCommitment - dt);
+        if (checkpointFrameSideCommitment <= 0f)
+            checkpointFrameAvoidanceSide = 0;
     }
 
     private float ComputeTargetSpeed()
@@ -520,6 +624,8 @@ public class AIDriver1912 : MonoBehaviour
         finishSide = laneOffset >= 0f ? 1f : -1f;
         avoidanceSide = 0;
         sideCommitment = 0f;
+        checkpointFrameAvoidanceSide = 0;
+        checkpointFrameSideCommitment = 0f;
     }
 
     private void UpdateFinished(float dt)
@@ -531,16 +637,25 @@ public class AIDriver1912 : MonoBehaviour
         Vector3 right = track.RightAt(progress);
         float currentLane = Vector3.Dot(body.position - track.PointAt(progress), right);
         float shoulderLane = finishSide * RoadLaneLimit();
-        laneTarget = Mathf.MoveTowards(laneTarget, shoulderLane, dt * 0.65f);
+        TrafficInfo traffic = EvaluateTraffic(forward, right);
+        CheckpointFrameInfo checkpointFrame = EvaluateCheckpointFrameAvoidance(forward, right, shoulderLane);
+        UpdateCheckpointFrameAvoidance(dt, checkpointFrame);
+        float desiredLane = checkpointFrame.detected && checkpointFrame.side == 0
+            ? laneTarget
+            : checkpointFrameAvoidanceSide != 0
+                ? CheckpointFrameLaneForSide(checkpointFrameAvoidanceSide, shoulderLane, right)
+                : shoulderLane;
+        laneTarget = Mathf.MoveTowards(laneTarget, desiredLane, dt * 0.65f);
         float lookaheadMeters = Mathf.Clamp(7f + speed * 0.22f, 8f, 15f);
         float targetProgress = continuousProgress + lookaheadMeters / Mathf.Max(1f, route.Length);
         Vector3 target = track.PointAt(targetProgress) + track.RightAt(targetProgress) * laneTarget;
         float steer = ComputePurePursuitSteer(target);
-        TrafficInfo traffic = EvaluateTraffic(forward, right);
         float targetSpeed = Mathf.Lerp(16f, 6f, Mathf.Clamp01(finishTimer / 6f));
         if (finishTimer > 3f && Mathf.Abs(currentLane) > track.track.roadWidth * 0.33f)
             targetSpeed = 0f;
-        ApplySpeedTarget(steer, targetSpeed, 0.55f, traffic.brake, traffic.safeSpeedMps);
+        ApplySpeedTarget(steer, targetSpeed, 0.55f,
+            Mathf.Max(traffic.brake, checkpointFrame.brake),
+            Mathf.Min(traffic.safeSpeedMps, checkpointFrame.safeSpeedMps));
     }
 
     private bool IsStartProtected()
@@ -735,6 +850,9 @@ public class AIDriver1912 : MonoBehaviour
     {
         GetLocalColliderBounds(vehicle, out Vector3 ownCenter, out Vector3 ownExtents);
         Vector3 candidateCenter = position + rotation * ownCenter;
+        if (Physics.CheckBox(candidateCenter, ownExtents + Vector3.one * 0.35f, rotation,
+                checkpointFrameMask, QueryTriggerInteraction.Ignore))
+            return false;
         foreach (VehicleController1912 other in FindObjectsByType<VehicleController1912>())
         {
             if (other == null || other == vehicle || !other.gameObject.activeInHierarchy)

@@ -155,22 +155,32 @@ public sealed class TrackRoute
         rotation = Quaternion.LookRotation(tangent, normal);
     }
 
-    public string Validate()
+    public string Validate(float roadWidth = 9f, float roadsideClearance = 6f)
     {
         var issues = new System.Text.StringBuilder();
         int count = points.Length;
+        float minimumSeparation = float.PositiveInfinity;
+        int minimumSeparationIndex = 0;
         for (int i = 0; i < count; i++)
         {
             int next = (i + 1) % count;
             for (int j = i + 2; j < count; j++)
             {
                 int jNext = (j + 1) % count;
-                if (i == 0 && jNext == 0) continue;
+                float alongSeparation = distances[j] - distances[i];
+                float circularSeparation = System.Math.Min(alongSeparation, Length - alongSeparation);
+                if (circularSeparation < 30f) continue;
                 if (SegmentsCross(points[i], points[next], points[j], points[jNext]))
                 {
                     issues.AppendLine($"Self-intersection near samples {i} and {j}.");
                     break;
                 }
+                Vector2 a = new Vector2(points[i].x, points[i].z);
+                Vector2 b = new Vector2(points[j].x, points[j].z);
+                float separation = Vector2.Distance(a, b);
+                if (separation >= minimumSeparation) continue;
+                minimumSeparation = separation;
+                minimumSeparationIndex = i;
             }
         }
 
@@ -202,10 +212,14 @@ public sealed class TrackRoute
                 maximumGrade = Mathf.Max(maximumGrade, Mathf.Abs(b.y) / run);
         }
 
-        if (minimumRadius < 5.5f)
-            issues.AppendLine($"Tight radius {minimumRadius:F2} m near sample {minimumRadiusIndex}.");
-        if (maximumGrade > 0.2f)
-            issues.AppendLine($"Maximum grade {maximumGrade * 100f:F1}% exceeds 20%.");
+        float requiredRadius = Mathf.Max(12f, roadWidth + roadsideClearance + 2f);
+        if (minimumRadius < requiredRadius)
+            issues.AppendLine($"Tight radius {minimumRadius:F2} m near sample {minimumRadiusIndex}; requires at least {requiredRadius:F2} m.");
+        float requiredSeparation = roadWidth + roadsideClearance + 8f;
+        if (minimumSeparation < requiredSeparation)
+            issues.AppendLine($"Non-adjacent route clearance {minimumSeparation:F2} m near sample {minimumSeparationIndex}; requires at least {requiredSeparation:F2} m.");
+        if (maximumGrade > 0.16f)
+            issues.AppendLine($"Maximum grade {maximumGrade * 100f:F1}% exceeds 16%.");
         return issues.ToString();
     }
 

@@ -257,6 +257,14 @@ public static class GameBuilderEditor
         {
             GameObject instance = UnityEngine.Object.Instantiate(source);
             instance.name = "NetworkPlayerCar";
+            VehicleController1912 controller = instance.GetComponent<VehicleController1912>();
+            if (controller != null)
+            {
+                controller.engineTorque = 360f;
+                controller.finalDrive = 3.5f;
+                controller.dragArea = 0.7f;
+                controller.rollingResistance = 0.014f;
+            }
             if (instance.GetComponent<NetworkObject>() == null) instance.AddComponent<NetworkObject>();
             NetworkTransform transform = instance.GetComponent<NetworkTransform>();
             if (transform == null) transform = instance.AddComponent<NetworkTransform>();
@@ -362,15 +370,15 @@ public static class GameBuilderEditor
         CreateTrack("winter_departure", "Зимний выезд", "Глава I · 1912", "Первый маршрут от рижской мастерской к северной дороге.", new[]
         {
             new Vector3(-55,0,35), new Vector3(-20,0,5), new Vector3(15,0,-30), new Vector3(55,0,-15), new Vector3(50,0,35), new Vector3(10,0,60), new Vector3(-40,0,55)
-        }, new Color(0.42f,0.34f,0.24f), new Color(0.26f,0.32f,0.23f), 0.72f, 1, 4, 420f, 600, "Первый оборот", "Морозный воздух, ручной старт и первая передача. Доберитесь до контрольных пунктов, не перегревая двигатель и следя за топливом.", "UI/Russia", "forest");
+        }, new Color(0.42f,0.34f,0.24f), new Color(0.26f,0.32f,0.23f), 0.72f, 1, 4, 600f, 600, "Первый оборот", "Морозный воздух, ручной старт и первая передача. Доберитесь до контрольных пунктов, не перегревая двигатель и следя за топливом.", "UI/Russia", "forest");
         CreateTrack("alps_pass", "Альпийский перевал", "Глава II · 1912", "Серпантины, туман и торможение двигателем.", new[]
         {
             new Vector3(-70,0,45), new Vector3(-45,7,15), new Vector3(-10,14,-25), new Vector3(30,10,-40), new Vector3(65,4,-5), new Vector3(45,0,40), new Vector3(0,2,65), new Vector3(-45,0,55)
-        }, new Color(0.28f,0.27f,0.24f), new Color(0.20f,0.27f,0.18f), 0.62f, 1, 5, 360f, 900, "Через Альпы", "Дорога сужается, повороты становятся круче, а туман скрывает следующую точку. Не забывайте о задних тормозах и теплорежиме.", "UI/Hero", "forest");
+        }, new Color(0.28f,0.27f,0.24f), new Color(0.20f,0.27f,0.18f), 0.62f, 1, 5, 900f, 900, "Через Альпы", "Дорога сужается, повороты становятся круче, а туман скрывает следующую точку. Не забывайте о задних тормозах и теплорежиме.", "UI/Hero", "forest");
         CreateTrack("monaco_finish", "Финиш в Монако", "Глава III · 1912", "Финальный этап экспедиции у Средиземного моря.", new[]
         {
             new Vector3(-60,0,30), new Vector3(-25,0,-10), new Vector3(20,0,-35), new Vector3(65,0,-10), new Vector3(55,0,40), new Vector3(5,0,55), new Vector3(-45,0,50)
-        }, new Color(0.38f,0.34f,0.28f), new Color(0.24f,0.30f,0.18f), 0.9f, 2, 6, 420f, 1400, "Монако", "Финишная арка уже видна. Соперники идут вплотную, а последний повод решает исход экспедиции.", "UI/Hero", "town");
+        }, new Color(0.38f,0.34f,0.28f), new Color(0.24f,0.30f,0.18f), 0.9f, 2, 6, 720f, 1400, "Монако", "Финишная арка уже видна. Соперники идут вплотную, а последний повод решает исход экспедиции.", "UI/Hero", "town");
     }
 
     private static void CreateTrack(string id, string name, string chapter, string description, Vector3[] waypoints, Color road, Color ground, float grip, int laps, int ai, float limit, int reward, string storyTitle, string story, string preview, string scenery)
@@ -500,7 +508,7 @@ public static class GameBuilderEditor
     {
         PlayerSettings.companyName = "RussoBalt The Road";
         PlayerSettings.productName = "RussoBalt The Road";
-        PlayerSettings.bundleVersion = "0.7.0";
+        PlayerSettings.bundleVersion = "0.8.0";
         PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone, "com.russobalt.theroad");
         List<EditorBuildSettingsScene> scenes = EditorBuildSettings.scenes != null ? EditorBuildSettings.scenes.ToList() : new List<EditorBuildSettingsScene>();
         HashSet<string> existingPaths = new HashSet<string>(scenes.Where(s => s.enabled).Select(s => s.path));

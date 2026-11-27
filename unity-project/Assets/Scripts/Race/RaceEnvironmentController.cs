@@ -170,9 +170,9 @@ public class RaceEnvironmentController : MonoBehaviour
         main.loop = true;
         main.playOnAwake = false;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.maxParticles = rain ? 900 : 650;
-        main.startLifetime = rain ? new ParticleSystem.MinMaxCurve(2.8f, 4.2f) : new ParticleSystem.MinMaxCurve(6f, 9f);
-        main.startSpeed = rain ? new ParticleSystem.MinMaxCurve(2f, 4f) : new ParticleSystem.MinMaxCurve(0.6f, 1.2f);
+        main.maxParticles = rain ? 1200 : 800;
+        main.startLifetime = rain ? new ParticleSystem.MinMaxCurve(2.2f, 3.4f) : new ParticleSystem.MinMaxCurve(6f, 9f);
+        main.startSpeed = rain ? new ParticleSystem.MinMaxCurve(9f, 14f) : new ParticleSystem.MinMaxCurve(0.7f, 1.5f);
         main.startSize = rain ? new ParticleSystem.MinMaxCurve(0.035f, 0.055f) : new ParticleSystem.MinMaxCurve(0.035f, 0.075f);
         main.startColor = rain ? new Color(0.66f, 0.76f, 0.82f, 0.48f) : new Color(0.96f, 0.98f, 1f, 0.76f);
         main.gravityModifier = 1f;
@@ -181,14 +181,12 @@ public class RaceEnvironmentController : MonoBehaviour
         main.startSizeY = rain ? new ParticleSystem.MinMaxCurve(0.42f) : new ParticleSystem.MinMaxCurve(0.035f, 0.075f);
         main.startSizeZ = rain ? new ParticleSystem.MinMaxCurve(0.012f) : new ParticleSystem.MinMaxCurve(0.035f, 0.075f);
         ParticleSystem.ShapeModule shape = precipitation.shape;
-        shape.shapeType = ParticleSystemShapeType.Cone;
+        shape.shapeType = ParticleSystemShapeType.Box;
         shape.rotation = new Vector3(180f, 0f, 0f);
         shape.position = Vector3.zero;
-        shape.radius = 19f;
-        shape.angle = 9f;
-        shape.length = 0.35f;
+        shape.scale = new Vector3(42f, 1f, 42f);
         ParticleSystem.EmissionModule emission = precipitation.emission;
-        emission.rateOverTime = rain ? 260f : 150f;
+        emission.rateOverTime = rain ? 420f : 220f;
         ParticleSystem.NoiseModule noise = precipitation.noise;
         noise.enabled = true;
         noise.strength = rain ? 0.06f : 0.28f;
@@ -382,15 +380,15 @@ public class RaceEnvironmentController : MonoBehaviour
         }
         float fogFactor = Weather switch
         {
-            WeatherPreset.Fog => 3.4f,
-            WeatherPreset.Rain => 1.8f,
-            WeatherPreset.Snow => 1.65f,
-            WeatherPreset.Cloudy => 1.25f,
-            _ => 1f
+            WeatherPreset.Fog => 4.2f,
+            WeatherPreset.Rain => 1.7f,
+            WeatherPreset.Snow => 1.5f,
+            WeatherPreset.Cloudy => 0.85f,
+            _ => 0f
         };
-        RenderSettings.fog = true;
+        RenderSettings.fog = fogFactor > 0.01f;
         RenderSettings.fogMode = FogMode.ExponentialSquared;
-        RenderSettings.fogDensity = Mathf.Clamp(profile.fogDensity * fogFactor, 0.0015f, 0.022f);
+        RenderSettings.fogDensity = Mathf.Clamp(profile.fogDensity * fogFactor, 0.0015f, 0.024f);
         RenderSettings.fogColor = fog;
         RenderSettings.ambientMode = AmbientMode.Flat;
         RenderSettings.ambientSkyColor = Color.Lerp(sky, Color.white, 0.12f) * (TimeOfDay == TimeOfDayPreset.Night ? 0.35f : 1f);
@@ -469,7 +467,7 @@ public class RaceEnvironmentController : MonoBehaviour
         Wetness = Mathf.MoveTowards(Wetness, targetWetness, Time.deltaTime * 0.22f);
         if (Mathf.Abs(previousWetness - Wetness) > 0.0001f) trackBuilder?.ApplyWeather(Weather, Wetness);
 
-        float windSpeed = Weather == WeatherPreset.Rain ? 0.52f : Weather == WeatherPreset.Snow ? 0.16f : 0.24f;
+        float windSpeed = Weather == WeatherPreset.Rain ? 7.5f : Weather == WeatherPreset.Snow ? 3.2f : Weather == WeatherPreset.Fog ? 4.5f : 5.5f;
         for (int i = 0; i < clouds.Count; i++)
         {
             Transform cloud = clouds[i];
@@ -477,9 +475,11 @@ public class RaceEnvironmentController : MonoBehaviour
             Vector3 position = cloud.position;
             position.x += Time.deltaTime * windSpeed * (1f + i * 0.025f);
             position.z += Time.deltaTime * windSpeed * 0.18f;
+            position.y += Mathf.Sin(elapsed * 0.08f + i * 1.7f) * Time.deltaTime * 0.12f;
             if (position.x > center.x + worldRadius) position.x = center.x - worldRadius;
             if (position.z > center.z + worldRadius) position.z = center.z - worldRadius;
             cloud.position = position;
+            cloud.Rotate(0f, Time.deltaTime * (0.35f + i * 0.018f), 0f, Space.World);
         }
 
         VehicleController1912 player = RaceManager.Instance != null ? RaceManager.Instance.Player : null;

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class ReleaseValidation
 {
-    [MenuItem("RussoBalt/Validate v0.7 Content")]
+    [MenuItem("RussoBalt/Validate v0.8 Content")]
     private static void ValidateMenu() => Run();
 
     public static string Run()
@@ -17,6 +17,7 @@ public static class ReleaseValidation
         var warnings = new List<string>();
 
         TrackData[] tracks = Resources.LoadAll<TrackData>("Tracks");
+        var lengthBands = new HashSet<int>();
         report.AppendLine($"Tracks: {tracks.Length}");
         if (tracks.Length < 8) errors.Add("Expected at least eight tracks.");
         foreach (TrackData track in tracks)
@@ -29,16 +30,27 @@ public static class ReleaseValidation
             try
             {
                 TrackRoute route = new TrackRoute(track);
-                string validation = route.Validate();
+                string validation = route.Validate(track.roadWidth, 6f);
                 if (!string.IsNullOrWhiteSpace(validation))
                     warnings.Add($"{track.id}: {validation.Trim()}");
-                report.AppendLine($"  {track.id}: {route.Length:F1} m, width {track.roadWidth:F1} m, AI {track.aiCount}");
+                lengthBands.Add(Mathf.RoundToInt(route.Length / 50f));
+                float minimumTimeLimit = route.Length * Mathf.Max(1, track.laps) / 5f;
+                if (track.timeLimit < minimumTimeLimit)
+                    errors.Add($"{track.id}: time limit {track.timeLimit:F0}s is too short for {route.Length * Mathf.Max(1, track.laps):F0}m.");
+                report.AppendLine($"  {track.id}: {route.Length:F1} m, width {track.roadWidth:F1} m, AI {track.aiCount}, limit {track.timeLimit:F0}s");
             }
             catch (Exception exception)
             {
                 errors.Add($"{track.id}: {exception.Message}");
             }
         }
+
+        if (lengthBands.Count < 5) errors.Add("Tracks should have at least five distinct distance bands.");
+        if (!Enum.IsDefined(typeof(WeatherPreset), WeatherPreset.Fog)) errors.Add("Fog weather preset is missing.");
+        GameObject driverPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Characters/Driver_1912.prefab");
+        DriverRigController driverController = driverPrefab != null ? driverPrefab.GetComponentInChildren<DriverRigController>(true) : null;
+        if (driverController == null || !driverController.staticSeatedPose || driverController.seatedClip == null)
+            errors.Add("Driver prefab must use a static authored Drive pose.");
 
         string[] vehiclePaths = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Resources/Vehicles" })
             .Select(AssetDatabase.GUIDToAssetPath).ToArray();
@@ -82,6 +94,11 @@ public static class ReleaseValidation
 
         if (!Enum.IsDefined(typeof(CameraMode), CameraMode.Rear))
             errors.Add("Rear camera mode is missing.");
+        if (LayerMask.NameToLayer("CheckpointFrame") != TrackBuilder.CheckpointFrameLayer)
+            errors.Add("CheckpointFrame layer is missing or moved.");
+        if (typeof(VehicleController1912).GetProperty("BoostCharge") == null
+            || typeof(VehicleController1912).GetProperty("BoostActive") == null)
+            errors.Add("Period power boost state is missing.");
 
         foreach (string warning in warnings) report.AppendLine("WARN " + warning);
         foreach (string error in errors) report.AppendLine("ERROR " + error);

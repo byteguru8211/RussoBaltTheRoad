@@ -2,7 +2,7 @@
   "validated": "2026-11-24",
   "blender": "5.2.1 LTS",
   "status": "passed",
-  "fbx_count": 58,
+  "fbx_count": 114,
   "errors": [],
   "records": [
     {
@@ -139,6 +139,1086 @@
         "CHR_Mechanic_1912_Root|CHR_Mechanic_1912_Rig_Idle",
         "CHR_Mechanic_1912_Root|CHR_Mechanic_1912_Rig_Walk"
       ]
+    },
+    {
+      "file": "game_assets/environment/release/Building_Log_Cabin_Detailed_01_Detailed.fbx",
+      "root": "Building_Log_Cabin_Detailed_01",
+      "stats": {
+        "meshes": 159,
+        "vertices": 19790,
+        "polygons": 18427,
+        "triangles": 36234,
+        "dimensions_m": [
+          8.254,
+          7.7726,
+          5.4918
+        ],
+        "bounds_min_m": [
+          -4.127,
+          -4.3226,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.127,
+          3.45,
+          5.4918
+        ]
+      },
+      "materials": 8,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Building_Log_Cabin_Detailed_01_LOD0.fbx",
+      "root": "Building_Log_Cabin_Detailed_01",
+      "stats": {
+        "meshes": 8,
+        "vertices": 19790,
+        "polygons": 18427,
+        "triangles": 36234,
+        "dimensions_m": [
+          8.2419,
+          7.7685,
+          5.4817
+        ],
+        "bounds_min_m": [
+          -4.125,
+          -4.3185,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.1169,
+          3.45,
+          5.4817
+        ]
+      },
+      "materials": 8,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Building_Townhouse_Detailed_01_Detailed.fbx",
+      "root": "Building_Townhouse_Detailed_01",
+      "stats": {
+        "meshes": 119,
+        "vertices": 6670,
+        "polygons": 6444,
+        "triangles": 12864,
+        "dimensions_m": [
+          7.5904,
+          7.585,
+          9.8
+        ],
+        "bounds_min_m": [
+          -3.7952,
+          -4.235,
+          -0.07
+        ],
+        "bounds_max_m": [
+          3.7952,
+          3.35,
+          9.73
+        ]
+      },
+      "materials": 7,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Building_Townhouse_Detailed_01_LOD0.fbx",
+      "root": "Building_Townhouse_Detailed_01",
+      "stats": {
+        "meshes": 7,
+        "vertices": 6670,
+        "polygons": 6444,
+        "triangles": 12864,
+        "dimensions_m": [
+          7.5662,
+          7.585,
+          9.8
+        ],
+        "bounds_min_m": [
+          -3.7831,
+          -4.235,
+          -0.07
+        ],
+        "bounds_max_m": [
+          3.7831,
+          3.35,
+          9.73
+        ]
+      },
+      "materials": 7,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_01_Detailed.fbx",
+      "root": "Cloud_Cumulus_01",
+      "stats": {
+        "meshes": 11,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.3279
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.3154
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.0125
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_01_LOD0.fbx",
+      "root": "Cloud_Cumulus_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.3279
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.3154
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.0125
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_02_Detailed.fbx",
+      "root": "Cloud_Cumulus_02",
+      "stats": {
+        "meshes": 11,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.4261
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.345
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.0811
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_02_LOD0.fbx",
+      "root": "Cloud_Cumulus_02",
+      "stats": {
+        "meshes": 2,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.4261
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.345
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.0811
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_03_Detailed.fbx",
+      "root": "Cloud_Cumulus_03",
+      "stats": {
+        "meshes": 11,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.5683
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.4405
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.1278
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Cloud_Cumulus_03_LOD0.fbx",
+      "root": "Cloud_Cumulus_03",
+      "stats": {
+        "meshes": 2,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.5683
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.4405
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.1278
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Cart_Detailed_01_Detailed.fbx",
+      "root": "Prop_Cart_Detailed_01",
+      "stats": {
+        "meshes": 47,
+        "vertices": 3820,
+        "polygons": 3660,
+        "triangles": 7460,
+        "dimensions_m": [
+          2.5,
+          5.6852,
+          1.915
+        ],
+        "bounds_min_m": [
+          -1.25,
+          -4.0102,
+          -0.025
+        ],
+        "bounds_max_m": [
+          1.25,
+          1.675,
+          1.89
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Cart_Detailed_01_LOD0.fbx",
+      "root": "Prop_Cart_Detailed_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 3820,
+        "polygons": 3660,
+        "triangles": 7460,
+        "dimensions_m": [
+          2.5,
+          5.6818,
+          1.915
+        ],
+        "bounds_min_m": [
+          -1.25,
+          -4.0068,
+          -0.025
+        ],
+        "bounds_max_m": [
+          1.25,
+          1.675,
+          1.89
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Fence_10m_01_Detailed.fbx",
+      "root": "Prop_Fence_10m_01",
+      "stats": {
+        "meshes": 51,
+        "vertices": 2397,
+        "polygons": 2313,
+        "triangles": 4590,
+        "dimensions_m": [
+          10.396,
+          0.396,
+          1.86
+        ],
+        "bounds_min_m": [
+          -5.198,
+          -0.198,
+          -0.0
+        ],
+        "bounds_max_m": [
+          5.198,
+          0.198,
+          1.86
+        ]
+      },
+      "materials": 1,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Fence_10m_01_LOD0.fbx",
+      "root": "Prop_Fence_10m_01",
+      "stats": {
+        "meshes": 1,
+        "vertices": 2397,
+        "polygons": 2313,
+        "triangles": 4590,
+        "dimensions_m": [
+          10.198,
+          0.198,
+          1.86
+        ],
+        "bounds_min_m": [
+          -5.099,
+          -0.099,
+          -0.0
+        ],
+        "bounds_max_m": [
+          5.099,
+          0.099,
+          1.86
+        ]
+      },
+      "materials": 1,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Haystack_01_Detailed.fbx",
+      "root": "Prop_Haystack_01",
+      "stats": {
+        "meshes": 5,
+        "vertices": 752,
+        "polygons": 716,
+        "triangles": 1496,
+        "dimensions_m": [
+          2.9,
+          2.9,
+          3.65
+        ],
+        "bounds_min_m": [
+          -1.45,
+          -1.45,
+          -0.0
+        ],
+        "bounds_max_m": [
+          1.45,
+          1.45,
+          3.65
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Haystack_01_LOD0.fbx",
+      "root": "Prop_Haystack_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 752,
+        "polygons": 716,
+        "triangles": 1496,
+        "dimensions_m": [
+          2.9,
+          2.9,
+          3.65
+        ],
+        "bounds_min_m": [
+          -1.45,
+          -1.45,
+          -0.0
+        ],
+        "bounds_max_m": [
+          1.45,
+          1.45,
+          3.65
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Milestone_01_Detailed.fbx",
+      "root": "Prop_Milestone_01",
+      "stats": {
+        "meshes": 7,
+        "vertices": 4150,
+        "polygons": 3877,
+        "triangles": 7176,
+        "dimensions_m": [
+          0.62,
+          0.52,
+          1.55
+        ],
+        "bounds_min_m": [
+          -0.31,
+          -0.26,
+          -0.0
+        ],
+        "bounds_max_m": [
+          0.31,
+          0.26,
+          1.55
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Milestone_01_LOD0.fbx",
+      "root": "Prop_Milestone_01",
+      "stats": {
+        "meshes": 3,
+        "vertices": 4150,
+        "polygons": 3877,
+        "triangles": 7176,
+        "dimensions_m": [
+          0.62,
+          0.52,
+          1.55
+        ],
+        "bounds_min_m": [
+          -0.31,
+          -0.26,
+          -0.0
+        ],
+        "bounds_max_m": [
+          0.31,
+          0.26,
+          1.55
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Rock_Cluster_01_Detailed.fbx",
+      "root": "Prop_Rock_Cluster_01",
+      "stats": {
+        "meshes": 8,
+        "vertices": 1048,
+        "polygons": 1156,
+        "triangles": 2064,
+        "dimensions_m": [
+          3.8009,
+          2.4519,
+          2.2549
+        ],
+        "bounds_min_m": [
+          -1.813,
+          -1.2587,
+          -0.5214
+        ],
+        "bounds_max_m": [
+          1.9878,
+          1.1933,
+          1.7335
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Rock_Cluster_01_LOD0.fbx",
+      "root": "Prop_Rock_Cluster_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 1048,
+        "polygons": 1156,
+        "triangles": 2064,
+        "dimensions_m": [
+          3.8009,
+          2.4519,
+          2.2549
+        ],
+        "bounds_min_m": [
+          -1.813,
+          -1.2587,
+          -0.5214
+        ],
+        "bounds_max_m": [
+          1.9878,
+          1.1933,
+          1.7335
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Start_Arch_1912_Detailed.fbx",
+      "root": "Prop_Start_Arch_1912",
+      "stats": {
+        "meshes": 35,
+        "vertices": 34310,
+        "polygons": 31800,
+        "triangles": 58818,
+        "dimensions_m": [
+          9.4,
+          1.0,
+          5.145
+        ],
+        "bounds_min_m": [
+          -4.7,
+          -0.5,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.7,
+          0.5,
+          5.145
+        ]
+      },
+      "materials": 5,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Start_Arch_1912_LOD0.fbx",
+      "root": "Prop_Start_Arch_1912",
+      "stats": {
+        "meshes": 5,
+        "vertices": 34310,
+        "polygons": 31800,
+        "triangles": 58818,
+        "dimensions_m": [
+          9.4,
+          1.0,
+          5.145
+        ],
+        "bounds_min_m": [
+          -4.7,
+          -0.5,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.7,
+          0.5,
+          5.145
+        ]
+      },
+      "materials": 5,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Telegraph_Pole_01_Detailed.fbx",
+      "root": "Prop_Telegraph_Pole_01",
+      "stats": {
+        "meshes": 38,
+        "vertices": 2692,
+        "polygons": 2622,
+        "triangles": 5232,
+        "dimensions_m": [
+          17.8024,
+          0.36,
+          8.0
+        ],
+        "bounds_min_m": [
+          -8.9012,
+          -0.18,
+          -0.0
+        ],
+        "bounds_max_m": [
+          8.9012,
+          0.18,
+          8.0
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Prop_Telegraph_Pole_01_LOD0.fbx",
+      "root": "Prop_Telegraph_Pole_01",
+      "stats": {
+        "meshes": 3,
+        "vertices": 2692,
+        "polygons": 2622,
+        "triangles": 5232,
+        "dimensions_m": [
+          17.8017,
+          0.36,
+          8.0
+        ],
+        "bounds_min_m": [
+          -8.9008,
+          -0.18,
+          -0.0
+        ],
+        "bounds_max_m": [
+          8.9008,
+          0.18,
+          8.0
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Birch_Detailed_01_Detailed.fbx",
+      "root": "Tree_Birch_Detailed_01",
+      "stats": {
+        "meshes": 52,
+        "vertices": 5874,
+        "polygons": 6156,
+        "triangles": 11540,
+        "dimensions_m": [
+          5.3512,
+          4.4984,
+          6.2661
+        ],
+        "bounds_min_m": [
+          -2.7971,
+          -2.3393,
+          -0.0
+        ],
+        "bounds_max_m": [
+          2.5541,
+          2.1591,
+          6.2661
+        ]
+      },
+      "materials": 4,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Birch_Detailed_01_LOD0.fbx",
+      "root": "Tree_Birch_Detailed_01",
+      "stats": {
+        "meshes": 4,
+        "vertices": 5874,
+        "polygons": 6156,
+        "triangles": 11540,
+        "dimensions_m": [
+          5.3512,
+          4.4984,
+          6.2661
+        ],
+        "bounds_min_m": [
+          -2.7971,
+          -2.3393,
+          -0.0
+        ],
+        "bounds_max_m": [
+          2.5541,
+          2.1591,
+          6.2661
+        ]
+      },
+      "materials": 4,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Conifer_Detailed_01_Detailed.fbx",
+      "root": "Tree_Conifer_Detailed_01",
+      "stats": {
+        "meshes": 28,
+        "vertices": 1613,
+        "polygons": 1329,
+        "triangles": 3114,
+        "dimensions_m": [
+          4.7355,
+          4.773,
+          6.925
+        ],
+        "bounds_min_m": [
+          -2.3678,
+          -2.3865,
+          -0.0
+        ],
+        "bounds_max_m": [
+          2.3678,
+          2.3865,
+          6.925
+        ]
+      },
+      "materials": 4,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Conifer_Detailed_01_LOD0.fbx",
+      "root": "Tree_Conifer_Detailed_01",
+      "stats": {
+        "meshes": 4,
+        "vertices": 1613,
+        "polygons": 1329,
+        "triangles": 3114,
+        "dimensions_m": [
+          4.2347,
+          4.3,
+          6.925
+        ],
+        "bounds_min_m": [
+          -2.1173,
+          -2.15,
+          -0.0
+        ],
+        "bounds_max_m": [
+          2.1173,
+          2.15,
+          6.925
+        ]
+      },
+      "materials": 4,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Oak_Detailed_01_Detailed.fbx",
+      "root": "Tree_Oak_Detailed_01",
+      "stats": {
+        "meshes": 56,
+        "vertices": 8060,
+        "polygons": 8574,
+        "triangles": 15896,
+        "dimensions_m": [
+          6.9806,
+          6.5704,
+          6.79
+        ],
+        "bounds_min_m": [
+          -3.5642,
+          -3.3626,
+          -0.0
+        ],
+        "bounds_max_m": [
+          3.4164,
+          3.2079,
+          6.79
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Tree_Oak_Detailed_01_LOD0.fbx",
+      "root": "Tree_Oak_Detailed_01",
+      "stats": {
+        "meshes": 2,
+        "vertices": 8060,
+        "polygons": 8574,
+        "triangles": 15896,
+        "dimensions_m": [
+          6.9806,
+          6.5704,
+          6.79
+        ],
+        "bounds_min_m": [
+          -3.5642,
+          -3.3626,
+          -0.0
+        ],
+        "bounds_max_m": [
+          3.4164,
+          3.2079,
+          6.79
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Byteguru_Emblem_Detailed.fbx",
+      "root": "Welcome_Byteguru_Emblem",
+      "stats": {
+        "meshes": 23,
+        "vertices": 2080,
+        "polygons": 1964,
+        "triangles": 4072,
+        "dimensions_m": [
+          2.84,
+          0.475,
+          2.84
+        ],
+        "bounds_min_m": [
+          -1.42,
+          -0.335,
+          -1.42
+        ],
+        "bounds_max_m": [
+          1.42,
+          0.14,
+          1.42
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Byteguru_Emblem_LOD0.fbx",
+      "root": "Welcome_Byteguru_Emblem",
+      "stats": {
+        "meshes": 2,
+        "vertices": 2080,
+        "polygons": 1964,
+        "triangles": 4072,
+        "dimensions_m": [
+          2.84,
+          0.475,
+          2.84
+        ],
+        "bounds_min_m": [
+          -1.42,
+          -0.335,
+          -1.42
+        ],
+        "bounds_max_m": [
+          1.42,
+          0.14,
+          1.42
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Heckercat_Emblem_Detailed.fbx",
+      "root": "Welcome_Heckercat_Emblem",
+      "stats": {
+        "meshes": 26,
+        "vertices": 2808,
+        "polygons": 2764,
+        "triangles": 5520,
+        "dimensions_m": [
+          2.84,
+          0.7071,
+          2.84
+        ],
+        "bounds_min_m": [
+          -1.42,
+          -0.5671,
+          -1.42
+        ],
+        "bounds_max_m": [
+          1.42,
+          0.14,
+          1.42
+        ]
+      },
+      "materials": 4,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Heckercat_Emblem_LOD0.fbx",
+      "root": "Welcome_Heckercat_Emblem",
+      "stats": {
+        "meshes": 4,
+        "vertices": 2808,
+        "polygons": 2764,
+        "triangles": 5520,
+        "dimensions_m": [
+          2.84,
+          0.7,
+          2.84
+        ],
+        "bounds_min_m": [
+          -1.42,
+          -0.56,
+          -1.42
+        ],
+        "bounds_max_m": [
+          1.42,
+          0.14,
+          1.42
+        ]
+      },
+      "materials": 4,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Workshop_Stage_Detailed.fbx",
+      "root": "Welcome_Workshop_Stage",
+      "stats": {
+        "meshes": 84,
+        "vertices": 54688,
+        "polygons": 50790,
+        "triangles": 94928,
+        "dimensions_m": [
+          18.0,
+          11.0,
+          6.625
+        ],
+        "bounds_min_m": [
+          -9.0,
+          -5.5,
+          -0.0
+        ],
+        "bounds_max_m": [
+          9.0,
+          5.5,
+          6.625
+        ]
+      },
+      "materials": 8,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/release/Welcome_Workshop_Stage_LOD0.fbx",
+      "root": "Welcome_Workshop_Stage",
+      "stats": {
+        "meshes": 8,
+        "vertices": 54688,
+        "polygons": 50790,
+        "triangles": 94928,
+        "dimensions_m": [
+          18.0,
+          11.0,
+          6.625
+        ],
+        "bounds_min_m": [
+          -9.0,
+          -5.5,
+          -0.0
+        ],
+        "bounds_max_m": [
+          9.0,
+          5.5,
+          6.625
+        ]
+      },
+      "materials": 8,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
     },
     {
       "file": "game_assets/environment/Russia_1912/modules/Building_Brick_Gatehouse_01_Collision.fbx",
@@ -1035,6 +2115,606 @@
         ]
       },
       "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Building_Alpine_Chalet_01_Detailed.fbx",
+      "root": "Building_Alpine_Chalet_01",
+      "stats": {
+        "meshes": 37,
+        "vertices": 2072,
+        "polygons": 1998,
+        "triangles": 3996,
+        "dimensions_m": [
+          8.2,
+          7.35,
+          7.2119
+        ],
+        "bounds_min_m": [
+          -4.1,
+          -4.25,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.1,
+          3.1,
+          7.2119
+        ]
+      },
+      "materials": 6,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Building_Alpine_Chalet_01_LOD1.fbx",
+      "root": "Building_Alpine_Chalet_01",
+      "stats": {
+        "meshes": 37,
+        "vertices": 888,
+        "polygons": 1628,
+        "triangles": 1628,
+        "dimensions_m": [
+          8.2,
+          7.3365,
+          7.207
+        ],
+        "bounds_min_m": [
+          -4.1,
+          -4.244,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.1,
+          3.0925,
+          7.207
+        ]
+      },
+      "materials": 6,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Building_Coastal_Cottage_01_Detailed.fbx",
+      "root": "Building_Coastal_Cottage_01",
+      "stats": {
+        "meshes": 26,
+        "vertices": 1488,
+        "polygons": 1420,
+        "triangles": 2872,
+        "dimensions_m": [
+          8.2351,
+          7.2,
+          4.909
+        ],
+        "bounds_min_m": [
+          -4.1176,
+          -4.25,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.1176,
+          2.95,
+          4.909
+        ]
+      },
+      "materials": 5,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Building_Coastal_Cottage_01_LOD1.fbx",
+      "root": "Building_Coastal_Cottage_01",
+      "stats": {
+        "meshes": 26,
+        "vertices": 638,
+        "polygons": 1172,
+        "triangles": 1172,
+        "dimensions_m": [
+          8.2313,
+          7.1914,
+          4.904
+        ],
+        "bounds_min_m": [
+          -4.1156,
+          -4.2447,
+          -0.0
+        ],
+        "bounds_max_m": [
+          4.1156,
+          2.9468,
+          4.904
+        ]
+      },
+      "materials": 5,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Alpine_Cliff_01_Detailed.fbx",
+      "root": "Prop_Alpine_Cliff_01",
+      "stats": {
+        "meshes": 27,
+        "vertices": 654,
+        "polygons": 1200,
+        "triangles": 1200,
+        "dimensions_m": [
+          7.8988,
+          6.5147,
+          5.8716
+        ],
+        "bounds_min_m": [
+          -4.3486,
+          -3.2227,
+          -1.2638
+        ],
+        "bounds_max_m": [
+          3.5502,
+          3.292,
+          4.6078
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Alpine_Cliff_01_LOD1.fbx",
+      "root": "Prop_Alpine_Cliff_01",
+      "stats": {
+        "meshes": 27,
+        "vertices": 294,
+        "polygons": 480,
+        "triangles": 480,
+        "dimensions_m": [
+          7.8952,
+          6.5681,
+          5.9537
+        ],
+        "bounds_min_m": [
+          -4.3486,
+          -3.2026,
+          -1.3033
+        ],
+        "bounds_max_m": [
+          3.5466,
+          3.3656,
+          4.6504
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Cobbled_Road_10m_01_Detailed.fbx",
+      "root": "Prop_Cobbled_Road_10m_01",
+      "stats": {
+        "meshes": 161,
+        "vertices": 9016,
+        "polygons": 8694,
+        "triangles": 17388,
+        "dimensions_m": [
+          10.0753,
+          4.0178,
+          0.265
+        ],
+        "bounds_min_m": [
+          -5.0065,
+          -2.0095,
+          -0.04
+        ],
+        "bounds_max_m": [
+          5.0688,
+          2.0083,
+          0.225
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Cobbled_Road_10m_01_LOD1.fbx",
+      "root": "Prop_Cobbled_Road_10m_01",
+      "stats": {
+        "meshes": 161,
+        "vertices": 3864,
+        "polygons": 7084,
+        "triangles": 7084,
+        "dimensions_m": [
+          10.0663,
+          4.0088,
+          0.2624
+        ],
+        "bounds_min_m": [
+          -5.002,
+          -2.005,
+          -0.0374
+        ],
+        "bounds_max_m": [
+          5.0643,
+          2.0039,
+          0.225
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Mediterranean_Cypress_01_Detailed.fbx",
+      "root": "Prop_Mediterranean_Cypress_01",
+      "stats": {
+        "meshes": 14,
+        "vertices": 415,
+        "polygons": 649,
+        "triangles": 774,
+        "dimensions_m": [
+          1.3126,
+          1.2702,
+          6.107
+        ],
+        "bounds_min_m": [
+          -0.6096,
+          -0.5761,
+          -0.007
+        ],
+        "bounds_max_m": [
+          0.703,
+          0.6941,
+          6.1
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Mediterranean_Cypress_01_LOD1.fbx",
+      "root": "Prop_Mediterranean_Cypress_01",
+      "stats": {
+        "meshes": 14,
+        "vertices": 184,
+        "polygons": 312,
+        "triangles": 312,
+        "dimensions_m": [
+          1.3252,
+          1.22,
+          6.1
+        ],
+        "bounds_min_m": [
+          -0.65,
+          -0.5743,
+          -0.0
+        ],
+        "bounds_max_m": [
+          0.6752,
+          0.6457,
+          6.1
+        ]
+      },
+      "materials": 3,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Race_Grandstand_01_Detailed.fbx",
+      "root": "Prop_Race_Grandstand_01",
+      "stats": {
+        "meshes": 91,
+        "vertices": 8160,
+        "polygons": 7910,
+        "triangles": 15956,
+        "dimensions_m": [
+          21.1,
+          8.5,
+          6.8
+        ],
+        "bounds_min_m": [
+          -10.55,
+          -3.85,
+          -0.0
+        ],
+        "bounds_max_m": [
+          10.55,
+          4.65,
+          6.8
+        ]
+      },
+      "materials": 4,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Race_Grandstand_01_LOD1.fbx",
+      "root": "Prop_Race_Grandstand_01",
+      "stats": {
+        "meshes": 91,
+        "vertices": 3484,
+        "polygons": 6604,
+        "triangles": 6604,
+        "dimensions_m": [
+          21.0957,
+          8.4866,
+          6.8
+        ],
+        "bounds_min_m": [
+          -10.5479,
+          -3.8433,
+          -0.0
+        ],
+        "bounds_max_m": [
+          10.5479,
+          4.6433,
+          6.8
+        ]
+      },
+      "materials": 4,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Reed_Cluster_01_Detailed.fbx",
+      "root": "Prop_Reed_Cluster_01",
+      "stats": {
+        "meshes": 98,
+        "vertices": 5600,
+        "polygons": 5684,
+        "triangles": 10808,
+        "dimensions_m": [
+          3.1693,
+          2.487,
+          2.5348
+        ],
+        "bounds_min_m": [
+          -1.4825,
+          -1.2391,
+          -0.0106
+        ],
+        "bounds_max_m": [
+          1.6868,
+          1.2478,
+          2.5242
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Reed_Cluster_01_LOD1.fbx",
+      "root": "Prop_Reed_Cluster_01",
+      "stats": {
+        "meshes": 98,
+        "vertices": 2436,
+        "polygons": 4480,
+        "triangles": 4480,
+        "dimensions_m": [
+          3.1569,
+          2.4872,
+          2.5245
+        ],
+        "bounds_min_m": [
+          -1.4829,
+          -1.2393,
+          -0.0001
+        ],
+        "bounds_max_m": [
+          1.674,
+          1.2479,
+          2.5244
+        ]
+      },
+      "materials": 2,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Roadside_Shrine_01_Detailed.fbx",
+      "root": "Prop_Roadside_Shrine_01",
+      "stats": {
+        "meshes": 11,
+        "vertices": 868,
+        "polygons": 828,
+        "triangles": 1692,
+        "dimensions_m": [
+          2.8577,
+          1.9,
+          3.7657
+        ],
+        "bounds_min_m": [
+          -1.4289,
+          -1.0,
+          -0.0
+        ],
+        "bounds_max_m": [
+          1.4289,
+          0.9,
+          3.7657
+        ]
+      },
+      "materials": 5,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Roadside_Shrine_01_LOD1.fbx",
+      "root": "Prop_Roadside_Shrine_01",
+      "stats": {
+        "meshes": 11,
+        "vertices": 369,
+        "polygons": 694,
+        "triangles": 694,
+        "dimensions_m": [
+          2.8454,
+          1.8935,
+          3.7539
+        ],
+        "bounds_min_m": [
+          -1.4227,
+          -0.9968,
+          0.0065
+        ],
+        "bounds_max_m": [
+          1.4227,
+          0.8968,
+          3.7604
+        ]
+      },
+      "materials": 5,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Stone_Bridge_01_Detailed.fbx",
+      "root": "Prop_Stone_Bridge_01",
+      "stats": {
+        "meshes": 18,
+        "vertices": 1408,
+        "polygons": 1376,
+        "triangles": 2752,
+        "dimensions_m": [
+          12.0,
+          4.6,
+          5.54
+        ],
+        "bounds_min_m": [
+          -6.0,
+          -2.3,
+          -1.77
+        ],
+        "bounds_max_m": [
+          6.0,
+          2.3,
+          3.77
+        ]
+      },
+      "materials": 1,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Stone_Bridge_01_LOD1.fbx",
+      "root": "Prop_Stone_Bridge_01",
+      "stats": {
+        "meshes": 18,
+        "vertices": 598,
+        "polygons": 1132,
+        "triangles": 1132,
+        "dimensions_m": [
+          12.0,
+          4.6,
+          5.5334
+        ],
+        "bounds_min_m": [
+          -6.0,
+          -2.3,
+          -1.77
+        ],
+        "bounds_max_m": [
+          6.0,
+          2.3,
+          3.7634
+        ]
+      },
+      "materials": 1,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Vineyard_Rows_01_Detailed.fbx",
+      "root": "Prop_Vineyard_Rows_01",
+      "stats": {
+        "meshes": 116,
+        "vertices": 5896,
+        "polygons": 6084,
+        "triangles": 11328,
+        "dimensions_m": [
+          12.0,
+          8.0,
+          1.6733
+        ],
+        "bounds_min_m": [
+          -6.0,
+          -4.0,
+          -0.0
+        ],
+        "bounds_max_m": [
+          6.0,
+          4.0,
+          1.6733
+        ]
+      },
+      "materials": 4,
+      "missing_uv": [],
+      "invalid_values": [],
+      "armatures": [],
+      "actions": []
+    },
+    {
+      "file": "game_assets/environment/variety/Prop_Vineyard_Rows_01_LOD1.fbx",
+      "root": "Prop_Vineyard_Rows_01",
+      "stats": {
+        "meshes": 116,
+        "vertices": 2584,
+        "polygons": 4704,
+        "triangles": 4704,
+        "dimensions_m": [
+          11.9931,
+          8.0,
+          1.6414
+        ],
+        "bounds_min_m": [
+          -5.9965,
+          -4.0,
+          0.0035
+        ],
+        "bounds_max_m": [
+          5.9965,
+          4.0,
+          1.6449
+        ]
+      },
+      "materials": 4,
       "missing_uv": [],
       "invalid_values": [],
       "armatures": [],

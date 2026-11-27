@@ -19,6 +19,7 @@ public class RaceHUD : MonoBehaviour
     private Text deltaText;
     private Text speedText;
     private Text gearText;
+    private Text boostText;
     private Text rpmText;
     private Text engineText;
     private Text tempText;
@@ -30,6 +31,7 @@ public class RaceHUD : MonoBehaviour
     private Text controlsText;
     private Image tempBar;
     private Image damageBar;
+    private Image boostBar;
     private HUDGaugeUI speedGauge;
     private HUDGaugeUI rpmGauge;
     private TrackMapUI minimap;
@@ -74,7 +76,7 @@ public class RaceHUD : MonoBehaviour
         BuildInstruments();
 
         UIUtils.Button(canvas.transform, "Repair", "Ремонт · 50", new Vector2(0.45f, 0.055f), new Vector2(0.58f, 0.105f), Vector2.zero, Vector2.zero, () => race.PlayerRepair(), 16);
-        controlsText = UIUtils.Text(canvas.transform, "Controls", "W/S · газ/тормоз   A/D · руль   SHIFT · сцепление   1–4 / R · передачи\nSPACE · ручник   BACKSPACE · вернуть   C · камера   ESC · пауза   ·   ГЕЙМПАД: RT/LT, СТИКИ, Y/B/C", 11, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.25f, 0.003f), new Vector2(0.65f, 0.035f), Vector2.zero, Vector2.zero);
+        controlsText = UIUtils.Text(canvas.transform, "Controls", "W/S · газ/тормоз   A/D · руль   SHIFT · сцепление   1–4 / R · передачи\nSPACE · ручник   N · усиление   BACKSPACE · вернуть   C · камера   ESC · пауза   ·   ГЕЙМПАД: RT/LT, СТИКИ, Y/B/C", 11, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.25f, 0.003f), new Vector2(0.65f, 0.035f), Vector2.zero, Vector2.zero);
         countdownText = UIUtils.Text(canvas.transform, "Countdown", "", 90, UITheme.Cream, TextAnchor.MiddleCenter, new Vector2(0.30f, 0.38f), new Vector2(0.70f, 0.62f), Vector2.zero, Vector2.zero, UITheme.TitleFont);
         Outline countdownOutline = countdownText.gameObject.AddComponent<Outline>();
         countdownOutline.effectColor = new Color(0f, 0f, 0f, 0.85f);
@@ -137,6 +139,8 @@ public class RaceHUD : MonoBehaviour
         speedGauge.SetRange(0f, 180f);
         speedText = UIUtils.Text(canvas.transform, "Speed", "0", 64, UITheme.Cream, TextAnchor.MiddleCenter, new Vector2(0.74f, 0.265f), new Vector2(0.93f, 0.35f), Vector2.zero, Vector2.zero, UITheme.TitleFont);
         UIUtils.Text(canvas.transform, "SpeedUnit", "КМ/Ч", 14, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.74f, 0.225f), new Vector2(0.93f, 0.265f), Vector2.zero, Vector2.zero);
+        boostText = UIUtils.Text(canvas.transform, "Boost", "УСИЛЕНИЕ · N 100%", 10, UITheme.Brass, TextAnchor.MiddleCenter, new Vector2(0.74f, 0.202f), new Vector2(0.94f, 0.224f), Vector2.zero, Vector2.zero);
+        boostBar = Bar(canvas.transform, "BoostBar", new Vector2(0.74f, 0.195f), new Vector2(0.94f, 0.199f), UITheme.Success);
         gearText = UIUtils.Text(canvas.transform, "Gear", "1", 42, UITheme.Brass, TextAnchor.MiddleCenter, new Vector2(0.675f, 0.075f), new Vector2(0.775f, 0.15f), Vector2.zero, Vector2.zero, UITheme.TitleFont);
         UIUtils.Text(canvas.transform, "GearLabel", "ПЕРЕДАЧА", 10, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.675f, 0.062f), new Vector2(0.775f, 0.088f), Vector2.zero, Vector2.zero);
         RectTransform rpmRect = UIUtils.Rect(canvas.transform, "RPMGauge", new Vector2(0.79f, 0.065f), new Vector2(0.965f, 0.19f), Vector2.zero, Vector2.zero);
@@ -200,6 +204,10 @@ public class RaceHUD : MonoBehaviour
             damageText.text = $"Повреждения {Mathf.RoundToInt(vehicle.damage)}%";
             speedGauge.SetValue(shownSpeed);
             rpmGauge.SetValue(vehicle.rpm);
+            boostText.text = $"УСИЛЕНИЕ · N {Mathf.RoundToInt(vehicle.BoostCharge * 100f)}%";
+            boostText.color = vehicle.BoostActive ? UITheme.Success : UITheme.Brass;
+            boostBar.rectTransform.anchorMax = new Vector2(Mathf.Clamp01(vehicle.BoostCharge), 1f);
+            boostBar.color = vehicle.BoostActive ? UITheme.Success : UITheme.Brass;
             tempBar.rectTransform.anchorMax = new Vector2(Mathf.Clamp01(vehicle.temperature / 120f), 1f);
             damageBar.rectTransform.anchorMax = new Vector2(Mathf.Clamp01(vehicle.damage / 100f), 1f);
             if (minimap != null && playerMarker != null)

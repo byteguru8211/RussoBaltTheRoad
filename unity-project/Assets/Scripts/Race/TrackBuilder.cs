@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class TrackBuilder : MonoBehaviour
 {
     public TrackData track;
-    public int sampleCount = 220;
+    public float sampleSpacingMeters = 2f;
     public int checkpointCount = 12;
     public TrackEnvironmentProfile environmentProfile;
 
@@ -18,9 +18,11 @@ public class TrackBuilder : MonoBehaviour
     public Vector3 StartPoint => Samples.Count > 0 ? Samples[0] : Vector3.zero;
     public Vector3 StartTangent => Tangents.Count > 0 ? Tangents[0] : Vector3.forward;
     public const float RoadSurfaceOffset = 0.045f;
-    public const float StartSafeZoneMeters = 25f;
+    public const int CheckpointFrameLayer = 6;
+    public const float StartSafeZoneMeters = 40f;
     public float Wetness { get; private set; }
 
+    private int sampleCount;
     private readonly List<Vector3> rights = new List<Vector3>();
     private readonly List<Vector3> normals = new List<Vector3>();
     private readonly List<float> distances = new List<float>();
@@ -71,11 +73,13 @@ public class TrackBuilder : MonoBehaviour
         normals.Clear();
         distances.Clear();
         TrackLength = 0f;
-        sampleCount = Mathf.Clamp(sampleCount, 32, 512);
         checkpointCount = Mathf.Clamp(checkpointCount, 2, 64);
         if (track.waypoints == null || track.waypoints.Length < 4) track.waypoints = DefaultLoop();
         EffectiveSections = track.GetSections();
         route = new TrackRoute(track);
+        sampleCount = Mathf.Clamp(Mathf.CeilToInt(route.Length / Mathf.Max(0.75f, sampleSpacingMeters)), 96, 1024);
+        string routeValidation = route.Validate(track.roadWidth, 6f);
+        if (!string.IsNullOrWhiteSpace(routeValidation)) Debug.LogWarning($"Track {track.id}: {routeValidation}");
 
         ResolveProfile();
         generatedRoot = new GameObject("Track_Generated");
@@ -691,7 +695,8 @@ public class TrackBuilder : MonoBehaviour
             marker.transform.localPosition = new Vector3(0f, 4.65f, 0f);
             marker.transform.localScale = new Vector3(track.roadWidth + 0.9f, 0.2f, 0.2f);
             marker.GetComponent<MeshRenderer>().sharedMaterial = bannerMaterial;
-            marker.GetComponent<Collider>().enabled = false;
+            marker.layer = CheckpointFrameLayer;
+            marker.GetComponent<Collider>().enabled = true;
             marker.isStatic = true;
             for (int side = -1; side <= 1; side += 2)
             {
@@ -701,7 +706,8 @@ public class TrackBuilder : MonoBehaviour
                 post.transform.localPosition = new Vector3(side * (half + 0.38f), 2.25f, 0f);
                 post.transform.localScale = new Vector3(0.16f, 4.65f, 0.16f);
                 post.GetComponent<MeshRenderer>().sharedMaterial = metalMaterial;
-                post.GetComponent<Collider>().enabled = false;
+                post.layer = CheckpointFrameLayer;
+                post.GetComponent<Collider>().enabled = true;
                 post.isStatic = true;
             }
         }

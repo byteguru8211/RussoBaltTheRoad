@@ -15,6 +15,7 @@ public class TrackTerrainBuilder
     private IReadOnlyList<Vector3> samples;
     private float[] sampleDistances;
     private TrackEnvironmentProfile profile;
+    private float edgeFadeStart;
     private int seed;
 
     public void Build(Transform parent, TrackEnvironmentProfile environment, TrackBuilder builder, Material groundMaterial, Material snowMaterial, float halfRoadWidth, int randomSeed)
@@ -32,8 +33,6 @@ public class TrackTerrainBuilder
         seed = randomSeed;
         roadHalfWidth = halfRoadWidth;
         shoulderWidth = environment.shoulderWidth;
-        Resolution = Mathf.Clamp(environment.terrainResolution, 65, 257);
-        Size = environment.terrainSize;
 
         Vector3 min = samples[0];
         Vector3 max = samples[0];
@@ -43,6 +42,13 @@ public class TrackTerrainBuilder
             max = Vector3.Max(max, samples[i]);
         }
         Center = new Vector3((min.x + max.x) * 0.5f, 0f, (min.z + max.z) * 0.5f);
+        float routeExtent = Mathf.Max(max.x - min.x, max.z - min.z);
+        float roadsideMargin = roadHalfWidth + shoulderWidth + environment.barrierOffset + environment.roadCutBlend + 36f;
+        Size = Mathf.Ceil(Mathf.Max(environment.terrainSize, routeExtent + roadsideMargin * 2f) / 20f) * 20f;
+        Resolution = Mathf.Clamp(Mathf.Max(environment.terrainResolution, Mathf.CeilToInt(Size / 3f) + 1), 65, 385);
+        edgeFadeStart = Mathf.Min(Size * 0.46f, Mathf.Max(
+            routeExtent * 0.5f + roadHalfWidth + shoulderWidth + environment.barrierOffset + environment.roadCutBlend + 10f,
+            Size * 0.32f));
         Origin = new Vector3(Center.x - Size * 0.5f, -160f, Center.z - Size * 0.5f);
         heights = new float[Resolution, Resolution];
         List<Vector3> vertices = new List<Vector3>(Resolution * Resolution);
@@ -93,7 +99,7 @@ public class TrackTerrainBuilder
                 }
                 height = ApplyBridgeCarvings(builder, along, nearestDistance, roadHeight, height, corridor);
                 float edgeDistance = Mathf.Max(Mathf.Abs(worldX - Center.x), Mathf.Abs(worldZ - Center.z));
-                float edgeFade = SmoothStep(Size * 0.36f, Size * 0.5f, edgeDistance);
+                float edgeFade = SmoothStep(edgeFadeStart, Size * 0.5f, edgeDistance);
                 height = Mathf.Lerp(height, profile.seaEnabled ? profile.seaLevel - 3f : -6f, edgeFade);
                 heights[z, x] = height;
                 vertices.Add(new Vector3(worldX, height, worldZ));

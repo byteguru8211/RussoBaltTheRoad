@@ -503,37 +503,6 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
---- !u!1 &1980212920695610591
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3378193062421722348}
-  m_Layer: 0
-  m_Name: RB_DriverSeat
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3378193062421722348
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980212920695610591}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.19, y: 0.52999973, z: -0.9000001}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4578946842499514555}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2316219362961078804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1875,6 +1844,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4578946842499514555}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5908326812390197928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6514319105249430383}
+  m_Layer: 0
+  m_Name: RB_DriverSeat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6514319105249430383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5908326812390197928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.19, y: 0.52999973, z: -0.9000001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4578946842499514555}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6266378666421763651
 GameObject:
   m_ObjectHideFlags: 0
@@ -2649,13 +2649,13 @@ Transform:
   - {fileID: 6709570553618156287}
   - {fileID: 1734850217517727644}
   - {fileID: 726226197819856621}
-  - {fileID: 3586149905529343720}
-  - {fileID: 3378193062421722348}
   - {fileID: 6155419488215448843}
   - {fileID: 405735609726890681}
   - {fileID: 8660347171303126232}
   - {fileID: 4369765846673262490}
   - {fileID: 6554556632697675412}
+  - {fileID: 3510669792698823093}
+  - {fileID: 6514319105249430383}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4787927538140295577
@@ -2716,7 +2716,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14ab0e01a2a5edc4ab6b649fa36568fc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleController1912
   frontLeft: {fileID: 8355387795215550554}
   frontRight: {fileID: 2840403558837306558}
@@ -2748,6 +2748,7 @@ MonoBehaviour:
   isPlayer: 1
   automaticTransmission: 1
   idleRpm: 650
+  launchRpm: 1200
   rpmLimiter: 2300
   shiftUpRpm: 2050
   shiftDownRpm: 850
@@ -2782,7 +2783,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3f3c5ccbe1da5b4293dcba24042441c, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleInput1912
   vehicle: {fileID: 8369551682164968589}
   cameraController: {fileID: 0}
@@ -2796,7 +2797,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0927af18703a5b348bda5b74b2e83d31, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EngineAudio1912
   vehicle: {fileID: 8369551682164968589}
   roadSource: {fileID: 0}
@@ -2814,7 +2815,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9152df5a30b70d439461654d44fcffb, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
   vehicle: {fileID: 8369551682164968589}
   dustSocket: {fileID: 6155419488215448843}
@@ -2825,6 +2826,7 @@ MonoBehaviour:
   automaticHeadlamps: 1
   headlampIntensity: 3.2
   headlampRange: 32
+  headlampEmissionColor: {r: 3.2, g: 1.15, b: 0.26, a: 1}
   surfaceMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2951,7 +2953,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &8530097134499127512
+--- !u!1001 &8582745862613278597
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -2961,16 +2963,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: vehicle
-      value:
+      value: 
       objectReference: {fileID: 8369551682164968589}
     - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: seatAnchor
-      value:
-      objectReference: {fileID: 3378193062421722348}
-    - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
-      propertyPath: useSeatAnchor
-      value: 1
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 6514319105249430383}
     - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.72
@@ -3032,8 +3030,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
---- !u!4 &3586149905529343720 stripped
+--- !u!4 &3510669792698823093 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
-  m_PrefabInstance: {fileID: 8530097134499127512}
+  m_PrefabInstance: {fileID: 8582745862613278597}
   m_PrefabAsset: {fileID: 0}

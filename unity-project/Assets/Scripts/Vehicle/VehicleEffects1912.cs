@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class VehicleEffects1912 : MonoBehaviour
@@ -18,6 +19,7 @@ public class VehicleEffects1912 : MonoBehaviour
     public bool automaticHeadlamps = true;
     public float headlampIntensity = 3.2f;
     public float headlampRange = 32f;
+    public Color headlampEmissionColor = new Color(3.2f, 1.15f, 0.26f);
     public LayerMask surfaceMask = ~0;
 
     private ParticleSystem dust;
@@ -31,6 +33,13 @@ public class VehicleEffects1912 : MonoBehaviour
     private SurfaceKind surface = SurfaceKind.None;
     private float surfaceRefreshTimer;
     private Camera viewCamera;
+    private bool singleRightExhaust;
+    private bool lampsOn;
+    private bool lastLampsOn;
+    private float lastHeadlampIntensity = -1f;
+    private MaterialPropertyBlock headlampProperties;
+    private Material headlampGlowMaterial;
+    private readonly List<Renderer> headlampFlameRenderers = new List<Renderer>();
 
     private void Awake()
     {
@@ -54,14 +63,36 @@ public class VehicleEffects1912 : MonoBehaviour
         float rear = -length * 0.43f;
         float rearAxle = vehicle != null && vehicle.rearLeft != null ? vehicle.rearLeft.transform.localPosition.z : rear;
         dustSocket = ResolveSocket(dustSocket, "DustTrail", new Vector3(0f, 0.16f, rearAxle));
-        leftExhaustSocket = ResolveSocket(leftExhaustSocket, "ExhaustSmoke_Left", new Vector3(-0.40f, 0.38f, rear));
-        rightExhaustSocket = ResolveSocket(rightExhaustSocket, "ExhaustSmoke_Right", new Vector3(0.40f, 0.38f, rear));
-
         dust = CreateSystem("DustTrail", dustSocket, dustMaterial, true);
-        leftExhaust = CreateSystem("ExhaustSmoke_Left", leftExhaustSocket, exhaustMaterial, false);
-        rightExhaust = CreateSystem("ExhaustSmoke_Right", rightExhaustSocket, exhaustMaterial, false);
+
+        singleRightExhaust = UsesSingleRightExhaust();
+        if (singleRightExhaust)
+        {
+            leftExhaustSocket = null;
+            leftExhaust = null;
+            rightExhaustSocket = ResolveSocket(rightExhaustSocket, "ExhaustSmoke_Right", new Vector3(0.70f, 0.35f, -length * 0.56f));
+            rightExhaustSocket.localPosition = new Vector3(0.70f, 0.35f, -length * 0.56f);
+            rightExhaustSocket.localRotation = Quaternion.identity;
+            rightExhaust = CreateSystem("ExhaustSmoke_Right", rightExhaustSocket, exhaustMaterial, false);
+        }
+        else
+        {
+            leftExhaustSocket = ResolveSocket(leftExhaustSocket, "ExhaustSmoke_Left", new Vector3(-0.40f, 0.38f, rear));
+            rightExhaustSocket = ResolveSocket(rightExhaustSocket, "ExhaustSmoke_Right", new Vector3(0.40f, 0.38f, rear));
+            leftExhaust = CreateSystem("ExhaustSmoke_Left", leftExhaustSocket, exhaustMaterial, false);
+            rightExhaust = CreateSystem("ExhaustSmoke_Right", rightExhaustSocket, exhaustMaterial, false);
+        }
+
+        headlampGlowMaterial = RaceMaterialFactory.CreateLit("Runtime_Acetylene_Flame_Lens", new Color(1f, 0.72f, 0.38f), 0.42f);
+        headlampGlowMaterial.SetColor("_EmissionColor", headlampEmissionColor);
+        headlampGlowMaterial.EnableKeyword("_EMISSION");
+        headlampGlowMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+        RaceMaterialFactory.MakeTransparent(headlampGlowMaterial, new Color(1f, 0.72f, 0.38f, 0.9f));
+
         CreateHeadlamp(leftHeadlampSocket, "Headlamp_Left", new Vector3(-0.52f, 0.78f, length * 0.44f), out leftHeadlamp);
         CreateHeadlamp(rightHeadlampSocket, "Headlamp_Right", new Vector3(0.52f, 0.78f, length * 0.44f), out rightHeadlamp);
+        headlampProperties = new MaterialPropertyBlock();
+        CollectHeadlampFlames();
     }
 
     private Transform ResolveSocket(Transform assigned, string name, Vector3 fallback)
@@ -82,6 +113,59 @@ public class VehicleEffects1912 : MonoBehaviour
         return null;
     }
 
+    private bool UsesSingleRightExhaust()
+    {
+        string vehicleName = transform.name;
+        if (vehicleName.IndexOf("russo", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            return true;
+
+        bool russoBaltModel = false;
+        bool namedLeft = false;
+        bool namedRight = false;
+        foreach (Transform child in GetComponentsInChildren<Transform>(true))
+        {
+            if (child.name.StartsWith("RB_", System.StringComparison.OrdinalIgnoreCase))
+                russoBaltModel = true;
+            if (child.name.IndexOf("Exhaust", System.StringComparison.OrdinalIgnoreCase) < 0)
+                continue;
+            if (child.name.IndexOf("Left", System.StringComparison.OrdinalIgnoreCase) >= 0) namedLeft = true;
+            if (child.name.IndexOf("Right", System.StringComparison.OrdinalIgnoreCase) >= 0) namedRight = true;
+        }
+        if (russoBaltModel || (namedRight && !namedLeft))
+            return true;
+        if (leftExhaustSocket == null && rightExhaustSocket != null)
+            return true;
+        if (leftExhaustSocket != null && rightExhaustSocket != null)
+        {
+            Vector3 left = transform.InverseTransformPoint(leftExhaustSocket.position);
+            Vector3 right = transform.InverseTransformPoint(rightExhaustSocket.position);
+            if (Mathf.Abs(left.x) < 0.08f && right.x > 0.08f)
+                return true;
+        }
+        return false;
+    }
+
+    private void CollectHeadlampFlames()
+    {
+        headlampProperties.SetColor("_EmissionColor", Color.black);
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>(true))
+        {
+            bool isFlame = false;
+            foreach (Material material in renderer.sharedMaterials)
+            {
+                if (material != null && material.name.IndexOf("Acetylene_Flame", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    isFlame = true;
+                    break;
+                }
+            }
+            if (!isFlame) continue;
+            headlampFlameRenderers.Add(renderer);
+            renderer.enabled = false;
+            renderer.SetPropertyBlock(headlampProperties);
+        }
+    }
+
     private ParticleSystem CreateSystem(string name, Transform socket, Material material, bool isDust)
     {
         socket.name = name;
@@ -90,23 +174,35 @@ public class VehicleEffects1912 : MonoBehaviour
         system.Stop();
         ParticleSystem.MainModule main = system.main;
         main.loop = true;
-        main.startLifetime = isDust ? new ParticleSystem.MinMaxCurve(0.45f, 0.95f) : new ParticleSystem.MinMaxCurve(0.42f, 0.88f);
-        main.startSpeed = isDust ? new ParticleSystem.MinMaxCurve(0.18f, 0.62f) : new ParticleSystem.MinMaxCurve(0.16f, 0.38f);
-        main.startSize = isDust ? new ParticleSystem.MinMaxCurve(0.10f, 0.22f) : new ParticleSystem.MinMaxCurve(0.065f, 0.13f);
-        main.startColor = isDust ? new Color(0.48f, 0.38f, 0.25f, 0.20f) : new Color(0.24f, 0.25f, 0.24f, 0.11f);
-        main.gravityModifier = isDust ? 0.04f : -0.015f;
+        main.startLifetime = isDust ? new ParticleSystem.MinMaxCurve(0.70f, 1.30f) : new ParticleSystem.MinMaxCurve(1.20f, 2.40f);
+        main.startSpeed = isDust ? new ParticleSystem.MinMaxCurve(0.25f, 0.85f) : new ParticleSystem.MinMaxCurve(0.50f, 1.60f);
+        main.startSize = isDust ? new ParticleSystem.MinMaxCurve(0.16f, 0.34f) : new ParticleSystem.MinMaxCurve(0.08f, 0.18f);
+        // Keep start alpha at one: the lifetime gradient is the only alpha multiplier.
+        main.startColor = new ParticleSystem.MinMaxGradient(isDust
+            ? new Color(0.62f, 0.53f, 0.42f, 1f)
+            : new Color(0.42f, 0.41f, 0.38f, 1f));
+        main.gravityModifier = isDust ? 0.025f : -0.025f;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.maxParticles = isDust ? 48 : 12;
+        main.maxParticles = isDust ? 64 : 18;
         main.stopAction = ParticleSystemStopAction.None;
         main.scalingMode = ParticleSystemScalingMode.Hierarchy;
         main.playOnAwake = false;
 
         ParticleSystem.ShapeModule shape = system.shape;
-        shape.shapeType = ParticleSystemShapeType.Cone;
-        shape.angle = isDust ? 18f : 8f;
-        shape.radius = isDust ? 0.24f : 0.018f;
-        shape.length = isDust ? 0.12f : 0.04f;
-        shape.rotation = new Vector3(-90f, 0f, 0f);
+        if (isDust)
+        {
+            // A wide, low volume behind the rear axle avoids a single-point dust source.
+            shape.shapeType = ParticleSystemShapeType.Box;
+            shape.scale = new Vector3(1.30f, 0.025f, 0.18f);
+        }
+        else
+        {
+            shape.shapeType = ParticleSystemShapeType.Cone;
+            shape.angle = 8f;
+            shape.radius = 0.022f;
+            shape.length = 0.05f;
+            shape.rotation = new Vector3(socket.localPosition.z > 0f ? 90f : -90f, 0f, 0f);
+        }
 
         ParticleSystem.EmissionModule emission = system.emission;
         emission.rateOverTime = 0f;
@@ -116,19 +212,22 @@ public class VehicleEffects1912 : MonoBehaviour
         gradient.SetKeys(new[]
         {
             new GradientColorKey(Color.white, 0f),
-            new GradientColorKey(isDust ? new Color(0.94f, 0.9f, 0.84f) : new Color(0.72f, 0.74f, 0.73f), 1f)
+            new GradientColorKey(isDust ? new Color(0.94f, 0.90f, 0.84f) : new Color(0.72f, 0.70f, 0.65f), 1f)
         }, new[]
         {
             new GradientAlphaKey(0f, 0f),
-            new GradientAlphaKey(isDust ? 0.20f : 0.095f, 0.16f),
-            new GradientAlphaKey(isDust ? 0.085f : 0.035f, 0.58f),
+            new GradientAlphaKey(isDust ? 0.18f : 0.16f, 0.16f),
+            new GradientAlphaKey(isDust ? 0.07f : 0.10f, 0.58f),
             new GradientAlphaKey(0f, 1f)
         });
         color.color = new ParticleSystem.MinMaxGradient(gradient);
 
         ParticleSystem.SizeOverLifetimeModule size = system.sizeOverLifetime;
         size.enabled = true;
-        AnimationCurve sizeCurve = new AnimationCurve(new Keyframe(0f, isDust ? 0.42f : 0.48f), new Keyframe(0.3f, 1f), new Keyframe(1f, isDust ? 1.75f : 1.5f));
+        AnimationCurve sizeCurve = new AnimationCurve(
+            new Keyframe(0f, 0.55f),
+            new Keyframe(0.30f, 1f),
+            new Keyframe(1f, isDust ? 1.90f : 1.75f));
         size.size = new ParticleSystem.MinMaxCurve(1f, sizeCurve);
         ParticleSystem.RotationOverLifetimeModule rotation = system.rotationOverLifetime;
         rotation.enabled = true;
@@ -143,8 +242,8 @@ public class VehicleEffects1912 : MonoBehaviour
         renderer.renderMode = ParticleSystemRenderMode.Billboard;
         renderer.alignment = ParticleSystemRenderSpace.View;
         renderer.sortMode = ParticleSystemSortMode.YoungestInFront;
-        renderer.minParticleSize = 0.01f;
-        renderer.maxParticleSize = 1.4f;
+        renderer.minParticleSize = 0.005f;
+        renderer.maxParticleSize = isDust ? 0.90f : 0.55f;
         renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         renderer.receiveShadows = false;
         system.Play();
@@ -161,6 +260,19 @@ public class VehicleEffects1912 : MonoBehaviour
             socketObject.transform.localPosition = fallback;
             socket = socketObject.transform;
         }
+        if (headlampGlowMaterial != null)
+        {
+            GameObject lens = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            lens.name = name + "_LensGlow";
+            lens.transform.SetParent(socket, false);
+            lens.transform.localPosition = new Vector3(0f, 0.25f, 0f);
+            lens.transform.localScale = new Vector3(0.15f, 0.15f, 0.07f);
+            MeshRenderer lensRenderer = lens.GetComponent<MeshRenderer>();
+            lensRenderer.sharedMaterial = headlampGlowMaterial;
+            lensRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            lensRenderer.receiveShadows = false;
+            Destroy(lens.GetComponent<Collider>());
+        }
         lamp = socket.GetComponent<Light>();
         if (lamp == null) lamp = socket.gameObject.AddComponent<Light>();
         lamp.type = LightType.Spot;
@@ -175,7 +287,7 @@ public class VehicleEffects1912 : MonoBehaviour
 
     private void Update()
     {
-        if (vehicle == null || dust == null || leftExhaust == null || rightExhaust == null) return;
+        if (vehicle == null || dust == null) return;
         if (viewCamera == null) viewCamera = Camera.main;
         surfaceRefreshTimer -= Time.deltaTime;
         if (surfaceRefreshTimer <= 0f)
@@ -192,34 +304,65 @@ public class VehicleEffects1912 : MonoBehaviour
         float distanceFade = vehicle.isPlayer ? 1f : Mathf.Clamp01((90f - cameraDistance) / 30f);
         float surfaceDust = surface switch
         {
-            SurfaceKind.Snow => 0.55f,
-            SurfaceKind.Ice => 0.08f,
-            SurfaceKind.Cobblestone => 0.22f,
-            SurfaceKind.Stone => 0.25f,
-            SurfaceKind.Grass => 0.8f,
+            SurfaceKind.Snow => 0.45f,
+            SurfaceKind.Ice => 0.05f,
+            SurfaceKind.Cobblestone => 0.18f,
+            SurfaceKind.Stone => 0.20f,
+            SurfaceKind.Grass => 0.85f,
             SurfaceKind.None => 0f,
             _ => 1f
         };
         float dustRate = surface != SurfaceKind.None && Mathf.Abs(vehicle.SpeedKmh) > 4f
-            ? (2.5f + speed * 10f + slip * 7f) * surfaceDust * viewFade * distanceFade
+            ? (3f + speed * 7f + slip * 4f) * surfaceDust * viewFade * distanceFade
             : 0f;
         ParticleSystem.EmissionModule dustEmission = dust.emission;
         dustEmission.rateOverTime = dustRate;
         ParticleSystem.MainModule dustMain = dust.main;
-        float sizeMultiplier = surface == SurfaceKind.Snow ? 1.12f : 1f;
-        dustMain.startSize = new ParticleSystem.MinMaxCurve((0.10f + speed * 0.10f) * sizeMultiplier, (0.20f + speed * 0.18f) * sizeMultiplier);
+        float sizeMultiplier = surface == SurfaceKind.Snow ? 0.95f : 1f;
+        dustMain.startSize = new ParticleSystem.MinMaxCurve((0.16f + speed * 0.08f) * sizeMultiplier, (0.34f + speed * 0.12f) * sizeMultiplier);
         dustMain.startColor = SurfaceColor(surface);
 
         float load = Mathf.Clamp01(vehicle.rpm / Mathf.Max(1f, vehicle.rpmLimiter));
-        float exhaustRate = vehicle.engineRunning ? (0.10f + vehicle.Throttle * 0.72f + load * 0.16f) * distanceFade : 0f;
-        ParticleSystem.EmissionModule leftEmission = leftExhaust.emission;
-        ParticleSystem.EmissionModule rightEmission = rightExhaust.emission;
-        leftEmission.rateOverTime = exhaustRate * 0.5f;
-        rightEmission.rateOverTime = exhaustRate * 0.5f;
+        float throttle = Mathf.Clamp01(vehicle.Throttle);
+        bool engineActive = vehicle.engineRunning && vehicle.enabled;
+        float exhaustRate = engineActive
+            ? Mathf.Lerp(0.22f, 3.20f, Mathf.Pow(throttle, 0.65f)) * Mathf.Lerp(0.90f, 1f, load) * distanceFade
+            : 0f;
+        if (leftExhaust != null)
+        {
+            ParticleSystem.EmissionModule leftEmission = leftExhaust.emission;
+            leftEmission.rateOverTime = exhaustRate * 0.5f;
+        }
+        if (rightExhaust != null)
+        {
+            ParticleSystem.EmissionModule rightEmission = rightExhaust.emission;
+            rightEmission.rateOverTime = exhaustRate * (singleRightExhaust ? 1f : 0.5f);
+        }
 
-        bool lampsOn = automaticHeadlamps && vehicle.engineRunning;
+        lampsOn = automaticHeadlamps && vehicle.engineRunning;
         if (leftHeadlamp != null) leftHeadlamp.enabled = lampsOn;
         if (rightHeadlamp != null) rightHeadlamp.enabled = lampsOn;
+        UpdateHeadlampFlames();
+    }
+
+    private void UpdateHeadlampFlames()
+    {
+        if (headlampFlameRenderers.Count == 0)
+            return;
+        float emissionScale = lampsOn ? Mathf.Clamp(headlampIntensity / 3.2f, 0f, 1.5f) : 0f;
+        if (lampsOn == lastLampsOn && Mathf.Abs(emissionScale - lastHeadlampIntensity) < 0.001f)
+            return;
+        lastLampsOn = lampsOn;
+        lastHeadlampIntensity = emissionScale;
+
+        headlampProperties.Clear();
+        headlampProperties.SetColor("_EmissionColor", headlampEmissionColor * emissionScale);
+        foreach (Renderer renderer in headlampFlameRenderers)
+        {
+            if (renderer == null) continue;
+            renderer.enabled = lampsOn;
+            renderer.SetPropertyBlock(headlampProperties);
+        }
     }
 
     private float GetWheelSlip()
@@ -295,11 +438,11 @@ public class VehicleEffects1912 : MonoBehaviour
     {
         switch (kind)
         {
-            case SurfaceKind.Snow: return new Color(0.96f, 0.98f, 1f, 0.24f);
+            case SurfaceKind.Snow: return new Color(0.96f, 0.98f, 1f, 1f);
             case SurfaceKind.Cobblestone:
-            case SurfaceKind.Stone: return new Color(0.72f, 0.68f, 0.6f, 0.12f);
-            case SurfaceKind.None: return new Color(0.48f, 0.38f, 0.25f, 0f);
-            default: return new Color(1.28f, 1.12f, 0.92f, 0.20f);
+            case SurfaceKind.Stone: return new Color(0.72f, 0.68f, 0.60f, 1f);
+            case SurfaceKind.None: return new Color(0.48f, 0.38f, 0.25f, 1f);
+            default: return new Color(0.82f, 0.72f, 0.58f, 1f);
         }
     }
 
@@ -334,6 +477,7 @@ public class VehicleEffects1912 : MonoBehaviour
     {
         if (dustMaterial != null) Destroy(dustMaterial);
         if (exhaustMaterial != null) Destroy(exhaustMaterial);
+        if (headlampGlowMaterial != null) Destroy(headlampGlowMaterial);
         if (generatedSmokeTexture != null) Destroy(generatedSmokeTexture);
     }
 }

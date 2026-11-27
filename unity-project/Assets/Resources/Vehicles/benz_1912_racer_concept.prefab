@@ -2242,6 +2242,37 @@ Transform:
   - {fileID: 450012231062927155}
   m_Father: {fileID: 6276364011985073165}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3647079070082936560
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6476922510039229604}
+  m_Layer: 0
+  m_Name: RB_DriverSeat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6476922510039229604
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3647079070082936560}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.32999998, y: 0.33999968, z: -0.59000003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6276364011985073165}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3712952458860963689
 GameObject:
   m_ObjectHideFlags: 0
@@ -2857,13 +2888,13 @@ Transform:
   - {fileID: 8742566319714576968}
   - {fileID: 8815441606263294985}
   - {fileID: 8185016846057091171}
-  - {fileID: 8404468778095475603}
-  - {fileID: 7979406516676176844}
   - {fileID: 1200367590260312201}
   - {fileID: 7352086618463606874}
   - {fileID: 5702646077287018514}
   - {fileID: 2047950027545187084}
   - {fileID: 7514105623642309687}
+  - {fileID: 6711134785240357186}
+  - {fileID: 6476922510039229604}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &6909773565709654160
@@ -2924,7 +2955,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14ab0e01a2a5edc4ab6b649fa36568fc, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleController1912
   frontLeft: {fileID: 5720685046290764801}
   frontRight: {fileID: 7493658137173127356}
@@ -2956,6 +2987,7 @@ MonoBehaviour:
   isPlayer: 1
   automaticTransmission: 1
   idleRpm: 650
+  launchRpm: 1200
   rpmLimiter: 2300
   shiftUpRpm: 2050
   shiftDownRpm: 850
@@ -2990,7 +3022,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3f3c5ccbe1da5b4293dcba24042441c, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleInput1912
   vehicle: {fileID: 5891874941940064571}
   cameraController: {fileID: 0}
@@ -3004,7 +3036,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0927af18703a5b348bda5b74b2e83d31, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EngineAudio1912
   vehicle: {fileID: 5891874941940064571}
   roadSource: {fileID: 0}
@@ -3022,7 +3054,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9152df5a30b70d439461654d44fcffb, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
   vehicle: {fileID: 5891874941940064571}
   dustSocket: {fileID: 1200367590260312201}
@@ -3033,6 +3065,7 @@ MonoBehaviour:
   automaticHeadlamps: 1
   headlampIntensity: 3.2
   headlampRange: 32
+  headlampEmissionColor: {r: 3.2, g: 1.15, b: 0.26, a: 1}
   surfaceMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -4389,37 +4422,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8165668477277180180
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7979406516676176844}
-  m_Layer: 0
-  m_Name: RB_DriverSeat
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7979406516676176844
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8165668477277180180}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.32999998, y: 0.33999968, z: -0.59000003}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6276364011985073165}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8282740532626043970
 GameObject:
   m_ObjectHideFlags: 0
@@ -5204,7 +5206,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &3676843453208630691
+--- !u!1001 &1911448150967695218
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -5214,16 +5216,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: vehicle
-      value:
+      value: 
       objectReference: {fileID: 5891874941940064571}
     - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: seatAnchor
-      value:
-      objectReference: {fileID: 7979406516676176844}
-    - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
-      propertyPath: useSeatAnchor
-      value: 1
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 6476922510039229604}
     - target: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.72
@@ -5285,8 +5283,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
---- !u!4 &8404468778095475603 stripped
+--- !u!4 &6711134785240357186 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5162372504467369520, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
-  m_PrefabInstance: {fileID: 3676843453208630691}
+  m_PrefabInstance: {fileID: 1911448150967695218}
   m_PrefabAsset: {fileID: 0}

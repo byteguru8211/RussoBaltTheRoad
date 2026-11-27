@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class DriverPrefabInstaller
 {
-    private const string DriverModelPath = "Assets/GameAssets/Characters/Driver_1912.fbx";
+    internal const string DriverModelPath = "Assets/GameAssets/Characters/Driver_1912.fbx";
     private const string DriverPrefabPath = "Assets/Resources/Characters/Driver_1912.prefab";
 
     [MenuItem("RussoBalt/Install Detailed Driver")]
@@ -18,6 +18,10 @@ public static class DriverPrefabInstaller
             Debug.LogError("Driver model not found: " + DriverModelPath);
             return;
         }
+
+        AnimationClip seatedClip = FindDriveClip(DriverModelPath);
+        if (seatedClip == null)
+            Debug.LogWarning("Drive animation clip not found in " + DriverModelPath);
 
         GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(model);
         instance.name = "Driver_1912";
@@ -33,6 +37,9 @@ public static class DriverPrefabInstaller
             controller = controllerOwner.AddComponent<DriverRigController>();
         controller.rigRoot = rig;
         controller.animator = animator;
+        controller.staticSeatedPose = true;
+        controller.seatedClip = seatedClip;
+        controller.headRenderer = instance.GetComponentInChildren<SkinnedMeshRenderer>(true);
         controller.hideHeadInCockpit = true;
         controller.useSeatAnchor = true;
         controller.leftGripLocal = new Vector3(-0.22f, 0f, 0f);
@@ -110,6 +117,28 @@ public static class DriverPrefabInstaller
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         Debug.Log("Detailed driver installed in vehicle prefabs");
+    }
+
+    internal static AnimationClip FindDriveClip(string modelPath)
+    {
+        Object[] assets = AssetDatabase.LoadAllAssetsAtPath(modelPath);
+        AnimationClip namedDrive = null;
+        AnimationClip rigDrive = null;
+        AnimationClip anyDrive = null;
+        foreach (Object asset in assets)
+        {
+            if (!(asset is AnimationClip clip))
+                continue;
+            if (string.Equals(clip.name, "Drive", System.StringComparison.OrdinalIgnoreCase))
+                namedDrive = clip;
+            if (!clip.name.EndsWith("Drive", System.StringComparison.OrdinalIgnoreCase))
+                continue;
+            if (anyDrive == null) anyDrive = clip;
+            if (clip.name.IndexOf("Rig", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                rigDrive = clip;
+        }
+        // FBX exports can contain both root and armature takes; only the armature take moves bones.
+        return rigDrive ?? namedDrive ?? anyDrive;
     }
 
     private static void CreateCharacterPrefab(string modelPath, string prefabPath, string objectName)

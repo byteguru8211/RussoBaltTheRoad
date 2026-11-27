@@ -57,15 +57,32 @@ public static class RegionalLandmarks
         Vector3 point = route.PointAt(progress);
         Vector3 right = route.RightAt(progress);
         Vector3 position = point + right * side * (track.roadWidth * 0.5f + clearance);
-        Physics.SyncTransforms();
-        float groundHeight = point.y;
-        if (Physics.Raycast(position + Vector3.up * 80f, Vector3.down, out RaycastHit hit, 160f, ~0, QueryTriggerInteraction.Ignore))
-            groundHeight = hit.point.y;
         Vector3 tangent = route.TangentAt(progress);
         tangent.y = 0f;
         if (tangent.sqrMagnitude < 0.001f) tangent = Vector3.forward;
         Quaternion rotation = Quaternion.LookRotation(tangent.normalized, Vector3.up);
         GameObject instance = RegionalSceneryRuntime.Instantiate(assetName, parent, position, rotation);
-        if (instance != null) TrackSceneryBuilder.GroundInstance(instance, groundHeight);
+        if (instance == null) return;
+
+        Bounds bounds = new Bounds();
+        bool initialized = false;
+        foreach (MeshRenderer renderer in instance.GetComponentsInChildren<MeshRenderer>())
+        {
+            if (!initialized)
+            {
+                bounds = renderer.bounds;
+                initialized = true;
+            }
+            else bounds.Encapsulate(renderer.bounds);
+        }
+        float radius = initialized ? Mathf.Max(bounds.extents.x, bounds.extents.z) : 1f;
+        for (int attempt = 0; attempt < 16 && !route.HasRoadClearance(position, radius); attempt++)
+            position += right * side * 1.5f;
+        instance.transform.position = position;
+        Physics.SyncTransforms();
+        float groundHeight = point.y;
+        if (Physics.Raycast(position + Vector3.up * 80f, Vector3.down, out RaycastHit hit, 160f, ~0, QueryTriggerInteraction.Ignore))
+            groundHeight = hit.point.y;
+        TrackSceneryBuilder.GroundInstance(instance, groundHeight);
     }
 }
