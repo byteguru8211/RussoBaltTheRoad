@@ -1446,6 +1446,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4613679495129581829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8660347171303126232}
+  m_Layer: 0
+  m_Name: ExhaustSmoke_Right
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8660347171303126232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4613679495129581829}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.4, y: 0.38, z: -1.51575}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4578946842499514555}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5071178715179369815
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,6 +1723,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5831506088110062524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6155419488215448843}
+  m_Layer: 0
+  m_Name: DustTrail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6155419488215448843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5831506088110062524}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.16, z: -1.85}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4578946842499514555}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5890489561591281538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,6 +1844,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5891618234604464973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4369765846673262490}
+  m_Layer: 0
+  m_Name: Headlamp_Left
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4369765846673262490
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5891618234604464973}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.52, y: 0.78, z: 1.551}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4578946842499514555}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6266378666421763651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1872,6 +1965,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6599515667642236509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 405735609726890681}
+  m_Layer: 0
+  m_Name: ExhaustSmoke_Left
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &405735609726890681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6599515667642236509}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.4, y: 0.38, z: -1.51575}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4578946842499514555}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7178574349876188904
 GameObject:
   m_ObjectHideFlags: 0
@@ -2421,6 +2545,37 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!1 &8849500613084277692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6554556632697675412}
+  m_Layer: 0
+  m_Name: Headlamp_Right
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6554556632697675412
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8849500613084277692}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.52, y: 0.78, z: 1.551}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4578946842499514555}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8852891708503320598
 GameObject:
   m_ObjectHideFlags: 0
@@ -2496,6 +2651,11 @@ Transform:
   - {fileID: 726226197819856621}
   - {fileID: 3586149905529343720}
   - {fileID: 3378193062421722348}
+  - {fileID: 6155419488215448843}
+  - {fileID: 405735609726890681}
+  - {fileID: 8660347171303126232}
+  - {fileID: 4369765846673262490}
+  - {fileID: 6554556632697675412}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &4787927538140295577
@@ -2556,19 +2716,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14ab0e01a2a5edc4ab6b649fa36568fc, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::VehicleController1912
   frontLeft: {fileID: 8355387795215550554}
   frontRight: {fileID: 2840403558837306558}
   rearLeft: {fileID: 5907095597008816740}
   rearRight: {fileID: 5540904910557412757}
-  frontLeftSteerVisual: {fileID: 2326549526902101438}
-  frontRightSteerVisual: {fileID: 9122319164259264788}
-  frontLeftSpinVisual: {fileID: 5765355986951925922}
-  frontRightSpinVisual: {fileID: 5667517599633436723}
-  rearLeftSpinVisual: {fileID: 2469463235592804857}
-  rearRightSpinVisual: {fileID: 5413330473009753689}
+  frontLeftSteerVisual: {fileID: 9122319164259264788}
+  frontRightSteerVisual: {fileID: 2326549526902101438}
+  frontLeftSpinVisual: {fileID: 5667517599633436723}
+  frontRightSpinVisual: {fileID: 5765355986951925922}
+  rearLeftSpinVisual: {fileID: 5413330473009753689}
+  rearRightSpinVisual: {fileID: 2469463235592804857}
   steeringWheelVisual: {fileID: 5242858784876754591}
+  steeringWheelAxis: {x: 0, y: 0.91, z: 0.414}
+  steeringWheelRatio: 4
+  cameraChasePosition: {x: 0, y: 2.95, z: -7.7}
+  cameraChaseLookAt: {x: 0, y: 1.05, z: 2.4}
+  cameraHoodPosition: {x: 0.23, y: 1.72, z: 0.82}
+  cameraHoodLookAt: {x: 0.23, y: 1.48, z: 16}
+  cameraCockpitPosition: {x: 0.19, y: 1.66, z: -0.12}
+  cameraCockpitLookAt: {x: 0.19, y: 1.46, z: 16}
+  cameraOrbitDistance: 8.5
   mass: 1650
   engineTorque: 520
   maxSteerAngle: 30
@@ -2596,10 +2765,10 @@ MonoBehaviour:
   speedSensitiveRollStability: 1.8
   speedSensitiveYawStability: 0.65
   gear: 1
-  engineRunning: 0
-  rpm: 600
+  engineRunning: 1
+  rpm: 650
   fuel: 100
-  temperature: 20
+  temperature: 72
   damage: 0
   distanceSinceReset: 0
   handCrankTimer: 0
@@ -2613,7 +2782,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3f3c5ccbe1da5b4293dcba24042441c, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::VehicleInput1912
   vehicle: {fileID: 8369551682164968589}
   cameraController: {fileID: 0}
@@ -2627,7 +2796,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0927af18703a5b348bda5b74b2e83d31, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::EngineAudio1912
   vehicle: {fileID: 8369551682164968589}
   roadSource: {fileID: 0}
@@ -2645,14 +2814,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9152df5a30b70d439461654d44fcffb, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::VehicleEffects1912
   vehicle: {fileID: 8369551682164968589}
-  dustSocket: {fileID: 0}
-  leftExhaustSocket: {fileID: 0}
-  rightExhaustSocket: {fileID: 0}
-  leftHeadlampSocket: {fileID: 0}
-  rightHeadlampSocket: {fileID: 0}
+  dustSocket: {fileID: 6155419488215448843}
+  leftExhaustSocket: {fileID: 405735609726890681}
+  rightExhaustSocket: {fileID: 8660347171303126232}
+  leftHeadlampSocket: {fileID: 4369765846673262490}
+  rightHeadlampSocket: {fileID: 6554556632697675412}
   automaticHeadlamps: 1
   headlampIntensity: 3.2
   headlampRange: 32
@@ -2718,7 +2887,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9103606171727428048}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.601815, y: 0, z: -0, w: 0.79863554}
+  m_LocalRotation: {x: -0.54097444, y: 0, z: 0, w: 0.841039}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2791,8 +2960,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 4578946842499514555}
     m_Modifications:
     - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
+      propertyPath: vehicle
+      value:
+      objectReference: {fileID: 8369551682164968589}
+    - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: seatAnchor
-      value: 
+      value:
       objectReference: {fileID: 3378193062421722348}
     - target: {fileID: 2907595980128481523, guid: f7cef1a57479d544692eaf90d5e0488c, type: 3}
       propertyPath: useSeatAnchor

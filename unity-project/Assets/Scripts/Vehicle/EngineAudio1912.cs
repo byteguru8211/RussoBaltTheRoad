@@ -75,11 +75,17 @@ public class EngineAudio1912 : MonoBehaviour
             source.clip = Resources.Load<AudioClip>($"Audio/{resource}");
         if (source.clip == null)
         {
+            // Keep the created source alive even if an optional resource is missing;
+            // callers can still configure it and a later clip assignment can be used.
             Debug.LogWarning($"Engine audio resource 'Audio/{resource}' is missing.", this);
-            return null;
+            source.volume = 0f;
+            return source;
         }
-        if (loop && !source.isPlaying)
-            source.Play();
+        if (loop)
+        {
+            source.volume = 0f;
+            if (!source.isPlaying) source.Play();
+        }
         return source;
     }
 
@@ -192,6 +198,8 @@ public class EngineAudio1912 : MonoBehaviour
             float weight = i == lower ? 1f - blend : i == upper ? blend : 0f;
             float targetVolume = engineAudible ? weight * engineVolume * audible : 0f;
             source.volume = Mathf.Lerp(source.volume, targetVolume, smoothing);
+            if (engineAudible && source.clip != null && !source.isPlaying)
+                source.Play();
             source.pitch = Mathf.Clamp(0.97f + normalized * 0.06f + vehicle.Throttle * 0.025f, 0.9f, 1.12f);
         }
 

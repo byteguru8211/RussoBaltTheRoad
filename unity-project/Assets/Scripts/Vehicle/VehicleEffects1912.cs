@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class VehicleEffects1912 : MonoBehaviour
 {
-    public enum SurfaceKind { None, Dirt, Snow, Stone }
+    public enum SurfaceKind { None, Dirt, Cobblestone, Snow, Ice, Grass, Stone }
 
     [Header("Vehicle")]
     public VehicleController1912 vehicle;
@@ -30,6 +30,7 @@ public class VehicleEffects1912 : MonoBehaviour
     private Light rightHeadlamp;
     private SurfaceKind surface = SurfaceKind.None;
     private float surfaceRefreshTimer;
+    private Camera viewCamera;
 
     private void Awake()
     {
@@ -48,15 +49,19 @@ public class VehicleEffects1912 : MonoBehaviour
         dustMaterial.SetFloat("_SoftParticlesEnabled", 1f);
         exhaustMaterial.SetFloat("_SoftParticlesEnabled", 1f);
 
-        dustSocket = ResolveSocket(dustSocket, "DustTrail", new Vector3(0f, 0.24f, -1.65f));
-        leftExhaustSocket = ResolveSocket(leftExhaustSocket, "ExhaustSmoke_Left", new Vector3(-0.43f, 0.42f, -1.75f));
-        rightExhaustSocket = ResolveSocket(rightExhaustSocket, "ExhaustSmoke_Right", new Vector3(0.43f, 0.42f, -1.75f));
+        BoxCollider hull = GetComponent<BoxCollider>();
+        float length = hull != null ? hull.size.z : 4.2f;
+        float rear = -length * 0.43f;
+        float rearAxle = vehicle != null && vehicle.rearLeft != null ? vehicle.rearLeft.transform.localPosition.z : rear;
+        dustSocket = ResolveSocket(dustSocket, "DustTrail", new Vector3(0f, 0.16f, rearAxle));
+        leftExhaustSocket = ResolveSocket(leftExhaustSocket, "ExhaustSmoke_Left", new Vector3(-0.40f, 0.38f, rear));
+        rightExhaustSocket = ResolveSocket(rightExhaustSocket, "ExhaustSmoke_Right", new Vector3(0.40f, 0.38f, rear));
 
         dust = CreateSystem("DustTrail", dustSocket, dustMaterial, true);
         leftExhaust = CreateSystem("ExhaustSmoke_Left", leftExhaustSocket, exhaustMaterial, false);
         rightExhaust = CreateSystem("ExhaustSmoke_Right", rightExhaustSocket, exhaustMaterial, false);
-        CreateHeadlamp(leftHeadlampSocket, "Headlamp_Left", new Vector3(-0.52f, 0.78f, 2.02f), out leftHeadlamp);
-        CreateHeadlamp(rightHeadlampSocket, "Headlamp_Right", new Vector3(0.52f, 0.78f, 2.02f), out rightHeadlamp);
+        CreateHeadlamp(leftHeadlampSocket, "Headlamp_Left", new Vector3(-0.52f, 0.78f, length * 0.44f), out leftHeadlamp);
+        CreateHeadlamp(rightHeadlampSocket, "Headlamp_Right", new Vector3(0.52f, 0.78f, length * 0.44f), out rightHeadlamp);
     }
 
     private Transform ResolveSocket(Transform assigned, string name, Vector3 fallback)
@@ -72,12 +77,8 @@ public class VehicleEffects1912 : MonoBehaviour
 
     private Transform FindSocket(string exactName)
     {
-        foreach (Transform child in transform)
-        {
+        foreach (Transform child in GetComponentsInChildren<Transform>(true))
             if (child.name == exactName) return child;
-            Transform nested = child.Find(exactName);
-            if (nested != null) return nested;
-        }
         return null;
     }
 
@@ -89,23 +90,23 @@ public class VehicleEffects1912 : MonoBehaviour
         system.Stop();
         ParticleSystem.MainModule main = system.main;
         main.loop = true;
-        main.startLifetime = isDust ? new ParticleSystem.MinMaxCurve(1.1f, 2.2f) : new ParticleSystem.MinMaxCurve(1.3f, 2.5f);
-        main.startSpeed = isDust ? new ParticleSystem.MinMaxCurve(0.35f, 1.15f) : new ParticleSystem.MinMaxCurve(0.22f, 0.62f);
-        main.startSize = isDust ? new ParticleSystem.MinMaxCurve(0.24f, 0.5f) : new ParticleSystem.MinMaxCurve(0.12f, 0.25f);
-        main.startColor = isDust ? new Color(0.48f, 0.38f, 0.25f, 0.42f) : new Color(0.2f, 0.21f, 0.2f, 0.32f);
-        main.gravityModifier = isDust ? 0.07f : -0.035f;
+        main.startLifetime = isDust ? new ParticleSystem.MinMaxCurve(0.45f, 0.95f) : new ParticleSystem.MinMaxCurve(0.42f, 0.88f);
+        main.startSpeed = isDust ? new ParticleSystem.MinMaxCurve(0.18f, 0.62f) : new ParticleSystem.MinMaxCurve(0.16f, 0.38f);
+        main.startSize = isDust ? new ParticleSystem.MinMaxCurve(0.10f, 0.22f) : new ParticleSystem.MinMaxCurve(0.065f, 0.13f);
+        main.startColor = isDust ? new Color(0.48f, 0.38f, 0.25f, 0.20f) : new Color(0.24f, 0.25f, 0.24f, 0.11f);
+        main.gravityModifier = isDust ? 0.04f : -0.015f;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.maxParticles = isDust ? 180 : 70;
+        main.maxParticles = isDust ? 48 : 12;
         main.stopAction = ParticleSystemStopAction.None;
         main.scalingMode = ParticleSystemScalingMode.Hierarchy;
         main.playOnAwake = false;
 
         ParticleSystem.ShapeModule shape = system.shape;
         shape.shapeType = ParticleSystemShapeType.Cone;
-        shape.angle = isDust ? 24f : 11f;
-        shape.radius = isDust ? 0.68f : 0.035f;
-        shape.length = isDust ? 0.22f : 0.08f;
-        shape.rotation = new Vector3(isDust ? -78f : -68f, 0f, 0f);
+        shape.angle = isDust ? 18f : 8f;
+        shape.radius = isDust ? 0.24f : 0.018f;
+        shape.length = isDust ? 0.12f : 0.04f;
+        shape.rotation = new Vector3(-90f, 0f, 0f);
 
         ParticleSystem.EmissionModule emission = system.emission;
         emission.rateOverTime = 0f;
@@ -119,23 +120,23 @@ public class VehicleEffects1912 : MonoBehaviour
         }, new[]
         {
             new GradientAlphaKey(0f, 0f),
-            new GradientAlphaKey(isDust ? 0.52f : 0.4f, 0.14f),
-            new GradientAlphaKey(isDust ? 0.25f : 0.2f, 0.58f),
+            new GradientAlphaKey(isDust ? 0.20f : 0.095f, 0.16f),
+            new GradientAlphaKey(isDust ? 0.085f : 0.035f, 0.58f),
             new GradientAlphaKey(0f, 1f)
         });
         color.color = new ParticleSystem.MinMaxGradient(gradient);
 
         ParticleSystem.SizeOverLifetimeModule size = system.sizeOverLifetime;
         size.enabled = true;
-        AnimationCurve sizeCurve = new AnimationCurve(new Keyframe(0f, isDust ? 0.38f : 0.42f), new Keyframe(0.25f, 1f), new Keyframe(1f, isDust ? 2.6f : 2.15f));
+        AnimationCurve sizeCurve = new AnimationCurve(new Keyframe(0f, isDust ? 0.42f : 0.48f), new Keyframe(0.3f, 1f), new Keyframe(1f, isDust ? 1.75f : 1.5f));
         size.size = new ParticleSystem.MinMaxCurve(1f, sizeCurve);
         ParticleSystem.RotationOverLifetimeModule rotation = system.rotationOverLifetime;
         rotation.enabled = true;
-        rotation.z = isDust ? new ParticleSystem.MinMaxCurve(-22f, 22f) : new ParticleSystem.MinMaxCurve(-12f, 12f);
+        rotation.z = new ParticleSystem.MinMaxCurve(-14f, 14f);
         ParticleSystem.NoiseModule noise = system.noise;
         noise.enabled = true;
-        noise.strength = isDust ? 0.16f : 0.1f;
-        noise.frequency = isDust ? 0.45f : 0.28f;
+        noise.strength = isDust ? 0.06f : 0.025f;
+        noise.frequency = isDust ? 0.32f : 0.22f;
 
         ParticleSystemRenderer renderer = system.GetComponent<ParticleSystemRenderer>();
         renderer.sharedMaterial = material;
@@ -143,7 +144,7 @@ public class VehicleEffects1912 : MonoBehaviour
         renderer.alignment = ParticleSystemRenderSpace.View;
         renderer.sortMode = ParticleSystemSortMode.YoungestInFront;
         renderer.minParticleSize = 0.01f;
-        renderer.maxParticleSize = 4f;
+        renderer.maxParticleSize = 1.4f;
         renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         renderer.receiveShadows = false;
         system.Play();
@@ -175,6 +176,7 @@ public class VehicleEffects1912 : MonoBehaviour
     private void Update()
     {
         if (vehicle == null || dust == null || leftExhaust == null || rightExhaust == null) return;
+        if (viewCamera == null) viewCamera = Camera.main;
         surfaceRefreshTimer -= Time.deltaTime;
         if (surfaceRefreshTimer <= 0f)
         {
@@ -182,18 +184,34 @@ public class VehicleEffects1912 : MonoBehaviour
             surface = DetectSurface();
         }
 
-        float speed = Mathf.Clamp01(vehicle.SpeedKmh / 55f);
+        float speed = Mathf.Clamp01(Mathf.Abs(vehicle.SpeedKmh) / 55f);
         float slip = GetWheelSlip();
-        float surfaceDust = surface == SurfaceKind.Stone ? 0.28f : surface == SurfaceKind.Snow ? 1.15f : 1f;
-        float dustRate = surface != SurfaceKind.None && vehicle.SpeedKmh > 3f ? (5f + speed * 34f + slip * 22f) * surfaceDust : 0f;
+        float cameraDistance = viewCamera != null ? Vector3.Distance(viewCamera.transform.position, dustSocket.position) : 20f;
+        float viewFadeT = Mathf.Clamp01((cameraDistance - 2.2f) / (6.5f - 2.2f));
+        float viewFade = viewFadeT * viewFadeT * (3f - 2f * viewFadeT);
+        float distanceFade = vehicle.isPlayer ? 1f : Mathf.Clamp01((90f - cameraDistance) / 30f);
+        float surfaceDust = surface switch
+        {
+            SurfaceKind.Snow => 0.55f,
+            SurfaceKind.Ice => 0.08f,
+            SurfaceKind.Cobblestone => 0.22f,
+            SurfaceKind.Stone => 0.25f,
+            SurfaceKind.Grass => 0.8f,
+            SurfaceKind.None => 0f,
+            _ => 1f
+        };
+        float dustRate = surface != SurfaceKind.None && Mathf.Abs(vehicle.SpeedKmh) > 4f
+            ? (2.5f + speed * 10f + slip * 7f) * surfaceDust * viewFade * distanceFade
+            : 0f;
         ParticleSystem.EmissionModule dustEmission = dust.emission;
         dustEmission.rateOverTime = dustRate;
         ParticleSystem.MainModule dustMain = dust.main;
-        float sizeMultiplier = surface == SurfaceKind.Snow ? 1.35f : 1f;
-        dustMain.startSize = new ParticleSystem.MinMaxCurve((0.24f + speed * 0.34f) * sizeMultiplier, (0.48f + speed * 0.58f) * sizeMultiplier);
+        float sizeMultiplier = surface == SurfaceKind.Snow ? 1.12f : 1f;
+        dustMain.startSize = new ParticleSystem.MinMaxCurve((0.10f + speed * 0.10f) * sizeMultiplier, (0.20f + speed * 0.18f) * sizeMultiplier);
         dustMain.startColor = SurfaceColor(surface);
 
-        float exhaustRate = vehicle.engineRunning ? 2.5f + vehicle.Throttle * 11f + Mathf.Clamp01(vehicle.rpm / 2400f) * 3f : 0f;
+        float load = Mathf.Clamp01(vehicle.rpm / Mathf.Max(1f, vehicle.rpmLimiter));
+        float exhaustRate = vehicle.engineRunning ? (0.10f + vehicle.Throttle * 0.72f + load * 0.16f) * distanceFade : 0f;
         ParticleSystem.EmissionModule leftEmission = leftExhaust.emission;
         ParticleSystem.EmissionModule rightEmission = rightExhaust.emission;
         leftEmission.rateOverTime = exhaustRate * 0.5f;
@@ -240,36 +258,48 @@ public class VehicleEffects1912 : MonoBehaviour
 
     private static SurfaceKind ClassifySurface(Collider collider, Vector3 worldPoint)
     {
-        TrackSurface1912 trackSurface = collider.GetComponent<TrackSurface1912>();
-        if (trackSurface != null && trackSurface.IsSnowAt(worldPoint)) return SurfaceKind.Snow;
-        string objectName = collider.gameObject.name.ToLowerInvariant();
-        MeshRenderer renderer = collider.GetComponent<MeshRenderer>();
-        Terrain terrain = collider.GetComponent<Terrain>();
-        PhysicsMaterial physicsMaterial = collider.sharedMaterial;
+        TrackSurface1912 trackSurface = collider != null ? collider.GetComponent<TrackSurface1912>() : null;
+        if (trackSurface != null)
+        {
+            TrackSurface1912.SurfaceKind kind = trackSurface.GetSurfaceKindAt(worldPoint);
+            return kind switch
+            {
+                TrackSurface1912.SurfaceKind.Snow => SurfaceKind.Snow,
+                TrackSurface1912.SurfaceKind.Ice => SurfaceKind.Ice,
+                TrackSurface1912.SurfaceKind.Cobblestone => SurfaceKind.Cobblestone,
+                TrackSurface1912.SurfaceKind.Grass => SurfaceKind.Grass,
+                TrackSurface1912.SurfaceKind.Stone => SurfaceKind.Stone,
+                _ => SurfaceKind.Dirt
+            };
+        }
+        string objectName = collider != null ? collider.gameObject.name.ToLowerInvariant() : "";
+        MeshRenderer renderer = collider != null ? collider.GetComponent<MeshRenderer>() : null;
+        PhysicsMaterial physicsMaterial = collider != null ? collider.sharedMaterial : null;
         Material material = renderer != null ? renderer.sharedMaterial : null;
-        if (material == null && terrain != null) material = terrain.materialTemplate;
         if (physicsMaterial != null)
         {
             string physicsName = physicsMaterial.name.ToLowerInvariant();
             if (physicsName.Contains("snow")) return SurfaceKind.Snow;
-            if (physicsName.Contains("stone") || physicsName.Contains("cobble")) return SurfaceKind.Stone;
+            if (physicsName.Contains("ice")) return SurfaceKind.Ice;
+            if (physicsName.Contains("stone") || physicsName.Contains("cobble")) return SurfaceKind.Cobblestone;
         }
         string materialName = material != null ? material.name.ToLowerInvariant() : "";
         string textureName = material != null && material.HasProperty("_BaseMap") && material.GetTexture("_BaseMap") != null ? material.GetTexture("_BaseMap").name.ToLowerInvariant() : "";
         if (objectName.Contains("snow") || materialName.Contains("snow") || textureName.Contains("snow")) return SurfaceKind.Snow;
-        if (objectName.Contains("cobble") || objectName.Contains("stone") || objectName.Contains("asphalt") || materialName.Contains("stone") || materialName.Contains("cobble") || textureName.Contains("cobble")) return SurfaceKind.Stone;
-        if (objectName.Contains("terrain") || objectName.Contains("road") || materialName.Contains("ground") || materialName.Contains("dirt")) return SurfaceKind.Dirt;
-        return SurfaceKind.Dirt;
+        if (objectName.Contains("cobble") || objectName.Contains("stone") || materialName.Contains("stone") || materialName.Contains("cobble") || textureName.Contains("cobble")) return SurfaceKind.Cobblestone;
+        if (objectName.Contains("terrain") || objectName.Contains("grass") || materialName.Contains("ground") || materialName.Contains("dirt")) return SurfaceKind.Dirt;
+        return SurfaceKind.None;
     }
 
     private static Color SurfaceColor(SurfaceKind kind)
     {
         switch (kind)
         {
-            case SurfaceKind.Snow: return new Color(0.96f, 0.98f, 1f, 0.48f);
-            case SurfaceKind.Stone: return new Color(0.72f, 0.68f, 0.6f, 0.24f);
+            case SurfaceKind.Snow: return new Color(0.96f, 0.98f, 1f, 0.24f);
+            case SurfaceKind.Cobblestone:
+            case SurfaceKind.Stone: return new Color(0.72f, 0.68f, 0.6f, 0.12f);
             case SurfaceKind.None: return new Color(0.48f, 0.38f, 0.25f, 0f);
-            default: return new Color(1.28f, 1.12f, 0.92f, 0.42f);
+            default: return new Color(1.28f, 1.12f, 0.92f, 0.20f);
         }
     }
 

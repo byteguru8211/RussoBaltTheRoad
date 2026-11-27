@@ -16,6 +16,7 @@ public class TrackEnvironmentProfile : ScriptableObject
     public string snowTexturePrefix = "road_snow";
     public float roadTileMeters = 4f;
     public float groundTileMeters = 8f;
+    public float roadRoughness = 0.02f;
     public float shoulderWidth = 1.25f;
     public float curbWidth = 0.34f;
     public float curbHeight = 0.15f;
@@ -50,11 +51,16 @@ public class TrackEnvironmentProfile : ScriptableObject
     public int treeCount = 100;
     public int rockCount;
     public int buildingCount = 8;
+    public int treeClusterCount = 7;
+    public float treeClusterRadius = 34f;
+    public float sceneryCullDistance = 240f;
     public float treeScaleMin = 0.75f;
     public float treeScaleMax = 1.4f;
     public float sceneryOffsetMin = 8f;
     public float sceneryOffsetMax = 26f;
     public float treeSnowChance;
+    public bool enableRoadsideDitches = true;
+    public float roadsideDitchDepth = 0.35f;
 
     [Header("Coast and harbor")]
     public bool seaEnabled;
@@ -94,6 +100,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.roadTexturePrefix = "road_snow";
                 profile.groundTexturePrefix = "road_snow";
                 profile.roadTileMeters = 3.5f;
+                profile.roadRoughness = 0.035f;
                 profile.groundTileMeters = 7f;
                 profile.roadTint = new Color(0.91f, 0.95f, 1f);
                 profile.groundTint = new Color(0.83f, 0.89f, 0.88f);
@@ -104,7 +111,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.terrainResolution = 193;
                 profile.terrainRelief = 1.8f;
                 profile.snowCoveredGround = true;
-                profile.treeCount = 120;
+                profile.treeCount = 72;
                 profile.buildingCount = 8;
                 profile.treeResources = new[] { "Pine", "Birch", "Pine" };
                 profile.treeSnowChance = 0.45f;
@@ -136,7 +143,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.retainingWallDrop = 4.5f;
                 profile.snowStartHeight = 7f;
                 profile.snowBlendHeight = 6f;
-                profile.treeCount = 85;
+                profile.treeCount = 58;
                 profile.rockCount = 70;
                 profile.buildingCount = 3;
                 profile.treeResources = new[] { "Pine", "Pine", "Pine", "Birch" };
@@ -163,6 +170,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.roadTexturePrefix = "road_cobblestone";
                 profile.groundTexturePrefix = "road_cobblestone";
                 profile.roadTileMeters = 2.5f;
+                profile.roadRoughness = 0.052f;
                 profile.groundTileMeters = 5f;
                 profile.roadTint = new Color(0.88f, 0.84f, 0.73f);
                 profile.groundTint = new Color(0.76f, 0.71f, 0.58f);
@@ -177,7 +185,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.terrainRelief = 5f;
                 profile.terrainNoiseScale = 0.01f;
                 profile.roadCutBlend = 20f;
-                profile.treeCount = 28;
+                profile.treeCount = 18;
                 profile.buildingCount = 46;
                 profile.treeResources = new[] { "Pine", "Birch" };
                 profile.treeScaleMin = 0.7f;
@@ -186,6 +194,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.sceneryOffsetMax = 30f;
                 profile.seaEnabled = true;
                 profile.harborEnabled = true;
+                profile.enableRoadsideDitches = false;
                 profile.seaLevel = -1.6f;
                 profile.coastlineZ = -72f;
                 profile.coastBlend = 38f;
@@ -208,6 +217,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.roadTexturePrefix = "road_snow";
                 profile.groundTexturePrefix = "road_snow";
                 profile.roadTileMeters = 4f;
+                profile.roadRoughness = 0.030f;
                 profile.groundTileMeters = 8f;
                 profile.roadTint = new Color(0.82f, 0.86f, 0.88f);
                 profile.groundTint = new Color(0.78f, 0.84f, 0.86f);
@@ -216,7 +226,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.terrainResolution = 193;
                 profile.terrainRelief = 2.2f;
                 profile.snowCoveredGround = true;
-                profile.treeCount = 115;
+                profile.treeCount = 68;
                 profile.buildingCount = 7;
                 profile.treeResources = new[] { "Pine", "Birch", "Pine" };
                 profile.treeSnowChance = 0.55f;
@@ -234,6 +244,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.roadTexturePrefix = "road_dirt";
                 profile.groundTexturePrefix = "road_dirt";
                 profile.roadTileMeters = 3.2f;
+                profile.roadRoughness = 0.028f;
                 profile.groundTileMeters = 7f;
                 profile.roadTint = new Color(0.7f, 0.67f, 0.58f);
                 profile.groundTint = new Color(0.45f, 0.52f, 0.43f);
@@ -244,7 +255,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.terrainSize = 780f;
                 profile.terrainRelief = 4.5f;
                 profile.roadCutBlend = 24f;
-                profile.treeCount = 52;
+                profile.treeCount = 36;
                 profile.rockCount = 34;
                 profile.buildingCount = 16;
                 profile.treeResources = new[] { "Pine", "Birch" };
@@ -252,6 +263,7 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.sceneryOffsetMax = 28f;
                 profile.seaEnabled = true;
                 profile.harborEnabled = true;
+                profile.enableRoadsideDitches = false;
                 profile.seaLevel = -1.8f;
                 profile.coastlineZ = -82f;
                 profile.coastBlend = 42f;
@@ -267,6 +279,99 @@ public class TrackEnvironmentProfile : ScriptableObject
                 profile.sunColor = new Color(1f, 0.86f, 0.66f);
                 profile.sunIntensity = 1.08f;
                 profile.exposure = 0.1f;
+                break;
+
+            case "tver_forest":
+                profile.seed = 4191912;
+                profile.roadTexturePrefix = "road_dirt";
+                profile.groundTexturePrefix = "road_dirt";
+                profile.roadRoughness = 0.026f;
+                profile.roadTint = new Color(0.48f, 0.34f, 0.20f);
+                profile.groundTint = new Color(0.24f, 0.34f, 0.14f);
+                profile.barrierStyle = BarrierStyle.WoodFence;
+                profile.terrainResolution = 225;
+                profile.terrainSize = 760f;
+                profile.terrainRelief = 5.5f;
+                profile.terrainNoiseScale = 0.014f;
+                profile.roadCutBlend = 16f;
+                profile.treeCount = 82;
+                profile.rockCount = 28;
+                profile.buildingCount = 6;
+                profile.treeResources = new[] { "Oak", "Birch", "Pine" };
+                profile.treeScaleMin = 0.85f;
+                profile.treeScaleMax = 1.45f;
+                profile.sceneryOffsetMin = 9f;
+                profile.sceneryOffsetMax = 34f;
+                profile.fogDensity = 0.0032f;
+                profile.fogColor = new Color(0.60f, 0.66f, 0.58f);
+                profile.skyTint = new Color(0.46f, 0.62f, 0.70f);
+                profile.horizonHeight = 42f;
+                profile.sunColor = new Color(1f, 0.84f, 0.62f);
+                profile.sunIntensity = 1.22f;
+                break;
+
+            case "riga_speedway":
+                profile.seed = 6191912;
+                profile.roadTexturePrefix = "road_dirt";
+                profile.groundTexturePrefix = "road_dirt";
+                profile.roadRoughness = 0.018f;
+                profile.roadTint = new Color(0.40f, 0.31f, 0.21f);
+                profile.groundTint = new Color(0.30f, 0.36f, 0.20f);
+                profile.barrierStyle = BarrierStyle.Guardrail;
+                profile.terrainResolution = 193;
+                profile.terrainSize = 820f;
+                profile.terrainRelief = 1.8f;
+                profile.roadCutBlend = 18f;
+                profile.treeCount = 42;
+                profile.rockCount = 12;
+                profile.buildingCount = 12;
+                profile.treeResources = new[] { "Oak", "Birch" };
+                profile.sceneryOffsetMin = 12f;
+                profile.sceneryOffsetMax = 38f;
+                profile.fogDensity = 0.0024f;
+                profile.fogColor = new Color(0.64f, 0.70f, 0.67f);
+                profile.skyTint = new Color(0.42f, 0.64f, 0.76f);
+                profile.horizonHeight = 34f;
+                profile.sunIntensity = 1.35f;
+                profile.exposure = 0.15f;
+                break;
+
+            case "crimean_coast":
+                profile.seed = 8191912;
+                profile.roadTexturePrefix = "road_dirt";
+                profile.groundTexturePrefix = "road_dirt";
+                profile.roadRoughness = 0.024f;
+                profile.roadTint = new Color(0.52f, 0.39f, 0.24f);
+                profile.groundTint = new Color(0.36f, 0.38f, 0.20f);
+                profile.barrierStyle = BarrierStyle.StonePromenade;
+                profile.barrierOffset = 0.8f;
+                profile.terrainResolution = 225;
+                profile.terrainSize = 820f;
+                profile.terrainRelief = 9f;
+                profile.terrainNoiseScale = 0.012f;
+                profile.roadCutBlend = 15f;
+                profile.treeCount = 22;
+                profile.rockCount = 58;
+                profile.buildingCount = 22;
+                profile.treeResources = new[] { "Oak", "Birch", "Pine" };
+                profile.treeScaleMin = 0.7f;
+                profile.treeScaleMax = 1.2f;
+                profile.sceneryOffsetMin = 10f;
+                profile.sceneryOffsetMax = 32f;
+                profile.seaEnabled = true;
+                profile.harborEnabled = true;
+                profile.enableRoadsideDitches = false;
+                profile.seaLevel = -1.8f;
+                profile.coastlineZ = -78f;
+                profile.coastBlend = 32f;
+                profile.fogDensity = 0.0026f;
+                profile.fogColor = new Color(0.70f, 0.72f, 0.67f);
+                profile.skyTint = new Color(0.40f, 0.62f, 0.76f);
+                profile.skyGroundColor = new Color(0.54f, 0.48f, 0.36f);
+                profile.horizonHeight = 95f;
+                profile.sunColor = new Color(1f, 0.78f, 0.52f);
+                profile.sunIntensity = 1.42f;
+                profile.exposure = 0.18f;
                 break;
         }
         return profile;

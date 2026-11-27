@@ -13,9 +13,13 @@ public class TrackBuilder : MonoBehaviour
 
     public List<Vector3> Samples { get; private set; } = new List<Vector3>();
     public List<Vector3> Tangents { get; private set; } = new List<Vector3>();
+    public TrackData.TrackSection[] EffectiveSections { get; private set; } = new TrackData.TrackSection[0];
     public float TrackLength { get; private set; }
     public Vector3 StartPoint => Samples.Count > 0 ? Samples[0] : Vector3.zero;
     public Vector3 StartTangent => Tangents.Count > 0 ? Tangents[0] : Vector3.forward;
+    public const float RoadSurfaceOffset = 0.045f;
+    public const float StartSafeZoneMeters = 25f;
+    public float Wetness { get; private set; }
 
     private readonly List<Vector3> rights = new List<Vector3>();
     private readonly List<Vector3> normals = new List<Vector3>();
@@ -23,6 +27,7 @@ public class TrackBuilder : MonoBehaviour
     private readonly List<Object> generatedAssets = new List<Object>();
     private GameObject generatedRoot;
     private TrackEnvironmentProfile profile;
+    private TrackRoute route;
     private TrackTerrainBuilder terrain;
     private System.Random random;
     private Material roadMaterial;
@@ -44,6 +49,15 @@ public class TrackBuilder : MonoBehaviour
     private Material seaMaterial;
     private Material sailMaterial;
     private Material lampMaterial;
+    private Material puddleMaterial;
+    private TrackSurface1912 roadSurface;
+    private TrackSurface1912 terrainSurface;
+    private Color dryRoadTint;
+    private Color dryShoulderTint;
+    private float dryRoadSmoothness;
+    private float dryShoulderSmoothness;
+    private bool roadHasRoughnessMap;
+    private bool shoulderHasRoughnessMap;
     private VolumeProfile volumeProfile;
 
     public void Build(TrackData data)
@@ -60,6 +74,8 @@ public class TrackBuilder : MonoBehaviour
         sampleCount = Mathf.Clamp(sampleCount, 32, 512);
         checkpointCount = Mathf.Clamp(checkpointCount, 2, 64);
         if (track.waypoints == null || track.waypoints.Length < 4) track.waypoints = DefaultLoop();
+        EffectiveSections = track.GetSections();
+        route = new TrackRoute(track);
 
         ResolveProfile();
         generatedRoot = new GameObject("Track_Generated");
@@ -70,13 +86,55 @@ public class TrackBuilder : MonoBehaviour
         CreateAtmosphere();
         CreateGround();
         CreateRoadMesh();
+        CreateTrackSections();
         CreateCurbs();
         CreateBarriers();
         CreateStartGantry();
         CreateCheckpoints();
         CreateScenery();
         CreateRoadsideDetails();
+        CreatePuddles();
+        RaceEnvironmentController environment = generatedRoot.AddComponent<RaceEnvironmentController>();
+        environment.Configure(profile, this, terrain.Center, terrain.Size * 0.48f);
+        RegionalLandmarks.Build(track, this, generatedRoot.transform);
     }
+
+    public void ApplyWeather(WeatherPreset weather, float wetness)
+    {
+        if (roadMaterial == null) return;
+        Wetness = Mathf.Clamp01(wetness);
+        float wetSmoothness = weather == WeatherPreset.Rain ? 0.78f : weather == WeatherPreset.Snow ? 0.2f : 0.22f;
+        roadMaterial.SetColor("_BaseColor", Color.Lerp(dryRoadTint, dryRoadTint * new Color(0.46f, 0.53f, 0.61f), Wetness));
+        roadMaterial.SetFloat("_Smoothness", Mathf.Lerp(dryRoadSmoothness, wetSmoothness, Wetness));
+        SetRoughnessMapEnabled(roadMaterial, roadHasRoughnessMap, Wetness <= 0.015f);
+        if (shoulderMaterial != null)
+        {
+            shoulderMaterial.SetColor("_BaseColor", Color.Lerp(dryShoulderTint, dryShoulderTint * new Color(0.58f, 0.64f, 0.68f), Wetness));
+            shoulderMaterial.SetFloat("_Smoothness", Mathf.Lerp(dryShoulderSmoothness, Mathf.Min(0.58f, wetSmoothness + 0.04f), Wetness));
+            SetRoughnessMapEnabled(shoulderMaterial, shoulderHasRoughnessMap, Wetness <= 0.015f);
+        }
+        if (puddleMaterial != null)
+        {
+            Color puddle = puddleMaterial.GetColor("_BaseColor");
+            puddle.a = Wetness * 0.42f;
+            puddleMaterial.SetColor("_BaseColor", puddle);
+        }
+        roadSurface?.SetWetness(Wetness);
+        terrainSurface?.SetWetness(Wetness * 0.55f);
+    }
+
+    public void ApplyWeather(WeatherPreset weather) => ApplyWeather(weather, weather == WeatherPreset.Rain ? 1f : 0f);
+
+    private static void SetRoughnessMapEnabled(Material material, bool available, bool enabled)
+    {
+        if (!available || material == null) return;
+        if (enabled) material.EnableKeyword("_METALLICSPECGLOSSMAP");
+        else material.DisableKeyword("_METALLICSPECGLOSSMAP");
+    }
+
+    private Color RoadTint => Color.Lerp(profile.roadTint, track.roadColor, profile.snowCoveredGround ? 0.3f : 0.9f);
+    private Color GroundTint => Color.Lerp(profile.groundTint, track.groundColor, profile.snowCoveredGround ? 0.25f : 0.82f);
+    private Color CurbTint => Color.Lerp(profile.curbPrimary, track.curbColor, 0.88f);
 
     private void ResolveProfile()
     {
@@ -97,12 +155,18 @@ public class TrackBuilder : MonoBehaviour
         List<Texture2D> generatedTextures = new List<Texture2D>();
         Dictionary<Texture2D, Texture2D> normalCache = new Dictionary<Texture2D, Texture2D>();
         Dictionary<Texture2D, Texture2D> roughnessCache = new Dictionary<Texture2D, Texture2D>();
-        roadMaterial = RaceMaterialFactory.CreateSurface("RoadMaterial", profile.roadTexturePrefix, profile.roadTint, profile.roadTileMeters, 0.16f, generatedTextures, normalCache, roughnessCache);
-        groundMaterial = RaceMaterialFactory.CreateSurface("GroundMaterial", profile.groundTexturePrefix, profile.groundTint, profile.groundTileMeters, 0.06f, generatedTextures, normalCache, roughnessCache);
+        roadMaterial = RaceMaterialFactory.CreateSurface("RoadMaterial", profile.roadTexturePrefix, RoadTint, profile.roadTileMeters, 0.16f, generatedTextures, normalCache, roughnessCache);
+        groundMaterial = RaceMaterialFactory.CreateSurface("GroundMaterial", profile.groundTexturePrefix, GroundTint, profile.groundTileMeters, 0.06f, generatedTextures, normalCache, roughnessCache);
         snowMaterial = RaceMaterialFactory.CreateSurface("SnowMaterial", profile.snowTexturePrefix, new Color(0.93f, 0.96f, 1f), profile.groundTileMeters, 0.12f, generatedTextures, normalCache, roughnessCache);
         shoulderMaterial = RaceMaterialFactory.CreateSurface("ShoulderMaterial", profile.snowCoveredGround ? profile.snowTexturePrefix : profile.groundTexturePrefix, profile.shoulderTint, profile.groundTileMeters, 0.08f, generatedTextures, normalCache, roughnessCache);
-        curbMaterial = RaceMaterialFactory.CreateLit("CurbMaterial", profile.curbPrimary, 0.18f);
+        curbMaterial = RaceMaterialFactory.CreateLit("CurbMaterial", CurbTint, 0.18f);
         curbAlternateMaterial = RaceMaterialFactory.CreateLit("CurbAlternateMaterial", profile.curbSecondary, 0.18f);
+        dryRoadTint = roadMaterial.GetColor("_BaseColor");
+        dryShoulderTint = shoulderMaterial.GetColor("_BaseColor");
+        dryRoadSmoothness = roadMaterial.GetFloat("_Smoothness");
+        dryShoulderSmoothness = shoulderMaterial.GetFloat("_Smoothness");
+        roadHasRoughnessMap = roadMaterial.GetTexture("_MetallicGlossMap") != null;
+        shoulderHasRoughnessMap = shoulderMaterial.GetTexture("_MetallicGlossMap") != null;
         stoneMaterial = RaceMaterialFactory.CreateLit("RetainingStone", new Color(0.42f, 0.43f, 0.39f), 0.08f);
         woodMaterial = RaceMaterialFactory.CreateLit("FenceWood", new Color(0.24f, 0.16f, 0.09f), 0.12f);
         metalMaterial = RaceMaterialFactory.CreateLit("GuardrailSteel", new Color(0.52f, 0.56f, 0.55f), 0.48f, 0.65f);
@@ -129,12 +193,14 @@ public class TrackBuilder : MonoBehaviour
         lampMaterial.SetColor("_EmissionColor", new Color(1f, 0.48f, 0.12f) * 2.5f);
         lampMaterial.EnableKeyword("_EMISSION");
         lampMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+        puddleMaterial = RaceMaterialFactory.CreateLit("RacePuddles", new Color(0.055f, 0.075f, 0.085f, 0f), 0.94f);
+        RaceMaterialFactory.MakeTransparent(puddleMaterial, new Color(0.055f, 0.075f, 0.085f, 0f));
 
         generatedAssets.AddRange(new Object[]
         {
             roadMaterial, groundMaterial, snowMaterial, shoulderMaterial, curbMaterial, curbAlternateMaterial,
             stoneMaterial, woodMaterial, metalMaterial, bannerMaterial, darkMaterial, glassMaterial,
-            foliageMaterial, rockMaterial, warmStoneMaterial, roofMaterial, seaMaterial, sailMaterial, lampMaterial, checks
+            foliageMaterial, rockMaterial, warmStoneMaterial, roofMaterial, seaMaterial, sailMaterial, lampMaterial, puddleMaterial, checks
         });
         generatedAssets.AddRange(generatedTextures);
     }
@@ -282,47 +348,54 @@ public class TrackBuilder : MonoBehaviour
     private void CreateGround()
     {
         terrain = new TrackTerrainBuilder();
-        terrain.Build(generatedRoot.transform, profile, Samples, groundMaterial, snowMaterial, track.roadWidth * 0.5f, profile.seed + StableId(track.id ?? string.Empty));
+        terrain.Build(generatedRoot.transform, profile, this, groundMaterial, snowMaterial, track.roadWidth * 0.5f, profile.seed + StableId(track.id ?? string.Empty));
         generatedAssets.Add(terrain.TerrainObject.GetComponent<MeshFilter>().sharedMesh);
+        terrainSurface = terrain.TerrainObject.GetComponent<TrackSurface1912>();
     }
 
     private void CreateSampledPath()
     {
-        for (int i = 0; i < sampleCount; i++) Samples.Add(CatmullRom(i / (float)sampleCount));
         for (int i = 0; i < sampleCount; i++)
         {
-            Vector3 previous = Samples[(i - 1 + sampleCount) % sampleCount];
-            Vector3 next = Samples[(i + 1) % sampleCount];
-            Vector3 tangent = (next - previous).normalized;
+            float progress = i / (float)sampleCount;
+            Samples.Add(route.PointAt(progress));
+        }
+        for (int i = 0; i < sampleCount; i++)
+        {
+            Vector3 tangent = (Samples[(i + 1) % sampleCount] - Samples[(i - 1 + sampleCount) % sampleCount]).normalized;
+            if (tangent.sqrMagnitude < 0.001f) tangent = (Samples[(i + 1) % sampleCount] - Samples[i]).normalized;
             Vector3 right = Vector3.Cross(Vector3.up, tangent).normalized;
             if (right.sqrMagnitude < 0.001f) right = Vector3.right;
-            Vector3 normal = Vector3.Cross(tangent, right).normalized;
-            right = Vector3.Cross(normal, tangent).normalized;
             Tangents.Add(tangent);
             rights.Add(right);
-            normals.Add(normal);
-            if (i > 0)
-            {
-                float distance = Vector3.Distance(Samples[i - 1], Samples[i]);
-                distances.Add(distances.Count == 0 ? distance : distances[distances.Count - 1] + distance);
-                TrackLength += distance;
-            }
+            normals.Add(Vector3.Cross(tangent, right).normalized);
         }
-        TrackLength += Vector3.Distance(Samples[sampleCount - 1], Samples[0]);
-        distances.Add(TrackLength);
+        distances.Add(0f);
+        for (int i = 0; i < sampleCount; i++)
+        {
+            TrackLength += Vector3.Distance(Samples[i], Samples[(i + 1) % sampleCount]);
+            distances.Add(TrackLength);
+        }
     }
 
-    private Vector3 CatmullRom(float t)
+    public float RoadHeightOffsetAtDistance(float distance)
     {
-        int count = track.waypoints.Length;
-        float scaled = t * count;
-        int i = Mathf.FloorToInt(scaled) % count;
-        float u = scaled - Mathf.FloorToInt(scaled);
-        Vector3 p0 = track.waypoints[(i - 1 + count) % count];
-        Vector3 p1 = track.waypoints[i];
-        Vector3 p2 = track.waypoints[(i + 1) % count];
-        Vector3 p3 = track.waypoints[(i + 2) % count];
-        return 0.5f * ((2f * p1) + (-p0 + p2) * u + (2f * p0 - 5f * p1 + 4f * p2 - p3) * u * u + (-p0 + 3f * p1 - 3f * p2 + p3) * u * u * u);
+        if (profile == null || TrackLength < 0.001f) return RoadSurfaceOffset;
+        float wrapped = Mathf.Repeat(distance, TrackLength);
+        float startDistance = Mathf.Min(wrapped, TrackLength - wrapped);
+        if (startDistance <= StartSafeZoneMeters) return RoadSurfaceOffset;
+        float amplitude = Mathf.Min(0.025f, Mathf.Max(0f, profile.roadRoughness) * (profile.roadTexturePrefix.Contains("cobble") ? 1.6f : 1f));
+        float envelope = SmoothStep(StartSafeZoneMeters, StartSafeZoneMeters + 10f, wrapped)
+            * SmoothStep(StartSafeZoneMeters, StartSafeZoneMeters + 10f, TrackLength - wrapped);
+        float relief = Mathf.Sin(wrapped * Mathf.PI * 2f / 28f) * 0.65f
+            + Mathf.Sin(wrapped * Mathf.PI * 2f / 37f + 1.1f) * 0.35f;
+        return RoadSurfaceOffset + envelope * amplitude * relief;
+    }
+
+    private static float SmoothStep(float edge0, float edge1, float value)
+    {
+        float t = Mathf.Clamp01((value - edge0) / Mathf.Max(0.0001f, edge1 - edge0));
+        return t * t * (3f - 2f * t);
     }
 
     private Vector3[] DefaultLoop()
@@ -352,20 +425,23 @@ public class TrackBuilder : MonoBehaviour
             Vector3 nextRight = rights[nextIndex];
             Vector3 normal = normals[i];
             Vector3 nextNormal = normals[nextIndex];
-            Vector3 leftRoad = point - right * half + normal * 0.045f;
-            Vector3 rightRoad = point + right * half + normal * 0.045f;
-            Vector3 leftShoulder = point - right * (half + shoulder) + normal * -0.015f;
-            Vector3 rightShoulder = point + right * (half + shoulder) + normal * -0.015f;
-            Vector3 leftGround = new Vector3(leftShoulder.x, terrain.SampleHeight(leftShoulder) - 0.08f, leftShoulder.z);
-            Vector3 rightGround = new Vector3(rightShoulder.x, terrain.SampleHeight(rightShoulder) - 0.08f, rightShoulder.z);
-            Vector3 nl = next - nextRight * half + nextNormal * 0.045f;
-            Vector3 nr = next + nextRight * half + nextNormal * 0.045f;
-            Vector3 nls = next - nextRight * (half + shoulder) + nextNormal * -0.015f;
-            Vector3 nrs = next + nextRight * (half + shoulder) + nextNormal * -0.015f;
-            Vector3 nlg = new Vector3(nls.x, terrain.SampleHeight(nls) - 0.08f, nls.z);
-            Vector3 nrg = new Vector3(nrs.x, terrain.SampleHeight(nrs) - 0.08f, nrs.z);
             float segmentLength = Vector3.Distance(point, next);
             float distance = distances[i];
+            float nextDistance = i + 1 < sampleCount ? distances[i + 1] : TrackLength;
+            float roadOffset = RoadHeightOffsetAtDistance(distance);
+            float nextRoadOffset = RoadHeightOffsetAtDistance(nextDistance);
+            Vector3 leftRoad = point - right * half + normal * roadOffset;
+            Vector3 rightRoad = point + right * half + normal * roadOffset;
+            Vector3 leftShoulder = point - right * (half + shoulder) + normal * (roadOffset - 0.06f);
+            Vector3 rightShoulder = point + right * (half + shoulder) + normal * (roadOffset - 0.06f);
+            Vector3 leftGround = new Vector3(leftShoulder.x, terrain.SampleHeight(leftShoulder) - 0.08f, leftShoulder.z);
+            Vector3 rightGround = new Vector3(rightShoulder.x, terrain.SampleHeight(rightShoulder) - 0.08f, rightShoulder.z);
+            Vector3 nl = next - nextRight * half + nextNormal * nextRoadOffset;
+            Vector3 nr = next + nextRight * half + nextNormal * nextRoadOffset;
+            Vector3 nls = next - nextRight * (half + shoulder) + nextNormal * (nextRoadOffset - 0.06f);
+            Vector3 nrs = next + nextRight * (half + shoulder) + nextNormal * (nextRoadOffset - 0.06f);
+            Vector3 nlg = new Vector3(nls.x, terrain.SampleHeight(nls) - 0.08f, nls.z);
+            Vector3 nrg = new Vector3(nrs.x, terrain.SampleHeight(nrs) - 0.08f, nrs.z);
             TrackMeshBuilder.AddQuad(vertices, uvs, road, leftRoad, nl, nr, rightRoad, 0f, distance, track.roadWidth, segmentLength);
             TrackMeshBuilder.AddQuad(vertices, uvs, shoulders, leftRoad, leftShoulder, nls, nl, 0f, distance, shoulder, segmentLength);
             TrackMeshBuilder.AddQuad(vertices, uvs, shoulders, rightRoad, nr, nrs, rightShoulder, half, distance, shoulder, segmentLength);
@@ -377,10 +453,10 @@ public class TrackBuilder : MonoBehaviour
             {
                 for (int side = -1; side <= 1; side += 2)
                 {
-                    Vector3 top = point + right * side * (half + shoulder + profile.barrierOffset) + normal * 0.02f;
-                    Vector3 nextTop = next + nextRight * side * (half + shoulder + profile.barrierOffset) + nextNormal * 0.02f;
-                    Vector3 shoulderTop = point + right * side * (half + shoulder) + normal * -0.015f;
-                    Vector3 nextShoulderTop = next + nextRight * side * (half + shoulder) + nextNormal * -0.015f;
+                    Vector3 top = point + right * side * (half + shoulder + profile.barrierOffset) + normal * (roadOffset - 0.025f);
+                    Vector3 nextTop = next + nextRight * side * (half + shoulder + profile.barrierOffset) + nextNormal * (nextRoadOffset - 0.025f);
+                    Vector3 shoulderTop = point + right * side * (half + shoulder) + normal * (roadOffset - 0.06f);
+                    Vector3 nextShoulderTop = next + nextRight * side * (half + shoulder) + nextNormal * (nextRoadOffset - 0.06f);
                     Vector3 bottom = new Vector3(top.x, terrain.SampleHeight(top) - 0.12f, top.z);
                     Vector3 nextBottom = new Vector3(nextTop.x, terrain.SampleHeight(nextTop) - 0.12f, nextTop.z);
                     if (side < 0) TrackMeshBuilder.AddQuad(vertices, uvs, support, shoulderTop, top, nextTop, nextShoulderTop, 0f, distance, profile.barrierOffset, segmentLength);
@@ -401,7 +477,14 @@ public class TrackBuilder : MonoBehaviour
         Material[] materials = { roadMaterial, shoulderMaterial, profile.retainingWalls ? stoneMaterial : groundMaterial };
         Mesh mesh = TrackMeshBuilder.Create("TrackRoad", vertices, uvs, new[] { road, shoulders, support }, materials);
         generatedAssets.Add(mesh);
-        TrackMeshBuilder.CreateObject("Road", mesh, materials, generatedRoot.transform, true, true);
+        GameObject roadObject = TrackMeshBuilder.CreateObject("Road", mesh, materials, generatedRoot.transform, true, true);
+        roadSurface = roadObject.AddComponent<TrackSurface1912>();
+        if (profile.roadTexturePrefix.Contains("snow"))
+            roadSurface.Configure(TrackSurface1912.SurfaceKind.Snow, track.surfaceGrip, 1.35f);
+        else if (profile.roadTexturePrefix.Contains("cobble"))
+            roadSurface.Configure(TrackSurface1912.SurfaceKind.Cobblestone, track.surfaceGrip, 1.18f);
+        else
+            roadSurface.Configure(TrackSurface1912.SurfaceKind.Dirt, track.surfaceGrip, 1f);
     }
 
     private void CreateCurbs()
@@ -426,7 +509,8 @@ public class TrackBuilder : MonoBehaviour
             {
                 Vector3 right = rights[i];
                 Vector3 normal = normals[i];
-                Vector3 position = center + right * side * (half + profile.curbWidth * 0.5f) + normal * (profile.curbHeight * 0.5f + 0.035f);
+                float roadOffset = RoadHeightOffsetAtDistance(distances[i] + length * 0.5f);
+                Vector3 position = center + right * side * (half + profile.curbWidth * 0.5f) + normal * (roadOffset - 0.045f + profile.curbHeight * 0.5f);
                 TrackMeshBuilder.AddBox(vertices, uvs, target, position, rotation, new Vector3(profile.curbWidth, profile.curbHeight, length + 0.035f));
             }
         }
@@ -456,8 +540,8 @@ public class TrackBuilder : MonoBehaviour
             Vector3 nextNormal = normals[next];
             for (int side = -1; side <= 1; side += 2)
             {
-                Vector3 a = point + right * side * offset + normal * 0.02f;
-                Vector3 b = nextPoint + nextRight * side * offset + nextNormal * 0.02f;
+                Vector3 a = point + right * side * offset + normal * (RoadHeightOffsetAtDistance(distances[i]) - 0.025f);
+                Vector3 b = nextPoint + nextRight * side * offset + nextNormal * (RoadHeightOffsetAtDistance(i + 1 < sampleCount ? distances[i + 1] : TrackLength) - 0.025f);
                 if (profile.barrierStyle == TrackEnvironmentProfile.BarrierStyle.StonePromenade)
                 {
                     Vector3 groundA = new Vector3(a.x, Mathf.Max(terrain.SampleHeight(a), point.y - 0.08f), a.z);
@@ -506,23 +590,43 @@ public class TrackBuilder : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(tangent, normal);
         GameObject root = new GameObject("StartGantry");
         root.transform.SetParent(generatedRoot.transform, false);
-        root.transform.SetPositionAndRotation(point + normal * 0.05f, rotation);
+        root.transform.SetPositionAndRotation(point + normal * RoadHeightOffsetAtDistance(0f), rotation);
+        GameObject detailedArch = Resources.Load<GameObject>("Environment/ReleaseKit/Prop_Start_Arch_1912");
+        if (detailedArch != null)
+        {
+            GameObject arch = TrackSceneryBuilder.InstantiateAsset(detailedArch, Vector3.zero, Quaternion.identity, root.transform);
+            arch.name = "StartArch_Detailed";
+            ConfigureArchWidth(arch, track.roadWidth);
+            TrackSceneryBuilder.SetStatic(arch, false);
+            for (int side = -1; side <= 1; side += 2)
+            {
+                GameObject support = new GameObject("StartSupportCollider");
+                support.transform.SetParent(root.transform, false);
+                support.transform.localPosition = new Vector3(side * (track.roadWidth * 0.5f + 0.85f), 2.5f, 0f);
+                BoxCollider collider = support.AddComponent<BoxCollider>();
+                collider.size = new Vector3(0.55f, 5f, 0.75f);
+                support.isStatic = true;
+            }
+            CreateStartTiles(root.transform);
+            return;
+        }
         for (int side = -1; side <= 1; side += 2)
         {
             GameObject pillar = GameObject.CreatePrimitive(PrimitiveType.Cube);
             pillar.name = "StartPillar";
             pillar.transform.SetParent(root.transform, false);
-            pillar.transform.localPosition = new Vector3(side * (track.roadWidth * 0.5f + 0.62f), 2.435f, 0f);
+            pillar.transform.localPosition = new Vector3(side * (track.roadWidth * 0.5f + 0.85f), 2.435f, 0f);
             pillar.transform.localScale = new Vector3(0.34f, 5f, 0.34f);
             pillar.GetComponent<MeshRenderer>().sharedMaterial = woodMaterial;
-            pillar.isStatic = true;
+            TrackSceneryBuilder.SetStatic(pillar);
         }
         GameObject banner = GameObject.CreatePrimitive(PrimitiveType.Cube);
         banner.name = "StartBanner";
         banner.transform.SetParent(root.transform, false);
         banner.transform.localPosition = new Vector3(0f, 4.82f, 0f);
-        banner.transform.localScale = new Vector3(track.roadWidth + 1.5f, 0.82f, 0.22f);
+        banner.transform.localScale = new Vector3(track.roadWidth + 1.7f, 0.82f, 0.22f);
         banner.GetComponent<MeshRenderer>().sharedMaterial = bannerMaterial;
+        banner.GetComponent<Collider>().enabled = false;
         banner.isStatic = true;
 
         GameObject labelObject = new GameObject("StartBannerLabel", typeof(RectTransform), typeof(Canvas));
@@ -534,16 +638,29 @@ public class TrackBuilder : MonoBehaviour
         labelCanvas.renderMode = RenderMode.WorldSpace;
         labelCanvas.sortingOrder = 1;
         UIUtils.Text(labelCanvas.transform, "Label", string.IsNullOrEmpty(track.displayName) ? "RUSSO-BALT" : track.displayName.ToUpperInvariant(), 64, UITheme.Cream, TextAnchor.MiddleCenter, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero, UITheme.TitleFont);
+        CreateStartTiles(root.transform);
+    }
 
+    private static void ConfigureArchWidth(GameObject arch, float roadWidth)
+    {
+        Vector3 sourceScale = arch.transform.localScale;
+        float nativeWidth = 9.4f * Mathf.Max(0.0001f, Mathf.Abs(sourceScale.x));
+        float beamScale = (roadWidth + 1.7f) / nativeWidth;
+        arch.transform.localScale = new Vector3(sourceScale.x * beamScale, sourceScale.y, sourceScale.z);
+    }
+
+    private void CreateStartTiles(Transform root)
+    {
         for (int i = 0; i < 16; i++)
         {
             GameObject tile = GameObject.CreatePrimitive(PrimitiveType.Cube);
             tile.name = "StartLineTile";
-            tile.transform.SetParent(root.transform, false);
+            tile.transform.SetParent(root, false);
             float width = track.roadWidth * 0.96f / 16f;
-            tile.transform.localPosition = new Vector3(-track.roadWidth * 0.48f + (i + 0.5f) * width, 0.0075f, 0f);
+            tile.transform.localPosition = new Vector3(-track.roadWidth * 0.48f + (i + 0.5f) * width, 0.0145f, 0f);
             tile.transform.localScale = new Vector3(width, 0.025f, 0.7f);
             tile.GetComponent<MeshRenderer>().sharedMaterial = i % 2 == 0 ? bannerMaterial : darkMaterial;
+            tile.GetComponent<Collider>().enabled = false;
             tile.isStatic = true;
         }
     }
@@ -558,7 +675,7 @@ public class TrackBuilder : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(Tangents[sample], normal);
             GameObject checkpoint = new GameObject($"Checkpoint_{i:00}", typeof(Checkpoint));
             checkpoint.transform.SetParent(generatedRoot.transform, false);
-            checkpoint.transform.SetPositionAndRotation(Samples[sample] + normal * 0.06f, rotation);
+            checkpoint.transform.SetPositionAndRotation(Samples[sample] + normal * RoadHeightOffsetAtDistance(distances[sample]), rotation);
             Checkpoint component = checkpoint.GetComponent<Checkpoint>();
             component.index = i;
             SphereCollider legacyTrigger = checkpoint.GetComponent<SphereCollider>();
@@ -566,7 +683,7 @@ public class TrackBuilder : MonoBehaviour
             BoxCollider trigger = checkpoint.AddComponent<BoxCollider>();
             trigger.isTrigger = true;
             trigger.center = new Vector3(0f, 3f, 0f);
-            trigger.size = new Vector3(track.roadWidth + profile.shoulderWidth * 2f, 6f, 1.8f);
+            trigger.size = new Vector3(track.roadWidth + profile.shoulderWidth * 2f + 1.5f, 6f, 3.5f);
 
             GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Cube);
             marker.name = "Marker";
@@ -592,10 +709,10 @@ public class TrackBuilder : MonoBehaviour
 
     private void CreateScenery()
     {
-        TrackSceneryBuilder.Build(generatedRoot.transform, profile, Samples, terrain, random, track.roadWidth * 0.5f, snowMaterial, rockMaterial, stoneMaterial, warmStoneMaterial, roofMaterial, glassMaterial, woodMaterial, foliageMaterial, sailMaterial, metalMaterial, lampMaterial, seaMaterial, groundMaterial);
+        TrackSceneryBuilder.Build(generatedRoot.transform, profile, this, terrain, random, snowMaterial, rockMaterial, stoneMaterial, warmStoneMaterial, roofMaterial, glassMaterial, woodMaterial, foliageMaterial, sailMaterial, metalMaterial, lampMaterial, seaMaterial, groundMaterial);
         foreach (Transform child in generatedRoot.transform)
         {
-            if (child.name.StartsWith("Horizon_") || child.name == "Rocks" || child.name == "Sea" || child.name == "Harbor" || child.name == "DistantGround" || child.name == "Building_Fallback")
+            if (child.name.StartsWith("Horizon_") || child.name.StartsWith("TrackSection_") || child.name == "Rocks" || child.name == "Sea" || child.name == "Harbor" || child.name == "DistantGround" || child.name == "Building_Fallback")
                 RegisterRuntimeAssets(child.gameObject);
         }
         foreach (MeshFilter filter in generatedRoot.GetComponentsInChildren<MeshFilter>())
@@ -605,11 +722,20 @@ public class TrackBuilder : MonoBehaviour
         }
     }
 
+    private void CreateTrackSections()
+    {
+        TrackSceneryBuilder.BuildSections(generatedRoot.transform, profile, this, terrain, random,
+            bannerMaterial, metalMaterial, woodMaterial, stoneMaterial, warmStoneMaterial, roofMaterial, glassMaterial);
+    }
+
     private void RegisterRuntimeAssets(GameObject root)
     {
         foreach (MeshFilter filter in root.GetComponentsInChildren<MeshFilter>())
         {
-            if (filter.sharedMesh != null && filter.sharedMesh.name != "Cube" && !generatedAssets.Contains(filter.sharedMesh)) generatedAssets.Add(filter.sharedMesh);
+            if (filter.sharedMesh == null || generatedAssets.Contains(filter.sharedMesh)) continue;
+            bool generatedSectionMesh = root.name.StartsWith("TrackSection_") && filter.sharedMesh.name.StartsWith("TrackSection_");
+            bool generatedHorizonMesh = filter.sharedMesh.name.StartsWith("Horizon") || filter.sharedMesh.name == "Sea" || filter.sharedMesh.name == "Harbor" || filter.sharedMesh.name == "DistantGround" || filter.sharedMesh.name == "StoneBuilding" || filter.sharedMesh.name == "AlpineRocks";
+            if ((generatedSectionMesh || generatedHorizonMesh) && filter.sharedMesh.name != "Cube") generatedAssets.Add(filter.sharedMesh);
         }
         foreach (MeshRenderer renderer in root.GetComponentsInChildren<MeshRenderer>())
         {
@@ -626,6 +752,9 @@ public class TrackBuilder : MonoBehaviour
         GameObject cart = Resources.Load<GameObject>("Environment/Cart");
         float nextSign = 24f;
         float nextCart = 85f;
+        float nextPole = 18f;
+        float nextMilestone = 55f;
+        float nextHaystack = 95f;
         for (int i = 0; i < sampleCount; i++)
         {
             if (distances[i] >= nextSign)
@@ -637,10 +766,11 @@ public class TrackBuilder : MonoBehaviour
                     Vector3 position = Samples[i] + rights[i] * side * (track.roadWidth * 0.5f + profile.shoulderWidth + 2f);
                     position.y = terrain.SampleHeight(position);
                     Quaternion rotation = Quaternion.LookRotation(-Tangents[i], Vector3.up);
-                    GameObject instance = Object.Instantiate(sign, position, rotation, generatedRoot.transform);
+                    GameObject instance = TrackSceneryBuilder.InstantiateAsset(sign, position, rotation, generatedRoot.transform);
                     TrackSceneryBuilder.GroundInstance(instance, position.y);
                     instance.name = "RoadSign";
                     TrackSceneryBuilder.SetStatic(instance);
+                    DestroyIfUnsafe(instance, false);
                 }
             }
             if (distances[i] >= nextCart)
@@ -651,31 +781,259 @@ public class TrackBuilder : MonoBehaviour
                     int side = random.Next(2) == 0 ? -1 : 1;
                     Vector3 position = Samples[i] + rights[i] * side * (track.roadWidth * 0.5f + 4.5f);
                     position.y = terrain.SampleHeight(position);
-                    GameObject instance = Object.Instantiate(cart, position, Quaternion.LookRotation(Tangents[i], Vector3.up), generatedRoot.transform);
+                    GameObject instance = TrackSceneryBuilder.InstantiateAsset(cart, position, Quaternion.LookRotation(Tangents[i], Vector3.up), generatedRoot.transform);
                     TrackSceneryBuilder.GroundInstance(instance, position.y);
                     instance.name = "HorseCart";
                     TrackSceneryBuilder.SetStatic(instance);
+                    DestroyIfUnsafe(instance, false);
                 }
+            }
+            if (distances[i] >= nextPole)
+            {
+                nextPole = distances[i] + 46f;
+                int side = random.Next(2) == 0 ? -1 : 1;
+                Vector3 position = Samples[i] + rights[i] * side * (track.roadWidth * 0.5f + profile.shoulderWidth + 5.5f);
+                PlaceRoadsideProp("Environment/ReleaseKit/Prop_Telegraph_Pole_01", position, Quaternion.LookRotation(Tangents[i], Vector3.up), "TelegraphPole");
+            }
+            if (distances[i] >= nextMilestone)
+            {
+                nextMilestone = distances[i] + 72f;
+                int side = random.Next(2) == 0 ? -1 : 1;
+                Vector3 position = Samples[i] + rights[i] * side * (track.roadWidth * 0.5f + profile.shoulderWidth + 2.4f);
+                PlaceRoadsideProp("Environment/ReleaseKit/Prop_Milestone_01", position, Quaternion.LookRotation(-Tangents[i], Vector3.up), "Milestone");
+            }
+            if (!profile.seaEnabled && distances[i] >= nextHaystack)
+            {
+                nextHaystack = distances[i] + TrackMeshBuilder.RandomRange(random, 95f, 135f);
+                int side = random.Next(2) == 0 ? -1 : 1;
+                Vector3 position = Samples[i] + rights[i] * side * (track.roadWidth * 0.5f + 9f + random.Next(0, 4));
+                PlaceRoadsideProp("Environment/ReleaseKit/Prop_Haystack_01", position, Quaternion.Euler(0f, random.Next(0, 360), 0f), "Haystack");
             }
         }
     }
 
-    public Vector3 PointAt(float progress)
+    private void CreatePuddles()
     {
-        if (Samples.Count == 0) return Vector3.zero;
-        float scaled = Mathf.Repeat(progress, 0.9999f) * Samples.Count;
-        int index = Mathf.FloorToInt(scaled) % Samples.Count;
-        int next = (index + 1) % Samples.Count;
-        return Vector3.Lerp(Samples[index], Samples[next], scaled - Mathf.FloorToInt(scaled));
+        List<Vector3> vertices = new List<Vector3>();
+        List<Vector2> uvs = new List<Vector2>();
+        List<int> triangles = new List<int>();
+        System.Random puddleRandom = new System.Random(unchecked(profile.seed + 903));
+        const int segments = 14;
+        float distance = 28f;
+        while (distance < TrackLength - 22f)
+        {
+            distance += TrackMeshBuilder.RandomRange(puddleRandom, 22f, 38f);
+            if (distance >= TrackLength - 22f) break;
+            FrameAtDistance(distance, out Vector3 point, out Vector3 tangent, out Vector3 right, out Vector3 normal);
+            float lateral = TrackMeshBuilder.RandomRange(puddleRandom, -track.roadWidth * 0.32f, track.roadWidth * 0.32f);
+            float radiusX = TrackMeshBuilder.RandomRange(puddleRandom, 1.1f, 2.4f);
+            float radiusZ = TrackMeshBuilder.RandomRange(puddleRandom, 2.8f, 5.8f);
+            Quaternion rotation = Quaternion.LookRotation(tangent, normal);
+            Vector3 center = point + right * lateral + normal * (RoadHeightOffsetAtDistance(distance) + 0.006f);
+            int centerIndex = vertices.Count;
+            vertices.Add(center);
+            uvs.Add(new Vector2(0.5f, 0.5f));
+            for (int i = 0; i <= segments; i++)
+            {
+                float angle = i / (float)segments * Mathf.PI * 2f;
+                Vector3 offset = rotation * new Vector3(Mathf.Cos(angle) * radiusX, 0f, Mathf.Sin(angle) * radiusZ);
+                vertices.Add(center + offset);
+                uvs.Add(new Vector2(0.5f + Mathf.Cos(angle) * 0.5f, 0.5f + Mathf.Sin(angle) * 0.5f));
+                if (i < segments) triangles.AddRange(new[] { centerIndex, centerIndex + i + 2, centerIndex + i + 1 });
+            }
+        }
+        if (triangles.Count == 0) return;
+        Mesh mesh = TrackMeshBuilder.Create("RoadPuddles", vertices, uvs, new[] { triangles }, new[] { puddleMaterial });
+        generatedAssets.Add(mesh);
+        TrackMeshBuilder.CreateObject("RoadPuddles", mesh, new[] { puddleMaterial }, generatedRoot.transform, false, false);
     }
 
-    public Vector3 TangentAt(float progress)
+    private void PlaceRoadsideProp(string resource, Vector3 position, Quaternion rotation, string name)
     {
-        if (Tangents.Count == 0) return Vector3.forward;
-        float scaled = Mathf.Repeat(progress, 0.9999f) * Tangents.Count;
-        int index = Mathf.FloorToInt(scaled) % Tangents.Count;
-        int next = (index + 1) % Tangents.Count;
-        return Vector3.Lerp(Tangents[index], Tangents[next], scaled - Mathf.FloorToInt(scaled)).normalized;
+        GameObject prefab = Resources.Load<GameObject>(resource);
+        if (prefab == null || IsStartSafeZone(position)) return;
+        position.y = terrain.SampleHeight(position);
+        GameObject instance = TrackSceneryBuilder.InstantiateAsset(prefab, position, rotation, generatedRoot.transform);
+        instance.name = name;
+        TrackSceneryBuilder.GroundInstance(instance, position.y);
+        TrackSceneryBuilder.SetStatic(instance);
+        DestroyIfUnsafe(instance, false);
+    }
+
+    private void DestroyIfUnsafe(GameObject instance, bool includeVisualBounds)
+    {
+        if (TrackSceneryBuilder.HasRoadClearance(instance, this, includeVisualBounds)) return;
+        if (Application.isPlaying) Destroy(instance);
+        else DestroyImmediate(instance);
+    }
+
+    public Vector3 PointAt(float progress)
+    {
+        return PointAtDistance(Mathf.Repeat(progress, 1f) * TrackLength);
+    }
+
+    public Vector3 PointAtDistance(float distance)
+    {
+        if (Samples.Count == 0 || TrackLength < 0.001f) return Vector3.zero;
+        float wrapped = Mathf.Repeat(distance, TrackLength);
+        int index = FindSampleIndex(wrapped);
+        int next = (index + 1) % sampleCount;
+        float segmentLength = (next == 0 ? TrackLength : distances[next]) - distances[index];
+        float t = segmentLength > 0.0001f ? (wrapped - distances[index]) / segmentLength : 0f;
+        return Vector3.Lerp(Samples[index], Samples[next], t);
+    }
+
+    public Vector3 TangentAt(float progress) => TangentAtDistance(Mathf.Repeat(progress, 1f) * TrackLength);
+
+    public Vector3 TangentAtDistance(float distance)
+    {
+        if (Samples.Count == 0 || TrackLength < 0.001f) return Vector3.forward;
+        int index = FindSampleIndex(Mathf.Repeat(distance, TrackLength));
+        return Vector3.Lerp(Tangents[index], Tangents[(index + 1) % sampleCount], 0.5f).normalized;
+    }
+
+    public Vector3 RightAt(float progress)
+    {
+        Vector3 tangent = TangentAt(progress);
+        Vector3 right = Vector3.Cross(Vector3.up, tangent).normalized;
+        return right.sqrMagnitude > 0.001f ? right : Vector3.right;
+    }
+
+    public Vector3 NormalAt(float progress) => Vector3.Cross(TangentAt(progress), RightAt(progress)).normalized;
+
+    public void FrameAtDistance(float distance, out Vector3 point, out Vector3 tangent, out Vector3 right, out Vector3 normal)
+    {
+        if (Samples.Count == 0 || TrackLength < 0.001f)
+        {
+            point = Vector3.zero;
+            tangent = Vector3.forward;
+            right = Vector3.right;
+            normal = Vector3.up;
+            return;
+        }
+        float wrapped = Mathf.Repeat(distance, TrackLength);
+        int index = FindSampleIndex(wrapped);
+        int next = (index + 1) % sampleCount;
+        float segmentLength = (next == 0 ? TrackLength : distances[next]) - distances[index];
+        float t = segmentLength > 0.0001f ? Mathf.Clamp01((wrapped - distances[index]) / segmentLength) : 0f;
+        point = Vector3.Lerp(Samples[index], Samples[next], t);
+        tangent = Vector3.Lerp(Tangents[index], Tangents[next], t).normalized;
+        right = Vector3.Cross(Vector3.up, tangent).normalized;
+        if (right.sqrMagnitude < 0.001f) right = Vector3.right;
+        normal = Vector3.Cross(tangent, right).normalized;
+    }
+
+    public float NearestProgress(Vector3 position, out float lateralDistance, out float centerDistance)
+    {
+        float along;
+        Vector3 point;
+        Vector3 tangent;
+        NearestRoad(position, out along, out lateralDistance, out centerDistance, out point, out tangent);
+        return TrackLength > 0.001f ? along / TrackLength : 0f;
+    }
+
+    public float DistanceAlongTrack(Vector3 position)
+    {
+        float lateral;
+        float center;
+        Vector3 point;
+        Vector3 tangent;
+        NearestRoad(position, out float along, out lateral, out center, out point, out tangent);
+        return along;
+    }
+
+    public float RoadDistanceAt(Vector3 position)
+    {
+        float lateral;
+        Vector3 point;
+        Vector3 tangent;
+        NearestRoad(position, out _, out lateral, out float center, out point, out tangent);
+        return center;
+    }
+
+    public float RoadHeightAt(Vector3 position)
+    {
+        NearestRoad(position, out float along, out _, out _, out Vector3 point, out Vector3 tangent);
+        Vector3 right = Vector3.Cross(Vector3.up, tangent).normalized;
+        Vector3 normal = Vector3.Cross(tangent, right).normalized;
+        return point.y + normal.y * RoadHeightOffsetAtDistance(along);
+    }
+
+    public bool HasRoadClearance(Vector3 position, float radius)
+    {
+        return RoadDistanceAt(position) >= track.roadWidth * 0.5f + profile.shoulderWidth + profile.barrierOffset + Mathf.Max(0f, radius) + 0.65f;
+    }
+
+    public bool IsStartSafeZone(Vector3 position)
+    {
+        if (Samples.Count == 0) return true;
+        NearestRoad(position, out float along, out _, out _, out _, out _);
+        float circularDistance = Mathf.Min(along, TrackLength - along);
+        return circularDistance <= StartSafeZoneMeters;
+    }
+
+    public void GridPose(int slot, out Vector3 position, out Quaternion rotation)
+    {
+        if (Samples.Count == 0 || TrackLength < 0.001f)
+        {
+            position = Vector3.zero;
+            rotation = Quaternion.identity;
+            return;
+        }
+        int row = Mathf.Max(0, slot) / 2;
+        int column = Mathf.Max(0, slot) % 2;
+        float lateral = column == 0 ? -1f : 1f;
+        lateral *= Mathf.Clamp(track.roadWidth * 0.24f, 1.65f, track.roadWidth * 0.5f - 1.25f);
+        float distance = Mathf.Repeat(-6.5f - row * 6.8f, TrackLength);
+        FrameAtDistance(distance, out Vector3 point, out Vector3 tangent, out Vector3 right, out Vector3 normal);
+        position = point + right * lateral + normal * RoadHeightOffsetAtDistance(distance);
+        rotation = Quaternion.LookRotation(tangent, normal);
+    }
+
+    private int FindSampleIndex(float distance)
+    {
+        int low = 0;
+        int high = sampleCount - 1;
+        while (low < high)
+        {
+            int middle = (low + high) / 2;
+            if (distances[middle + 1] < distance) low = middle + 1;
+            else high = middle;
+        }
+        return Mathf.Clamp(low, 0, sampleCount - 1);
+    }
+
+    private void NearestRoad(Vector3 position, out float along, out float lateral, out float centerDistance, out Vector3 point, out Vector3 tangent)
+    {
+        float bestSquared = float.PositiveInfinity;
+        along = 0f;
+        lateral = 0f;
+        point = Samples.Count > 0 ? Samples[0] : Vector3.zero;
+        tangent = Tangents.Count > 0 ? Tangents[0] : Vector3.forward;
+        for (int i = 0; i < Samples.Count; i++)
+        {
+            int next = (i + 1) % Samples.Count;
+            Vector3 a = Samples[i];
+            Vector3 b = Samples[next];
+            float abx = b.x - a.x;
+            float abz = b.z - a.z;
+            float lengthSquared = abx * abx + abz * abz;
+            float t = lengthSquared > 0.0001f ? Mathf.Clamp01(((position.x - a.x) * abx + (position.z - a.z) * abz) / lengthSquared) : 0f;
+            Vector3 closest = Vector3.Lerp(a, b, t);
+            float dx = position.x - closest.x;
+            float dz = position.z - closest.z;
+            float candidate = dx * dx + dz * dz;
+            if (candidate >= bestSquared) continue;
+            bestSquared = candidate;
+            float segmentLength = (next == 0 ? TrackLength : distances[next]) - distances[i];
+            along = distances[i] + segmentLength * t;
+            Vector3 segmentTangent = (b - a).normalized;
+            Vector3 right = Vector3.Cross(Vector3.up, segmentTangent).normalized;
+            lateral = Vector3.Dot(position - closest, right);
+            point = closest;
+            tangent = segmentTangent;
+        }
+        centerDistance = Mathf.Sqrt(bestSquared);
     }
 
     private static int StableId(string value)
@@ -690,6 +1048,7 @@ public class TrackBuilder : MonoBehaviour
 
     private void ClearGenerated()
     {
+        TrackSceneryBuilder.ClearCulling();
         if (generatedRoot != null)
         {
             generatedRoot.SetActive(false);
@@ -706,10 +1065,16 @@ public class TrackBuilder : MonoBehaviour
         generatedAssets.Clear();
         terrain = null;
         volumeProfile = null;
+        EffectiveSections = new TrackData.TrackSection[0];
+        roadSurface = null;
+        terrainSurface = null;
+        puddleMaterial = null;
+        Wetness = 0f;
     }
 
     private void OnDestroy()
     {
+        TrackSceneryBuilder.ClearCulling();
         foreach (Object asset in generatedAssets)
         {
             if (asset != null) Destroy(asset);

@@ -6,7 +6,27 @@ public enum CameraMode
     Chase = 0,
     Hood = 1,
     Cockpit = 2,
-    Cinematic = 3
+    Cinematic = 3,
+    Rear = 4
+}
+
+public enum WeatherPreset
+{
+    Auto,
+    Clear,
+    Cloudy,
+    Rain,
+    Snow,
+    Fog
+}
+
+public enum TimeOfDayPreset
+{
+    Auto,
+    Dawn,
+    Day,
+    Sunset,
+    Night
 }
 
 [Serializable]
@@ -25,6 +45,8 @@ public class SettingsData
     public CameraMode cameraMode = CameraMode.Chase;
     public string selectedVehicleId = "russo_balt_c24_55";
     public string selectedTrackId = "winter_departure";
+    public WeatherPreset weather = WeatherPreset.Auto;
+    public TimeOfDayPreset timeOfDay = TimeOfDayPreset.Auto;
 
     public bool IsValidCameraMode()
     {

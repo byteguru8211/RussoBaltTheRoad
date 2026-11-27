@@ -13,7 +13,7 @@ public class PersistentAudioService1912 : MonoBehaviour
     private AudioSource raceAmbienceSource;
     private AudioSource clickSource;
     private float contextRefreshTimer;
-    private float engineRefreshTimer;
+    private float engineAudioElapsed;
     private float lastMasterVolume = -1f;
     private bool inRace;
     private bool paused;
@@ -89,11 +89,11 @@ public class PersistentAudioService1912 : MonoBehaviour
         Fade(menuAmbienceSource, menuAmbienceTarget, deltaTime, 0.45f);
         Fade(raceAmbienceSource, raceAmbienceTarget, deltaTime, 1.4f);
 
-        engineRefreshTimer -= deltaTime;
-        if (engineRefreshTimer <= 0f)
+        engineAudioElapsed += deltaTime;
+        if (engineAudioElapsed >= 0.2f)
         {
-            RefreshDisabledVehicleAudio();
-            engineRefreshTimer = 0.2f;
+            RefreshDisabledVehicleAudio(engineAudioElapsed);
+            engineAudioElapsed %= 0.2f;
         }
     }
 
@@ -111,15 +111,15 @@ public class PersistentAudioService1912 : MonoBehaviour
         results = resultsMenu || (race != null && race.State == RaceManager.RaceState.Finished);
     }
 
-    private void RefreshDisabledVehicleAudio()
+    private void RefreshDisabledVehicleAudio(float elapsedTime)
     {
-        if (!inRace)
-            return;
+        // Disabled remote-car audio still needs updates in menus, grids and races.
+        float elapsed = Mathf.Max(0.0001f, elapsedTime);
         foreach (EngineAudio1912 audio in FindObjectsByType<EngineAudio1912>())
         {
             if (audio == null || !audio.gameObject.activeInHierarchy || audio.enabled)
                 continue;
-            audio.TickExternal(Time.unscaledDeltaTime);
+            audio.TickExternal(elapsed);
         }
     }
 

@@ -210,6 +210,10 @@ public static class SaveSystem
 
         if (!settings.IsValidCameraMode())
             settings.cameraMode = CameraMode.Chase;
+        if (!Enum.IsDefined(typeof(WeatherPreset), settings.weather))
+            settings.weather = WeatherPreset.Auto;
+        if (!Enum.IsDefined(typeof(TimeOfDayPreset), settings.timeOfDay))
+            settings.timeOfDay = TimeOfDayPreset.Auto;
         settings.selectedVehicleId = NormalizeIdentifier(settings.selectedVehicleId, DefaultVehicleId);
         settings.selectedTrackId = NormalizeIdentifier(settings.selectedTrackId, DefaultTrackId);
         int qualityCount = QualitySettings.names.Length;

@@ -10,6 +10,9 @@ public static class UITheme
     public static readonly Color Muted = new Color(0.655f, 0.702f, 0.659f, 1f);
     public static readonly Color Danger = new Color(0.549f, 0.231f, 0.196f, 1f);
     public static readonly Color Success = new Color(0.435f, 0.545f, 0.463f, 1f);
+    public static readonly Color HudDark = new Color(0.043f, 0.078f, 0.071f, 0.84f);
+    public static readonly Color HudPanel = new Color(0.075f, 0.129f, 0.114f, 0.72f);
+    public static readonly Color HudRaised = new Color(0.114f, 0.180f, 0.153f, 0.90f);
 
     public static Font Font => Resources.Load<Font>("Fonts/Arial") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
     public static Font TitleFont => Resources.Load<Font>("Fonts/Georgia") ?? Font;

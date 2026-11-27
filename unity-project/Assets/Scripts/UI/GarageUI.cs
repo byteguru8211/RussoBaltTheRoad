@@ -100,8 +100,11 @@ public class GarageUI : MonoBehaviour
         List<TrackData> tracks = GameManager.GetTracks();
         for (int i = 0; i < tracks.Count; i++)
         {
-            float left = 0.04f + i * 0.184f;
-            AddTrackButton(tracks[i], new Vector2(left, 0.18f), new Vector2(left + 0.17f, 0.285f));
+            int column = i % 4;
+            int row = i / 4;
+            float left = 0.04f + column * 0.15f;
+            float bottom = 0.225f - row * 0.062f;
+            AddTrackButton(tracks[i], new Vector2(left, bottom), new Vector2(left + 0.14f, bottom + 0.052f));
         }
         UIUtils.Button(canvas.transform, "Start", "НА СТАРТ  →", new Vector2(0.68f, 0.055f), new Vector2(0.96f, 0.14f), Vector2.zero, Vector2.zero, StartRace, 30);
         UIUtils.Button(canvas.transform, "Modes", "Все форматы заезда", new Vector2(0.32f, 0.055f), new Vector2(0.64f, 0.14f), Vector2.zero, Vector2.zero, () =>
@@ -154,7 +157,7 @@ public class GarageUI : MonoBehaviour
             if (!vehicleButtons.TryGetValue(card.id, out Button button)) continue;
             bool selected = card.id == selectedVehicle;
             bool unlocked = GameManager.Instance.IsVehicleUnlocked(card.id);
-            button.image.color = selected ? UITheme.Brass : UITheme.Panel;
+            UIUtils.SetButtonColor(button, selected ? UITheme.Brass : UITheme.Panel);
             button.transform.Find("Label").GetComponent<Text>().color = selected ? UITheme.Dark : UITheme.Cream;
             button.transform.Find("Spec").GetComponent<Text>().color = selected ? UITheme.Dark : UITheme.Muted;
             button.transform.Find("Spec").GetComponent<Text>().text = unlocked ? $"{card.power}  ·  {card.gearbox}" : $"{card.power}  ·  {card.price} ₽";
@@ -163,7 +166,7 @@ public class GarageUI : MonoBehaviour
         {
             bool selected = pair.Key == selectedTrack;
             bool unlocked = GameManager.Instance.IsTrackUnlocked(pair.Key);
-            pair.Value.image.color = selected && unlocked ? UITheme.Brass : UITheme.Panel;
+            UIUtils.SetButtonColor(pair.Value, selected && unlocked ? UITheme.Brass : UITheme.Panel);
             pair.Value.transform.Find("Label").GetComponent<Text>().color = unlocked ? (selected ? UITheme.Dark : UITheme.Cream) : UITheme.Muted;
             pair.Value.transform.Find("Subtitle").GetComponent<Text>().color = unlocked ? (selected ? UITheme.Dark : UITheme.Muted) : UITheme.Muted;
             trackStateLabels[pair.Key].text = unlocked ? (selected ? "ВЫБРАН" : "ОТКРЫТ") : "ЗАКРЫТО";

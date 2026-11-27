@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70e94fcafba717848afcdf7ad2c93fee, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::DriverRigController
   vehicle: {fileID: 0}
   input: {fileID: 0}
@@ -112,7 +112,7 @@ MonoBehaviour:
   seatAnchor: {fileID: 0}
   steeringWheel: {fileID: 0}
   gearLever: {fileID: 0}
-  useSeatAnchor: 0
+  useSeatAnchor: 1
   leftHandTarget: {fileID: 0}
   rightHandTarget: {fileID: 0}
   leftKneeTarget: {fileID: 0}
@@ -120,21 +120,21 @@ MonoBehaviour:
   leftFootTarget: {fileID: 0}
   rightFootTarget: {fileID: 0}
   boneAxis: {x: 0, y: 1, z: 0}
-  leftGripLocal: {x: 0.22, y: 0, z: 0}
-  rightGripLocal: {x: -0.22, y: 0, z: 0}
-  leftElbowPoleLocal: {x: 0.85, y: -0.3, z: 0.2}
-  rightElbowPoleLocal: {x: -0.85, y: -0.3, z: 0.2}
-  leftKneeLocal: {x: 0.17, y: 0.64, z: -0.22}
-  rightKneeLocal: {x: -0.17, y: 0.64, z: -0.22}
-  leftFootLocal: {x: 0.18, y: 0.24, z: 0.24}
-  rightFootLocal: {x: -0.18, y: 0.24, z: 0.24}
+  leftGripLocal: {x: -0.22, y: 0, z: 0}
+  rightGripLocal: {x: 0.22, y: 0, z: 0}
+  leftElbowPoleLocal: {x: -0.85, y: -0.3, z: 0.2}
+  rightElbowPoleLocal: {x: 0.85, y: -0.3, z: 0.2}
+  leftKneeLocal: {x: -0.17, y: 0.64, z: -0.22}
+  rightKneeLocal: {x: 0.17, y: 0.64, z: -0.22}
+  leftFootLocal: {x: -0.18, y: 0.24, z: 0.24}
+  rightFootLocal: {x: 0.18, y: 0.24, z: 0.24}
   gearGripLocal: {x: 0, y: 0.12, z: 0}
   armResponse: 12
   bodyResponse: 6
   shiftDuration: 0.42
   maximumSteerAngle: 30
   headRenderer: {fileID: 0}
-  hideHeadInCockpit: 0
+  hideHeadInCockpit: 1
 --- !u!1 &5543859520124826762 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 255f552ab376fb74b9730096981d55f0, type: 3}
@@ -157,7 +157,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: 
+  m_WarningMessage:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0

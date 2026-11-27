@@ -194,12 +194,12 @@ public static class GameBuilderEditor
         controller.frontRight = CreateWheel(wrapper, "FR", trackWidth / 2f, wheelbase / 2f, radius);
         controller.rearLeft = CreateWheel(wrapper, "RL", -trackWidth / 2f, -wheelbase / 2f, radius);
         controller.rearRight = CreateWheel(wrapper, "RR", trackWidth / 2f, -wheelbase / 2f, radius);
-        controller.frontLeftSteerVisual = FindTransform(instance.transform, $"{prefix}_Wheel_FL_Steer");
-        controller.frontRightSteerVisual = FindTransform(instance.transform, $"{prefix}_Wheel_FR_Steer");
-        controller.frontLeftSpinVisual = FindTransform(instance.transform, $"{prefix}_Wheel_FL_Spin");
-        controller.frontRightSpinVisual = FindTransform(instance.transform, $"{prefix}_Wheel_FR_Spin");
-        controller.rearLeftSpinVisual = FindTransform(instance.transform, $"{prefix}_Wheel_RL_Spin");
-        controller.rearRightSpinVisual = FindTransform(instance.transform, $"{prefix}_Wheel_RR_Spin");
+        controller.frontLeftSteerVisual = FindWheelVisual(instance.transform, true, true, true);
+        controller.frontRightSteerVisual = FindWheelVisual(instance.transform, true, false, true);
+        controller.frontLeftSpinVisual = FindWheelVisual(instance.transform, true, true, false);
+        controller.frontRightSpinVisual = FindWheelVisual(instance.transform, true, false, false);
+        controller.rearLeftSpinVisual = FindWheelVisual(instance.transform, false, true, false);
+        controller.rearRightSpinVisual = FindWheelVisual(instance.transform, false, false, false);
         controller.steeringWheelVisual = FindTransformContains(instance.transform, "SteeringWheel_Pivot");
         wrapper.AddComponent<VehicleInput1912>().vehicle = controller;
         wrapper.AddComponent<EngineAudio1912>().vehicle = controller;
@@ -218,6 +218,22 @@ public static class GameBuilderEditor
         UnityEngine.Object.DestroyImmediate(wrapper);
         AssetDatabase.SaveAssets();
         Debug.Log($"Built vehicle prefab {id} with {models.Count} LODs");
+    }
+
+    private static Transform FindWheelVisual(Transform root, bool front, bool left, bool steer)
+    {
+        string suffix = steer ? "_steer" : "_spin";
+        foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+        {
+            string name = child.name;
+            if (name.IndexOf("wheel_", System.StringComparison.OrdinalIgnoreCase) < 0
+                || name.IndexOf("spare", System.StringComparison.OrdinalIgnoreCase) >= 0
+                || !name.EndsWith(suffix, System.StringComparison.OrdinalIgnoreCase))
+                continue;
+            Vector3 local = root.InverseTransformPoint(child.position);
+            if ((local.z >= 0f) == front && (local.x < 0f) == left) return child;
+        }
+        return null;
     }
 
     private static WheelCollider CreateWheel(GameObject parent, string code, float x, float z, float radius)
@@ -484,19 +500,21 @@ public static class GameBuilderEditor
     {
         PlayerSettings.companyName = "RussoBalt The Road";
         PlayerSettings.productName = "RussoBalt The Road";
-        PlayerSettings.bundleVersion = "0.6.0";
+        PlayerSettings.bundleVersion = "0.7.0";
         PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone, "com.russobalt.theroad");
         List<EditorBuildSettingsScene> scenes = EditorBuildSettings.scenes != null ? EditorBuildSettings.scenes.ToList() : new List<EditorBuildSettingsScene>();
         HashSet<string> existingPaths = new HashSet<string>(scenes.Where(s => s.enabled).Select(s => s.path));
         foreach (string path in new[]
         {
-            "Assets/Scenes/MainMenu.unity", "Assets/Scenes/Garage.unity", "Assets/Scenes/PreRace.unity", "Assets/Scenes/Lobby.unity",
+            "Assets/Scenes/Boot.unity", "Assets/Scenes/MainMenu.unity", "Assets/Scenes/Garage.unity", "Assets/Scenes/PreRace.unity", "Assets/Scenes/Lobby.unity",
             "Assets/Scenes/Race_Winter.unity", "Assets/Scenes/Race_Alps.unity", "Assets/Scenes/Race_Monaco.unity",
-            "Assets/Scenes/Race_Moscow.unity", "Assets/Scenes/Race_Finland.unity"
+            "Assets/Scenes/Race_Moscow.unity", "Assets/Scenes/Race_Finland.unity", "Assets/Scenes/Race_Runtime.unity"
         })
         {
             if (existingPaths.Add(path)) scenes.Add(new EditorBuildSettingsScene(path, true));
         }
+        scenes.RemoveAll(item => item.path == "Assets/Scenes/Boot.unity");
+        scenes.Insert(0, new EditorBuildSettingsScene("Assets/Scenes/Boot.unity", true));
         EditorBuildSettings.scenes = scenes.ToArray();
     }
 }

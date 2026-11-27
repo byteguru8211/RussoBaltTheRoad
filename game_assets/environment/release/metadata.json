@@ -1,0 +1,852 @@
+{
+  "units": "meters",
+  "seed": 1912,
+  "assets": [
+    {
+      "id": "Tree_Conifer_Detailed_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Tree_Conifer_Detailed_01.fbx",
+      "source": "game_assets/environment/release/Tree_Conifer_Detailed_01_Detailed.fbx",
+      "stats": {
+        "meshes": 4,
+        "vertices": 1613,
+        "polygons": 1329,
+        "triangles": 3114,
+        "dimensions_m": [
+          4.2347,
+          4.3,
+          6.925
+        ],
+        "bounds_min_m": [
+          -2.1173,
+          -2.15,
+          0.0
+        ],
+        "bounds_max_m": [
+          2.1173,
+          2.15,
+          6.925
+        ]
+      },
+      "detailed": {
+        "meshes": 28,
+        "vertices": 693,
+        "polygons": 409,
+        "triangles": 1274,
+        "dimensions_m": [
+          4.7355,
+          4.773,
+          6.925
+        ],
+        "bounds_min_m": [
+          -2.3678,
+          -2.3865,
+          0.0
+        ],
+        "bounds_max_m": [
+          2.3678,
+          2.3865,
+          6.925
+        ]
+      }
+    },
+    {
+      "id": "Tree_Birch_Detailed_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Tree_Birch_Detailed_01.fbx",
+      "source": "game_assets/environment/release/Tree_Birch_Detailed_01_Detailed.fbx",
+      "stats": {
+        "meshes": 4,
+        "vertices": 5874,
+        "polygons": 6156,
+        "triangles": 11540,
+        "dimensions_m": [
+          5.3512,
+          4.4984,
+          6.2661
+        ],
+        "bounds_min_m": [
+          -2.7971,
+          -2.3393,
+          0.0
+        ],
+        "bounds_max_m": [
+          2.5541,
+          2.1591,
+          6.2661
+        ]
+      },
+      "detailed": {
+        "meshes": 52,
+        "vertices": 4234,
+        "polygons": 4516,
+        "triangles": 8260,
+        "dimensions_m": [
+          5.3512,
+          4.4984,
+          6.2661
+        ],
+        "bounds_min_m": [
+          -2.7971,
+          -2.3393,
+          0.0
+        ],
+        "bounds_max_m": [
+          2.5541,
+          2.1591,
+          6.2661
+        ]
+      }
+    },
+    {
+      "id": "Tree_Oak_Detailed_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Tree_Oak_Detailed_01.fbx",
+      "source": "game_assets/environment/release/Tree_Oak_Detailed_01_Detailed.fbx",
+      "stats": {
+        "meshes": 2,
+        "vertices": 8060,
+        "polygons": 8574,
+        "triangles": 15896,
+        "dimensions_m": [
+          6.9806,
+          6.5704,
+          6.79
+        ],
+        "bounds_min_m": [
+          -3.5642,
+          -3.3626,
+          0.0
+        ],
+        "bounds_max_m": [
+          3.4164,
+          3.2079,
+          6.79
+        ]
+      },
+      "detailed": {
+        "meshes": 56,
+        "vertices": 6676,
+        "polygons": 7190,
+        "triangles": 13128,
+        "dimensions_m": [
+          6.9806,
+          6.5704,
+          6.79
+        ],
+        "bounds_min_m": [
+          -3.5642,
+          -3.3626,
+          0.0
+        ],
+        "bounds_max_m": [
+          3.4164,
+          3.2079,
+          6.79
+        ]
+      }
+    },
+    {
+      "id": "Prop_Rock_Cluster_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Prop_Rock_Cluster_01.fbx",
+      "source": "game_assets/environment/release/Prop_Rock_Cluster_01_Detailed.fbx",
+      "stats": {
+        "meshes": 2,
+        "vertices": 1048,
+        "polygons": 1156,
+        "triangles": 2064,
+        "dimensions_m": [
+          3.8009,
+          2.4519,
+          2.2549
+        ],
+        "bounds_min_m": [
+          -1.813,
+          -1.2587,
+          -0.5214
+        ],
+        "bounds_max_m": [
+          1.9878,
+          1.1933,
+          1.7335
+        ]
+      },
+      "detailed": {
+        "meshes": 8,
+        "vertices": 512,
+        "polygons": 704,
+        "triangles": 992,
+        "dimensions_m": [
+          3.8009,
+          2.4519,
+          2.2549
+        ],
+        "bounds_min_m": [
+          -1.813,
+          -1.2587,
+          -0.5214
+        ],
+        "bounds_max_m": [
+          1.9878,
+          1.1933,
+          1.7335
+        ]
+      }
+    },
+    {
+      "id": "Prop_Fence_10m_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Prop_Fence_10m_01.fbx",
+      "source": "game_assets/environment/release/Prop_Fence_10m_01_Detailed.fbx",
+      "stats": {
+        "meshes": 1,
+        "vertices": 2397,
+        "polygons": 2313,
+        "triangles": 4590,
+        "dimensions_m": [
+          10.198,
+          0.198,
+          1.86
+        ],
+        "bounds_min_m": [
+          -5.099,
+          -0.099,
+          0.0
+        ],
+        "bounds_max_m": [
+          5.099,
+          0.099,
+          1.86
+        ]
+      },
+      "detailed": {
+        "meshes": 51,
+        "vertices": 381,
+        "polygons": 297,
+        "triangles": 558,
+        "dimensions_m": [
+          10.396,
+          0.396,
+          1.86
+        ],
+        "bounds_min_m": [
+          -5.198,
+          -0.198,
+          0.0
+        ],
+        "bounds_max_m": [
+          5.198,
+          0.198,
+          1.86
+        ]
+      }
+    },
+    {
+      "id": "Prop_Telegraph_Pole_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Prop_Telegraph_Pole_01.fbx",
+      "source": "game_assets/environment/release/Prop_Telegraph_Pole_01_Detailed.fbx",
+      "stats": {
+        "meshes": 3,
+        "vertices": 2692,
+        "polygons": 2622,
+        "triangles": 5232,
+        "dimensions_m": [
+          17.8017,
+          0.36,
+          8.0
+        ],
+        "bounds_min_m": [
+          -8.9008,
+          -0.18,
+          0.0
+        ],
+        "bounds_max_m": [
+          8.9008,
+          0.18,
+          8.0
+        ]
+      },
+      "detailed": {
+        "meshes": 38,
+        "vertices": 1108,
+        "polygons": 1038,
+        "triangles": 2064,
+        "dimensions_m": [
+          17.8024,
+          0.36,
+          8.0
+        ],
+        "bounds_min_m": [
+          -8.9012,
+          -0.18,
+          0.0
+        ],
+        "bounds_max_m": [
+          8.9012,
+          0.18,
+          8.0
+        ]
+      }
+    },
+    {
+      "id": "Prop_Milestone_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Prop_Milestone_01.fbx",
+      "source": "game_assets/environment/release/Prop_Milestone_01_Detailed.fbx",
+      "stats": {
+        "meshes": 3,
+        "vertices": 4150,
+        "polygons": 3877,
+        "triangles": 7176,
+        "dimensions_m": [
+          0.62,
+          0.52,
+          1.55
+        ],
+        "bounds_min_m": [
+          -0.31,
+          -0.26,
+          0.0
+        ],
+        "bounds_max_m": [
+          0.31,
+          0.26,
+          1.55
+        ]
+      },
+      "detailed": {
+        "meshes": 7,
+        "vertices": 3958,
+        "polygons": 3685,
+        "triangles": 6792,
+        "dimensions_m": [
+          0.62,
+          0.52,
+          1.55
+        ],
+        "bounds_min_m": [
+          -0.31,
+          -0.26,
+          0.0
+        ],
+        "bounds_max_m": [
+          0.31,
+          0.26,
+          1.55
+        ]
+      }
+    },
+    {
+      "id": "Building_Log_Cabin_Detailed_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Building_Log_Cabin_Detailed_01.fbx",
+      "source": "game_assets/environment/release/Building_Log_Cabin_Detailed_01_Detailed.fbx",
+      "stats": {
+        "meshes": 8,
+        "vertices": 19742,
+        "polygons": 18379,
+        "triangles": 36138,
+        "dimensions_m": [
+          8.2419,
+          7.7685,
+          5.4817
+        ],
+        "bounds_min_m": [
+          -4.125,
+          -4.3185,
+          0.0
+        ],
+        "bounds_max_m": [
+          4.1169,
+          3.45,
+          5.4817
+        ]
+      },
+      "detailed": {
+        "meshes": 159,
+        "vertices": 11502,
+        "polygons": 10139,
+        "triangles": 19658,
+        "dimensions_m": [
+          8.254,
+          7.7726,
+          5.4918
+        ],
+        "bounds_min_m": [
+          -4.127,
+          -4.3226,
+          0.0
+        ],
+        "bounds_max_m": [
+          4.127,
+          3.45,
+          5.4918
+        ]
+      }
+    },
+    {
+      "id": "Building_Townhouse_Detailed_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Building_Townhouse_Detailed_01.fbx",
+      "source": "game_assets/environment/release/Building_Townhouse_Detailed_01_Detailed.fbx",
+      "stats": {
+        "meshes": 7,
+        "vertices": 6622,
+        "polygons": 6396,
+        "triangles": 12768,
+        "dimensions_m": [
+          7.5662,
+          7.585,
+          9.8
+        ],
+        "bounds_min_m": [
+          -3.7831,
+          -4.235,
+          -0.07
+        ],
+        "bounds_max_m": [
+          3.7831,
+          3.35,
+          9.73
+        ]
+      },
+      "detailed": {
+        "meshes": 119,
+        "vertices": 1006,
+        "polygons": 780,
+        "triangles": 1536,
+        "dimensions_m": [
+          7.5904,
+          7.585,
+          9.8
+        ],
+        "bounds_min_m": [
+          -3.7952,
+          -4.235,
+          -0.07
+        ],
+        "bounds_max_m": [
+          3.7952,
+          3.35,
+          9.73
+        ]
+      }
+    },
+    {
+      "id": "Prop_Haystack_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Prop_Haystack_01.fbx",
+      "source": "game_assets/environment/release/Prop_Haystack_01_Detailed.fbx",
+      "stats": {
+        "meshes": 2,
+        "vertices": 752,
+        "polygons": 716,
+        "triangles": 1496,
+        "dimensions_m": [
+          2.9,
+          2.9,
+          3.65
+        ],
+        "bounds_min_m": [
+          -1.45,
+          -1.45,
+          0.0
+        ],
+        "bounds_max_m": [
+          1.45,
+          1.45,
+          3.65
+        ]
+      },
+      "detailed": {
+        "meshes": 5,
+        "vertices": 656,
+        "polygons": 620,
+        "triangles": 1304,
+        "dimensions_m": [
+          2.9,
+          2.9,
+          3.65
+        ],
+        "bounds_min_m": [
+          -1.45,
+          -1.45,
+          0.0
+        ],
+        "bounds_max_m": [
+          1.45,
+          1.45,
+          3.65
+        ]
+      }
+    },
+    {
+      "id": "Prop_Cart_Detailed_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Prop_Cart_Detailed_01.fbx",
+      "source": "game_assets/environment/release/Prop_Cart_Detailed_01_Detailed.fbx",
+      "stats": {
+        "meshes": 2,
+        "vertices": 3820,
+        "polygons": 3660,
+        "triangles": 7460,
+        "dimensions_m": [
+          2.5,
+          5.6818,
+          1.915
+        ],
+        "bounds_min_m": [
+          -1.25,
+          -4.0068,
+          -0.025
+        ],
+        "bounds_max_m": [
+          1.25,
+          1.675,
+          1.89
+        ]
+      },
+      "detailed": {
+        "meshes": 47,
+        "vertices": 1012,
+        "polygons": 852,
+        "triangles": 1844,
+        "dimensions_m": [
+          2.5,
+          5.6852,
+          1.915
+        ],
+        "bounds_min_m": [
+          -1.25,
+          -4.0102,
+          -0.025
+        ],
+        "bounds_max_m": [
+          1.25,
+          1.675,
+          1.89
+        ]
+      }
+    },
+    {
+      "id": "Prop_Start_Arch_1912",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Prop_Start_Arch_1912.fbx",
+      "source": "game_assets/environment/release/Prop_Start_Arch_1912_Detailed.fbx",
+      "stats": {
+        "meshes": 5,
+        "vertices": 34262,
+        "polygons": 31752,
+        "triangles": 58722,
+        "dimensions_m": [
+          9.4,
+          1.0,
+          5.145
+        ],
+        "bounds_min_m": [
+          -4.7,
+          -0.5,
+          0.0
+        ],
+        "bounds_max_m": [
+          4.7,
+          0.5,
+          5.145
+        ]
+      },
+      "detailed": {
+        "meshes": 35,
+        "vertices": 33926,
+        "polygons": 31416,
+        "triangles": 58050,
+        "dimensions_m": [
+          9.4,
+          1.0,
+          5.145
+        ],
+        "bounds_min_m": [
+          -4.7,
+          -0.5,
+          0.0
+        ],
+        "bounds_max_m": [
+          4.7,
+          0.5,
+          5.145
+        ]
+      }
+    },
+    {
+      "id": "Cloud_Cumulus_01",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Cloud_Cumulus_01.fbx",
+      "source": "game_assets/environment/release/Cloud_Cumulus_01_Detailed.fbx",
+      "stats": {
+        "meshes": 2,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.3279
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.3154
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.0125
+        ]
+      },
+      "detailed": {
+        "meshes": 11,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.3279
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.3154
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.0125
+        ]
+      }
+    },
+    {
+      "id": "Cloud_Cumulus_02",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Cloud_Cumulus_02.fbx",
+      "source": "game_assets/environment/release/Cloud_Cumulus_02_Detailed.fbx",
+      "stats": {
+        "meshes": 2,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.4261
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.345
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.0811
+        ]
+      },
+      "detailed": {
+        "meshes": 11,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.4261
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.345
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.0811
+        ]
+      }
+    },
+    {
+      "id": "Cloud_Cumulus_03",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Cloud_Cumulus_03.fbx",
+      "source": "game_assets/environment/release/Cloud_Cumulus_03_Detailed.fbx",
+      "stats": {
+        "meshes": 2,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.5683
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.4405
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.1278
+        ]
+      },
+      "detailed": {
+        "meshes": 11,
+        "vertices": 2902,
+        "polygons": 3104,
+        "triangles": 5760,
+        "dimensions_m": [
+          8.95,
+          3.3,
+          4.5683
+        ],
+        "bounds_min_m": [
+          -4.5,
+          -1.65,
+          -1.4405
+        ],
+        "bounds_max_m": [
+          4.45,
+          1.65,
+          3.1278
+        ]
+      }
+    },
+    {
+      "id": "Welcome_Byteguru_Emblem",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Welcome_Byteguru_Emblem.fbx",
+      "source": "game_assets/environment/release/Welcome_Byteguru_Emblem_Detailed.fbx",
+      "stats": {
+        "meshes": 2,
+        "vertices": 1952,
+        "polygons": 1836,
+        "triangles": 3816,
+        "dimensions_m": [
+          2.84,
+          0.475,
+          2.84
+        ],
+        "bounds_min_m": [
+          -1.42,
+          -0.335,
+          -1.42
+        ],
+        "bounds_max_m": [
+          1.42,
+          0.14,
+          1.42
+        ]
+      },
+      "detailed": {
+        "meshes": 23,
+        "vertices": 800,
+        "polygons": 684,
+        "triangles": 1512,
+        "dimensions_m": [
+          2.84,
+          0.475,
+          2.84
+        ],
+        "bounds_min_m": [
+          -1.42,
+          -0.335,
+          -1.42
+        ],
+        "bounds_max_m": [
+          1.42,
+          0.14,
+          1.42
+        ]
+      }
+    },
+    {
+      "id": "Welcome_Heckercat_Emblem",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Welcome_Heckercat_Emblem.fbx",
+      "source": "game_assets/environment/release/Welcome_Heckercat_Emblem_Detailed.fbx",
+      "stats": {
+        "meshes": 4,
+        "vertices": 2808,
+        "polygons": 2764,
+        "triangles": 5520,
+        "dimensions_m": [
+          2.84,
+          0.7,
+          2.84
+        ],
+        "bounds_min_m": [
+          -1.42,
+          -0.56,
+          -1.42
+        ],
+        "bounds_max_m": [
+          1.42,
+          0.14,
+          1.42
+        ]
+      },
+      "detailed": {
+        "meshes": 26,
+        "vertices": 1720,
+        "polygons": 1676,
+        "triangles": 3344,
+        "dimensions_m": [
+          2.84,
+          0.7071,
+          2.84
+        ],
+        "bounds_min_m": [
+          -1.42,
+          -0.5671,
+          -1.42
+        ],
+        "bounds_max_m": [
+          1.42,
+          0.14,
+          1.42
+        ]
+      }
+    },
+    {
+      "id": "Welcome_Workshop_Stage",
+      "runtime": "unity-project/Assets/Resources/Environment/ReleaseKit/Welcome_Workshop_Stage.fbx",
+      "source": "game_assets/environment/release/Welcome_Workshop_Stage_Detailed.fbx",
+      "stats": {
+        "meshes": 8,
+        "vertices": 54640,
+        "polygons": 50742,
+        "triangles": 94832,
+        "dimensions_m": [
+          18.0,
+          11.0,
+          6.625
+        ],
+        "bounds_min_m": [
+          -9.0,
+          -5.5,
+          0.0
+        ],
+        "bounds_max_m": [
+          9.0,
+          5.5,
+          6.625
+        ]
+      },
+      "detailed": {
+        "meshes": 84,
+        "vertices": 50272,
+        "polygons": 46374,
+        "triangles": 86096,
+        "dimensions_m": [
+          18.0,
+          11.0,
+          6.625
+        ],
+        "bounds_min_m": [
+          -9.0,
+          -5.5,
+          0.0
+        ],
+        "bounds_max_m": [
+          9.0,
+          5.5,
+          6.625
+        ]
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Netcode.Components;
 using UnityEngine;
 
@@ -27,6 +28,17 @@ public class VehicleController1912 : MonoBehaviour
     public Transform rearLeftSpinVisual;
     public Transform rearRightSpinVisual;
     public Transform steeringWheelVisual;
+    public Vector3 steeringWheelAxis = new Vector3(0f, 0.777f, 0.630f);
+    public float steeringWheelRatio = 4f;
+
+    [Header("Camera mounts")]
+    public Vector3 cameraChasePosition = new Vector3(0f, 2.7f, -6.2f);
+    public Vector3 cameraChaseLookAt = new Vector3(0f, 0.9f, 2f);
+    public Vector3 cameraHoodPosition = new Vector3(0.31f, 1.55f, 0.62f);
+    public Vector3 cameraHoodLookAt = new Vector3(0.31f, 1.35f, 14f);
+    public Vector3 cameraCockpitPosition = new Vector3(0.27f, 1.52f, 0.12f);
+    public Vector3 cameraCockpitLookAt = new Vector3(0.27f, 1.36f, 15f);
+    public float cameraOrbitDistance = 7.4f;
 
     [Header("Period setup")]
     public float mass = 1300f;
@@ -66,7 +78,7 @@ public class VehicleController1912 : MonoBehaviour
     public float handCrankTimer;
 
     // Indexed by gear + 1: reverse, neutral, then four forward ratios.
-    private static readonly float[] GearRatios = { 0f, -3.2f, 3.4f, 2.05f, 1.3f, 0.76f };
+    private static readonly float[] GearRatios = { -3.2f, 0f, 3.4f, 2.05f, 1.3f, 0.76f };
     private const float FrontForwardStiffness = 2f;
     private const float RearForwardStiffness = 2.1f;
     private const float FrontSideStiffness = 1.55f;
@@ -82,6 +94,15 @@ public class VehicleController1912 : MonoBehaviour
     private float shiftCooldown;
     private bool simulationEnabled = true;
     private int requestedGear = 1;
+    private Quaternion steeringWheelRestRotation;
+    private TrackSurface1912.SurfaceKind currentSurface = TrackSurface1912.SurfaceKind.Dirt;
+    private float surfaceRollingMultiplier = 1f;
+    private readonly List<Transform> frontLeftSteerVisuals = new List<Transform>();
+    private readonly List<Transform> frontRightSteerVisuals = new List<Transform>();
+    private readonly List<Transform> frontLeftSpinVisuals = new List<Transform>();
+    private readonly List<Transform> frontRightSpinVisuals = new List<Transform>();
+    private readonly List<Transform> rearLeftSpinVisuals = new List<Transform>();
+    private readonly List<Transform> rearRightSpinVisuals = new List<Transform>();
 
     public float SteeringVisualAngle => steeringVisualAngle;
     public float SpeedKmh => body != null ? ForwardSpeedMps * 3.6f : 0f;
@@ -132,7 +153,82 @@ public class VehicleController1912 : MonoBehaviour
                 new Keyframe(2100f, 0.88f),
                 new Keyframe(rpmLimiter, 0f));
         }
+        CanonicalizeWheelVisuals();
+        if (steeringWheelVisual != null)
+            steeringWheelRestRotation = steeringWheelVisual.localRotation;
         ConfigureWheels();
+    }
+
+    private void CanonicalizeWheelVisuals()
+    {
+        frontLeftSteerVisuals.Clear();
+        frontRightSteerVisuals.Clear();
+        frontLeftSpinVisuals.Clear();
+        frontRightSpinVisuals.Clear();
+        rearLeftSpinVisuals.Clear();
+        rearRightSpinVisuals.Clear();
+        foreach (Transform candidate in GetComponentsInChildren<Transform>(true))
+        {
+            string name = candidate.name;
+            bool steer = name.EndsWith("_steer", System.StringComparison.OrdinalIgnoreCase);
+            bool spin = name.EndsWith("_spin", System.StringComparison.OrdinalIgnoreCase);
+            if (name.IndexOf("wheel_", System.StringComparison.OrdinalIgnoreCase) < 0
+                || name.IndexOf("spare", System.StringComparison.OrdinalIgnoreCase) >= 0
+                || (!steer && !spin))
+                continue;
+            Vector3 local = transform.InverseTransformPoint(candidate.position);
+            bool front = local.z >= 0f;
+            bool left = local.x < 0f;
+            if (steer)
+            {
+                if (front && left) frontLeftSteerVisuals.Add(candidate);
+                else if (front) frontRightSteerVisuals.Add(candidate);
+            }
+            else
+            {
+                if (front && left) frontLeftSpinVisuals.Add(candidate);
+                else if (front) frontRightSpinVisuals.Add(candidate);
+                else if (left) rearLeftSpinVisuals.Add(candidate);
+                else rearRightSpinVisuals.Add(candidate);
+            }
+        }
+        if (frontLeftSteerVisuals.Count > 0) frontLeftSteerVisual = frontLeftSteerVisuals[0];
+        if (frontRightSteerVisuals.Count > 0) frontRightSteerVisual = frontRightSteerVisuals[0];
+        if (frontLeftSpinVisuals.Count > 0) frontLeftSpinVisual = frontLeftSpinVisuals[0];
+        if (frontRightSpinVisuals.Count > 0) frontRightSpinVisual = frontRightSpinVisuals[0];
+        if (rearLeftSpinVisuals.Count > 0) rearLeftSpinVisual = rearLeftSpinVisuals[0];
+        if (rearRightSpinVisuals.Count > 0) rearRightSpinVisual = rearRightSpinVisuals[0];
+        AddValidWheelVisual(frontLeftSteerVisuals, frontLeftSteerVisual, true);
+        AddValidWheelVisual(frontRightSteerVisuals, frontRightSteerVisual, true);
+        AddValidWheelVisual(frontLeftSpinVisuals, frontLeftSpinVisual, false);
+        AddValidWheelVisual(frontRightSpinVisuals, frontRightSpinVisual, false);
+        AddValidWheelVisual(rearLeftSpinVisuals, rearLeftSpinVisual, false);
+        AddValidWheelVisual(rearRightSpinVisuals, rearRightSpinVisual, false);
+        AlignWheelCollider(frontLeft, frontLeftSpinVisual);
+        AlignWheelCollider(frontRight, frontRightSpinVisual);
+        AlignWheelCollider(rearLeft, rearLeftSpinVisual);
+        AlignWheelCollider(rearRight, rearRightSpinVisual);
+    }
+
+    private static void AddValidWheelVisual(List<Transform> visuals, Transform assigned, bool steer)
+    {
+        if (visuals.Count > 0 || assigned == null)
+            return;
+        string suffix = steer ? "_steer" : "_spin";
+        string name = assigned.name;
+        if (name.IndexOf("wheel_", System.StringComparison.OrdinalIgnoreCase) >= 0
+            && name.IndexOf("spare", System.StringComparison.OrdinalIgnoreCase) < 0
+            && name.EndsWith(suffix, System.StringComparison.OrdinalIgnoreCase))
+            visuals.Add(assigned);
+    }
+
+    private void AlignWheelCollider(WheelCollider wheel, Transform visual)
+    {
+        if (wheel == null || visual == null) return;
+        Vector3 local = transform.InverseTransformPoint(visual.position);
+        Vector3 colliderPosition = wheel.transform.localPosition;
+        colliderPosition.z = local.z;
+        wheel.transform.localPosition = colliderPosition;
     }
 
     private void ConfigureWheels()
@@ -148,12 +244,22 @@ public class VehicleController1912 : MonoBehaviour
         if (wheel == null)
             return;
         wheel.radius = Mathf.Max(0.1f, wheelRadius);
-        wheel.suspensionDistance = 0.16f;
-        wheel.suspensionSpring = new JointSpring { spring = 42000f, damper = 4500f, targetPosition = 0.5f };
+        wheel.suspensionDistance = 0.18f;
+        float snowFactor = currentSurface == TrackSurface1912.SurfaceKind.Snow ? 0.92f : 1f;
+        float damperFactor = currentSurface == TrackSurface1912.SurfaceKind.Snow ? 0.86f : 1f;
+        wheel.suspensionSpring = new JointSpring { spring = Mathf.Max(18000f, mass * 32f) * snowFactor, damper = Mathf.Max(3000f, mass * 5.5f) * damperFactor, targetPosition = 0.5f };
+        float surfaceFactor = currentSurface switch
+        {
+            TrackSurface1912.SurfaceKind.Ice => 0.55f,
+            TrackSurface1912.SurfaceKind.Snow => 0.9f,
+            TrackSurface1912.SurfaceKind.Grass => 0.7f,
+            TrackSurface1912.SurfaceKind.Cobblestone => 0.96f,
+            _ => 1f
+        };
         WheelFrictionCurve forward = wheel.forwardFriction;
-        forward.stiffness = forwardStiffness * Mathf.Clamp(surfaceGrip, 0.15f, 1.5f);
+        forward.stiffness = forwardStiffness * Mathf.Clamp(surfaceGrip * surfaceFactor, 0.12f, 1.5f);
         WheelFrictionCurve sideways = wheel.sidewaysFriction;
-        sideways.stiffness = sideStiffness * Mathf.Clamp(surfaceGrip, 0.15f, 1.5f);
+        sideways.stiffness = sideStiffness * Mathf.Clamp(surfaceGrip * surfaceFactor, 0.12f, 1.5f);
         wheel.forwardFriction = forward;
         wheel.sidewaysFriction = sideways;
     }
@@ -228,6 +334,20 @@ public class VehicleController1912 : MonoBehaviour
         Invoke(nameof(CompleteStart), 1.1f);
     }
 
+    public void StartEngineImmediately()
+    {
+        if (fuel <= 0f || temperature >= 118f)
+            return;
+        CancelInvoke(nameof(CompleteStart));
+        engineRunning = true;
+        handCrankTimer = 0f;
+        rpm = Mathf.Max(idleRpm, rpm);
+        temperature = Mathf.Max(72f, temperature);
+        StartRequestId++;
+        if (isPlayer && AchievementSystem.Instance != null)
+            AchievementSystem.Instance.Unlock("first_start");
+    }
+
     private void CompleteStart()
     {
         engineRunning = true;
@@ -291,15 +411,21 @@ public class VehicleController1912 : MonoBehaviour
         {
             networkedBody.SetPosition(position);
             networkedBody.SetRotation(rotation);
-            networkedBody.SetLinearVelocity(Vector3.zero);
-            networkedBody.SetAngularVelocity(Vector3.zero);
+            if (!body.isKinematic)
+            {
+                networkedBody.SetLinearVelocity(Vector3.zero);
+                networkedBody.SetAngularVelocity(Vector3.zero);
+            }
         }
         else
         {
             body.position = position;
             body.rotation = rotation;
-            body.linearVelocity = Vector3.zero;
-            body.angularVelocity = Vector3.zero;
+            if (!body.isKinematic)
+            {
+                body.linearVelocity = Vector3.zero;
+                body.angularVelocity = Vector3.zero;
+            }
         }
         transform.SetPositionAndRotation(position, rotation);
         NetworkTransform networkedTransform = GetComponent<NetworkTransform>();
@@ -333,6 +459,7 @@ public class VehicleController1912 : MonoBehaviour
 
         float forwardSpeed = ForwardSpeedMps;
         float planarSpeed = PlanarSpeedMps;
+        UpdateSurfaceFromWheels();
         float steerTarget = input.steer * maxSteerAngle / (1f + planarSpeed * 0.028f);
         steerTarget = Mathf.Clamp(steerTarget, -maxSteerAngle, maxSteerAngle);
         if (frontLeft != null)
@@ -446,6 +573,23 @@ public class VehicleController1912 : MonoBehaviour
         return GearRatios[index];
     }
 
+    private void UpdateSurfaceFromWheels()
+    {
+        WheelCollider[] wheels = { frontLeft, frontRight, rearLeft, rearRight };
+        foreach (WheelCollider wheel in wheels)
+        {
+            if (wheel == null || !wheel.GetGroundHit(out WheelHit hit)) continue;
+            TrackSurface1912 surface = hit.collider != null ? hit.collider.GetComponent<TrackSurface1912>() : null;
+            TrackSurface1912.SurfaceKind next = surface != null ? surface.GetSurfaceKindAt(hit.point) : TrackSurface1912.SurfaceKind.Dirt;
+            float rolling = surface != null ? surface.RollingResistanceMultiplier : 1f;
+            if (next == currentSurface && Mathf.Abs(rolling - surfaceRollingMultiplier) < 0.01f) return;
+            currentSurface = next;
+            surfaceRollingMultiplier = rolling;
+            ConfigureWheels();
+            return;
+        }
+    }
+
     private void ApplyAeroAndStability(float planarSpeed)
     {
         if (planarSpeed < 0.05f)
@@ -454,7 +598,7 @@ public class VehicleController1912 : MonoBehaviour
         planarVelocity.y = 0f;
         Vector3 direction = planarVelocity / planarSpeed;
         float groundedFactor = GroundedWheelCount / 4f;
-        float rollingForce = rollingResistance * body.mass * Mathf.Abs(Physics.gravity.y) * groundedFactor;
+        float rollingForce = rollingResistance * surfaceRollingMultiplier * body.mass * Mathf.Abs(Physics.gravity.y) * groundedFactor;
         float aeroForce = 0.5f * AirDensity * dragArea * planarSpeed * planarSpeed;
         body.AddForce(-direction * (rollingForce + aeroForce), ForceMode.Force);
         body.AddForce(-Vector3.up * downforceCoefficient * planarSpeed * planarSpeed, ForceMode.Force);
@@ -495,16 +639,25 @@ public class VehicleController1912 : MonoBehaviour
 
     private void UpdateVisuals(float dt)
     {
-        RotateWheel(frontLeftSpinVisual, frontLeft != null ? frontLeft.rpm : 0f, dt);
-        RotateWheel(frontRightSpinVisual, frontRight != null ? frontRight.rpm : 0f, dt);
-        RotateWheel(rearLeftSpinVisual, rearLeft != null ? rearLeft.rpm : 0f, dt);
-        RotateWheel(rearRightSpinVisual, rearRight != null ? rearRight.rpm : 0f, dt);
-        if (frontLeftSteerVisual != null)
-            frontLeftSteerVisual.localRotation = Quaternion.Euler(0f, steeringVisualAngle, 0f);
-        if (frontRightSteerVisual != null)
-            frontRightSteerVisual.localRotation = Quaternion.Euler(0f, steeringVisualAngle, 0f);
+        RotateWheels(frontLeftSpinVisuals, frontLeft != null ? frontLeft.rpm : 0f, dt);
+        RotateWheels(frontRightSpinVisuals, frontRight != null ? frontRight.rpm : 0f, dt);
+        RotateWheels(rearLeftSpinVisuals, rearLeft != null ? rearLeft.rpm : 0f, dt);
+        RotateWheels(rearRightSpinVisuals, rearRight != null ? rearRight.rpm : 0f, dt);
+        foreach (Transform visual in frontLeftSteerVisuals)
+            if (visual != null) visual.localRotation = Quaternion.Euler(0f, 0f, steeringVisualAngle);
+        foreach (Transform visual in frontRightSteerVisuals)
+            if (visual != null) visual.localRotation = Quaternion.Euler(0f, 0f, steeringVisualAngle);
         if (steeringWheelVisual != null)
-            steeringWheelVisual.localRotation = Quaternion.Euler(0f, 0f, -steeringVisualAngle * 4f);
+        {
+            Vector3 axis = steeringWheelAxis.sqrMagnitude > 0.001f ? steeringWheelAxis.normalized : Vector3.up;
+            steeringWheelVisual.localRotation = steeringWheelRestRotation * Quaternion.AngleAxis(steeringVisualAngle * steeringWheelRatio, axis);
+        }
+    }
+
+    private void RotateWheels(List<Transform> visuals, float wheelRpm, float dt)
+    {
+        foreach (Transform visual in visuals)
+            RotateWheel(visual, wheelRpm, dt);
     }
 
     private void RotateWheel(Transform visual, float wheelRpm, float dt)

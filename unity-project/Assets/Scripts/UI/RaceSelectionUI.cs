@@ -54,10 +54,10 @@ public class RaceSelectionUI : MonoBehaviour
         List<TrackData> tracks = GameManager.GetTracks();
         for (int i = 0; i < tracks.Count; i++)
         {
-            int column = i % 2;
-            int row = i / 2;
-            float top = 0.765f - row * 0.135f;
-            AddTrackCard(tracks[i], new Vector2(0.04f + column * 0.305f, top - 0.12f), new Vector2(0.325f + column * 0.305f, top));
+            int column = i % 4;
+            int row = i / 4;
+            float top = 0.765f - row * 0.118f;
+            AddTrackCard(tracks[i], new Vector2(0.04f + column * 0.15f, top - 0.102f), new Vector2(0.175f + column * 0.15f, top));
         }
 
         UIUtils.Card(root, "Details", UITheme.Dark, new Vector2(0.68f, 0.355f), new Vector2(0.96f, 0.80f), Vector2.zero, Vector2.zero);
@@ -93,9 +93,9 @@ public class RaceSelectionUI : MonoBehaviour
         RectTransform mapRect = UIUtils.Rect(button.transform, "Map", new Vector2(0.015f, 0.10f), new Vector2(0.16f, 0.90f), Vector2.zero, Vector2.zero);
         TrackMapUI map = mapRect.gameObject.AddComponent<TrackMapUI>();
         map.SetWaypoints(track.waypoints);
-        UIUtils.Text(button.transform, "Name", track.displayName, 19, UITheme.Cream, TextAnchor.MiddleLeft, new Vector2(0.18f, 0.46f), new Vector2(0.76f, 0.94f), Vector2.zero, Vector2.zero, UITheme.TitleFont);
-        UIUtils.Text(button.transform, "Chapter", $"{track.chapter}   ·   {track.Location}", 12, UITheme.Muted, TextAnchor.MiddleLeft, new Vector2(0.18f, 0.08f), new Vector2(0.98f, 0.43f), Vector2.zero, Vector2.zero);
-        Text state = UIUtils.Text(button.transform, "State", "", 11, UITheme.Brass, TextAnchor.MiddleRight, new Vector2(0.62f, 0.46f), new Vector2(0.97f, 0.92f), Vector2.zero, Vector2.zero);
+        UIUtils.Text(button.transform, "Name", track.displayName, 15, UITheme.Cream, TextAnchor.MiddleLeft, new Vector2(0.18f, 0.46f), new Vector2(0.78f, 0.94f), Vector2.zero, Vector2.zero, UITheme.TitleFont);
+        UIUtils.Text(button.transform, "Chapter", $"{track.chapter}   ·   {track.Location}", 10, UITheme.Muted, TextAnchor.MiddleLeft, new Vector2(0.18f, 0.08f), new Vector2(0.98f, 0.43f), Vector2.zero, Vector2.zero);
+        Text state = UIUtils.Text(button.transform, "State", "", 9, UITheme.Brass, TextAnchor.MiddleRight, new Vector2(0.60f, 0.46f), new Vector2(0.97f, 0.92f), Vector2.zero, Vector2.zero);
         trackButtons[track.id] = button;
         trackStatusLabels[track.id] = state;
     }
@@ -136,7 +136,7 @@ public class RaceSelectionUI : MonoBehaviour
         {
             bool unlocked = GameManager.Instance.IsTrackUnlocked(pair.Key);
             bool active = pair.Key == inspectedTrackId;
-            pair.Value.image.color = active ? UITheme.Raised : UITheme.Panel;
+            UIUtils.SetButtonColor(pair.Value, active ? UITheme.Raised : UITheme.Panel);
             pair.Value.transform.Find("Name").GetComponent<Text>().color = unlocked ? UITheme.Cream : UITheme.Muted;
             pair.Value.transform.Find("Chapter").GetComponent<Text>().color = unlocked ? UITheme.Muted : new Color(0.45f, 0.48f, 0.44f, 1f);
             trackStatusLabels[pair.Key].text = unlocked ? (pair.Key == selectedTrackId ? "ВЫБРАН" : "ОТКРЫТ") : "ЗАКРЫТО";
@@ -145,7 +145,7 @@ public class RaceSelectionUI : MonoBehaviour
         foreach (var pair in modeButtons)
         {
             bool active = pair.Key == selectedRaceType;
-            pair.Value.image.color = active ? UITheme.Brass : UITheme.Panel;
+            UIUtils.SetButtonColor(pair.Value, active ? UITheme.Brass : UITheme.Panel);
             pair.Value.transform.Find("Label").GetComponent<Text>().color = active ? UITheme.Dark : UITheme.Cream;
         }
         Transform modeDescription = root.Find("ModeDescription");
@@ -164,7 +164,7 @@ public class RaceSelectionUI : MonoBehaviour
         {
             bool canStart = inspectedTrackId == selectedTrackId && GameManager.Instance.IsTrackUnlocked(selectedTrackId) && GameManager.Instance.CanStartRace();
             startButton.interactable = canStart;
-            startButton.image.color = canStart ? UITheme.Brass : UITheme.Panel;
+            UIUtils.SetButtonColor(startButton, canStart ? UITheme.Brass : UITheme.Panel);
             startButton.transform.Find("Label").GetComponent<Text>().color = canStart ? UITheme.Dark : UITheme.Muted;
         }
     }

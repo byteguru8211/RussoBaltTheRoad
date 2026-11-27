@@ -77,6 +77,8 @@ public class NetworkPlayerCar : NetworkBehaviour
     public NetworkVariable<int> CheckpointIndex = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<int> CompletedLaps = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<bool> Finished = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    // Zero means unfinished; positive values are unique, server-assigned finish places.
+    public NetworkVariable<int> FinishOrder = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<VehicleNetworkState> State = new NetworkVariable<VehicleNetworkState>(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     public NetworkVariable<FixedString32Bytes> DisplayName = new NetworkVariable<FixedString32Bytes>(new FixedString32Bytes("Гонщик"), NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
@@ -92,6 +94,7 @@ public class NetworkPlayerCar : NetworkBehaviour
     private bool displayNameResolved;
     private float continuousProgress;
     private float lastTrackProgress = -1f;
+    private Vector3 lastTrackPosition;
 
     private void Awake()
     {
@@ -162,6 +165,8 @@ public class NetworkPlayerCar : NetworkBehaviour
         {
             ResolveDisplayName();
             SetGridPhase(true);
+            if (RaceManager.Instance != null && RaceManager.Instance.TrackBuilder != null)
+                InitializeTrackProgress();
         }
     }
 
@@ -272,8 +277,6 @@ public class NetworkPlayerCar : NetworkBehaviour
         if (vehicle.StartRequestId > processedStartRequest)
             vehicle.TryStartEngine();
         processedStartRequest = Mathf.Max(processedStartRequest, vehicle.StartRequestId);
-        if (vehicle.ResetRequestId > processedResetRequest)
-            vehicle.ResetVehicle();
         processedResetRequest = Mathf.Max(processedResetRequest, vehicle.ResetRequestId);
     }
 
@@ -350,12 +353,8 @@ public class NetworkPlayerCar : NetworkBehaviour
             return;
         GridSlot.Value = Mathf.Max(0, slot);
         TrackBuilder track = RaceManager.Instance.TrackBuilder;
-        Vector3 tangent = track.StartTangent;
-        Vector3 right = Vector3.Cross(Vector3.up, tangent).normalized;
-        int row = slot / 2;
-        int column = slot % 2;
-        Vector3 position = track.StartPoint - tangent * (2.5f + row * 7f) + right * (column == 0 ? -1.9f : 1.9f) + Vector3.up * 0.75f;
-        Quaternion rotation = Quaternion.LookRotation(tangent, Vector3.up);
+        track.GridPose(slot, out Vector3 position, out Quaternion rotation);
+        if (vehicle != null) vehicle.StartEngineImmediately();
         if (!body.isKinematic)
         {
             body.linearVelocity = Vector3.zero;
@@ -367,12 +366,20 @@ public class NetworkPlayerCar : NetworkBehaviour
         transform.SetPositionAndRotation(position, rotation);
         networkTransform.Teleport(position, rotation, transform.lossyScale);
         nextCheckpoint = 1;
-        continuousProgress = 0f;
-        lastTrackProgress = -1f;
-        RaceProgress.Value = 0f;
+        InitializeTrackProgress();
         CheckpointIndex.Value = 1;
         CompletedLaps.Value = 0;
         Finished.Value = false;
+        FinishOrder.Value = 0;
+    }
+
+    private void InitializeTrackProgress()
+    {
+        float nearest = NearestTrackProgress(body.position);
+        continuousProgress = RaceManager.SignedTrackProgress(nearest);
+        lastTrackProgress = nearest;
+        lastTrackPosition = body.position;
+        RaceProgress.Value = continuousProgress;
     }
 
     public void SetGridPhase(bool locked)
@@ -416,13 +423,27 @@ public class NetworkPlayerCar : NetworkBehaviour
         TrackBuilder track = race.TrackBuilder;
         if (track == null || track.Samples.Count == 0)
             return;
+        if (lastTrackProgress < 0f)
+            InitializeTrackProgress();
         int checkpointCount = Mathf.Max(1, track.checkpointCount);
         int targetIndex = nextCheckpoint >= checkpointCount ? 0 : nextCheckpoint;
-        Vector3 target = track.PointAt(targetIndex / (float)checkpointCount);
-        Vector3 offset = body.position - target;
-        offset.y = 0f;
-        float checkpointRadius = Mathf.Max(6f, track.track.roadWidth * 0.85f);
-        if (offset.sqrMagnitude <= checkpointRadius * checkpointRadius)
+        bool checkpointReached;
+        if (targetIndex == 0)
+        {
+            // The grid is behind this plane. A spherical checkpoint would finish cars before the line.
+            checkpointReached = CrossedStartPlane(track, out _);
+        }
+        else
+        {
+            Vector3 target = track.PointAt(targetIndex / (float)checkpointCount);
+            Vector3 offset = body.position - target;
+            offset.y = 0f;
+            float checkpointRadius = Mathf.Max(3.5f, track.track.roadWidth * 0.55f);
+            float alignment = Vector3.Dot(body.transform.forward, track.TangentAt(targetIndex / (float)checkpointCount));
+            checkpointReached = offset.sqrMagnitude <= checkpointRadius * checkpointRadius && alignment > 0.1f;
+        }
+
+        if (checkpointReached)
         {
             if (targetIndex == 0)
             {
@@ -438,17 +459,45 @@ public class NetworkPlayerCar : NetworkBehaviour
                 nextCheckpoint = targetIndex + 1;
             }
             CheckpointIndex.Value = nextCheckpoint;
-            if (CompletedLaps.Value >= GameManager.Instance.GetRaceLaps())
+            if (targetIndex == 0 && CompletedLaps.Value >= GameManager.Instance.GetRaceLaps() && !Finished.Value)
             {
-                Finished.Value = true;
-                serverInput = new NetworkDriveInput { Brake = 0.35f };
+                int finishOrder = race.RegisterNetworkFinish(this);
+                if (finishOrder > 0)
+                {
+                    // Publish the order before Finished so clients never rank a finished car with order zero.
+                    Finished.Value = true;
+                    serverInput = new NetworkDriveInput { Brake = 0.35f };
+                }
             }
         }
 
         UpdateContinuousProgress();
-        if (Finished.Value)
-            continuousProgress = CompletedLaps.Value;
+        // Keep the measured progress intact; FinishOrder, not a clamped lap value, decides finished places.
         RaceProgress.Value = continuousProgress;
+    }
+
+    private bool CrossedStartPlane(TrackBuilder track, out Vector3 crossingPoint)
+    {
+        crossingPoint = body.position;
+        Vector3 planePoint = track.PointAt(0f);
+        Vector3 planeTangent = track.TangentAt(0f);
+        if (planeTangent.sqrMagnitude < 0.0001f)
+            return false;
+        planeTangent.Normalize();
+        float previousSide = Vector3.Dot(lastTrackPosition - planePoint, planeTangent);
+        float currentSide = Vector3.Dot(body.position - planePoint, planeTangent);
+        if (!(previousSide <= 0f && currentSide > 0f) || Vector3.Dot(body.transform.forward, planeTangent) <= 0.1f)
+            return false;
+
+        float denominator = currentSide - previousSide;
+        float t = denominator > 0.00001f ? Mathf.Clamp01(-previousSide / denominator) : 1f;
+        crossingPoint = Vector3.Lerp(lastTrackPosition, body.position, t);
+        Vector3 right = track.RightAt(0f);
+        Vector3 planeUp = Vector3.Cross(planeTangent, right).normalized;
+        Vector3 crossingOffset = crossingPoint - planePoint;
+        float lateral = Vector3.Dot(crossingOffset, right);
+        float height = Vector3.Dot(crossingOffset, planeUp);
+        return Mathf.Abs(lateral) <= track.track.roadWidth * 0.5f + 0.75f && Mathf.Abs(height) <= 3f;
     }
 
     private void UpdateContinuousProgress()
@@ -457,12 +506,16 @@ public class NetworkPlayerCar : NetworkBehaviour
         if (lastTrackProgress < 0f)
         {
             lastTrackProgress = nearest;
+            lastTrackPosition = body.position;
             return;
         }
         float delta = Mathf.Repeat(nearest - lastTrackProgress + 0.5f, 1f) - 0.5f;
-        if (Mathf.Abs(delta) < 0.1f)
-            continuousProgress += delta;
+        TrackBuilder track = RaceManager.Instance.TrackBuilder;
+        float alignment = Vector3.Dot(body.transform.forward, track.TangentAt(nearest));
+        if (Mathf.Abs(delta) < 0.035f && alignment > 0.15f)
+            continuousProgress += Mathf.Max(0f, delta);
         lastTrackProgress = nearest;
+        lastTrackPosition = body.position;
     }
 
     private float NearestTrackProgress(Vector3 position)
@@ -494,7 +547,9 @@ public class NetworkPlayerCar : NetworkBehaviour
             EngineRunning = vehicle.engineRunning,
             Rpm = vehicle.rpm,
             Throttle = vehicle.Throttle,
-            Steer = vehicle.CurrentInput.steer,
+            // Keep the existing normalized [-1, 1] wire field, but replicate the angle
+            // actually shown on the wheels instead of the unsmoothed control input.
+            Steer = Mathf.Clamp(vehicle.SteeringVisualAngle / Mathf.Max(1f, vehicle.maxSteerAngle), -1f, 1f),
             Fuel = vehicle.fuel,
             Temperature = vehicle.temperature,
             Damage = vehicle.damage,

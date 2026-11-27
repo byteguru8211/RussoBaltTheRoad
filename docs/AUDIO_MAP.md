@@ -34,12 +34,14 @@
 - `processed/ambience_hooves_loop.wav` — повозки и лошади.
 - `processed/ambience_crowd_loop.wav` — старт, финиш, площадь.
 - `processed/ambience_birds_loop.wav` — сельская местность, вечер.
+- `processed/rain_soft_loop.wav` — дождь и влажная погода.
 
 ## Разовые звуки
 
 - `processed/gear_lever_clack.wav` — рычаг коробки.
 - `processed/metal_release_clunk.wav` — металлический люфт/фиксатор.
 - `processed/horn_close_era.wav` — гудок Austin 1933 как близкая по эпохи стилизация.
+- `processed/logo_chime_1912.wav` — оригинальный музыкальный знак студий для welcome-заставки.
 
 ## Историческая оговорка
 

@@ -257,13 +257,29 @@
       "sample_rate": 48000,
       "channels": 1,
       "sha256": "d893c0dd10202dec1f92b4997193f1a4c81e3056028372fdbb6f83a1c7c3effa"
+    },
+    {
+      "file": "audio/processed/rain_soft_loop.wav",
+      "samples": 288000,
+      "duration_s": 6.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "7116be209133b0ee169a0318bd25e7f6eded0f563479be53f4d0aff4c9fb3754"
+    },
+    {
+      "file": "audio/processed/logo_chime_1912.wav",
+      "samples": 192000,
+      "duration_s": 4.0,
+      "sample_rate": 48000,
+      "channels": 1,
+      "sha256": "dbff3125747fd06e1ebebf358e6a29c3278a5b3794bf5f3c8f3a4a77a07d733a"
     }
   ],
   "unity_mapping": {
     "engine": "Crossfade adjacent synthetic RPM layers by normalized RPM; add starter_hand_crank before engine loop.",
     "road": "Layer road_gravel_loop with speed and surface grip; pitch 0.85–1.20.",
     "wind": "Layer wind_open_cockpit_loop with speed; low-pass at low speed.",
-    "ambience": "Use crowd near start/finish, hooves near NPC carriages, birds in rural chapters.",
-    "one_shots": "gear_lever_clack, metal_release_clunk, horn_close_era, starter_hand_crank"
+    "ambience": "Use crowd near start/finish, hooves near NPC carriages, birds in rural chapters, rain_soft_loop in wet weather.",
+    "one_shots": "gear_lever_clack, metal_release_clunk, horn_close_era, starter_hand_crank, logo_chime_1912"
   }
 }

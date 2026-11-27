@@ -21,6 +21,7 @@ public class CameraController1912 : MonoBehaviour
     [Header("Cockpit / first person")]
     public Vector3 cockpitPosition = new Vector3(0f, 1.38f, 0.58f);
     public Vector3 cockpitLookAt = new Vector3(0f, 1.26f, 15f);
+    public Vector3 cockpitSeatOffset = new Vector3(0f, 1.16f, 0.14f);
     public float cockpitFieldOfView = 69f;
 
     [Header("Cinematic orbit")]
@@ -40,15 +41,19 @@ public class CameraController1912 : MonoBehaviour
     private Vector3 unshakenPosition;
     private Vector3 previousVelocity;
     private Vector3 orbitInput;
+    private bool cockpitOffsetResolved;
     private float fieldOfViewVelocity;
     private float nearClipVelocity;
+    private float targetAccelerationShake;
     private float accelerationShake;
     private float shake;
+    private int lastResetRequestId;
     private float orbitAngle = 0.35f;
     private float orbitHeightOffset;
     private float originalNearClipPlane = 0.1f;
     private Rigidbody body;
     private bool initialized;
+    private bool snapRequested;
 
     public CameraMode CurrentMode => currentMode;
 
@@ -75,6 +80,7 @@ public class CameraController1912 : MonoBehaviour
     private void Start()
     {
         ResolveReferences();
+        ResolveCockpitOffset();
         if (targetCamera != null)
             originalNearClipPlane = targetCamera.nearClipPlane;
 
@@ -93,6 +99,7 @@ public class CameraController1912 : MonoBehaviour
         }
 
         initialized = true;
+        lastResetRequestId = vehicle != null ? vehicle.ResetRequestId : 0;
         SnapToVehicle();
     }
 
@@ -144,13 +151,15 @@ public class CameraController1912 : MonoBehaviour
         targetCamera.fieldOfView = BaseFieldOfView();
         positionVelocity = Vector3.zero;
         fieldOfViewVelocity = 0f;
-        previousVelocity = body != null ? body.linearVelocity : Vector3.zero;
+        ResetShakeState();
     }
 
     private void ApplyMode(CameraMode cameraMode)
     {
         currentMode = cameraMode;
         orbitHeightOffset = 0f;
+        if (cameraMode == CameraMode.Cockpit || cameraMode == CameraMode.Hood || cameraMode == CameraMode.Rear)
+            snapRequested = true;
     }
 
     private void ResolveReferences()
@@ -175,10 +184,41 @@ public class CameraController1912 : MonoBehaviour
             body = vehicle.GetComponent<Rigidbody>();
     }
 
+    private void FixedUpdate()
+    {
+        if (vehicle == null || body == null)
+        {
+            ResetShakeState();
+            return;
+        }
+
+        Vector3 velocity = body.linearVelocity;
+        targetAccelerationShake = 0f;
+        SettingsData settings = GameManager.Instance != null ? GameManager.Instance.Settings : null;
+        bool shakeEnabled = settings == null || settings.cameraShake;
+        if (shakeEnabled && vehicle.PlanarSpeedMps >= 0.05f)
+        {
+            // Use the physics timestep so render stalls do not create shake spikes.
+            Vector3 acceleration = (velocity - previousVelocity) / Time.fixedDeltaTime;
+            float longitudinal = Mathf.Abs(Vector3.Dot(acceleration, vehicle.transform.forward));
+            float lateral = Mathf.Abs(Vector3.Dot(acceleration, vehicle.transform.right));
+            targetAccelerationShake = Mathf.Clamp(Mathf.Max(0f, longitudinal - 1.5f) * 0.0015f + lateral * 0.0006f, 0f, 0.018f);
+        }
+        previousVelocity = velocity;
+        if (vehicle.PlanarSpeedMps < 0.05f)
+            targetAccelerationShake = 0f;
+    }
+
     private void LateUpdate()
     {
         if (vehicle == null || targetCamera == null)
             return;
+        if (lastResetRequestId != vehicle.ResetRequestId)
+        {
+            lastResetRequestId = vehicle.ResetRequestId;
+            SnapToVehicle();
+            return;
+        }
         if (!initialized)
         {
             initialized = true;
@@ -193,7 +233,16 @@ public class CameraController1912 : MonoBehaviour
             : currentMode == CameraMode.Cinematic ? 0.2f
             : transitionSmoothTime;
 
-        unshakenPosition = Vector3.SmoothDamp(unshakenPosition, targetPosition, ref positionVelocity, smoothTime, Mathf.Infinity, deltaTime);
+        if (snapRequested || currentMode == CameraMode.Rear)
+        {
+            unshakenPosition = targetPosition;
+            positionVelocity = Vector3.zero;
+            snapRequested = false;
+        }
+        else
+        {
+            unshakenPosition = Vector3.SmoothDamp(unshakenPosition, targetPosition, ref positionVelocity, smoothTime, Mathf.Infinity, deltaTime);
+        }
         Quaternion targetRotation = Quaternion.LookRotation(lookTarget - unshakenPosition, Vector3.up);
         float rotationSpeed = currentMode == CameraMode.Cockpit ? 14f : currentMode == CameraMode.Cinematic ? 3.5f : 7f;
         targetCamera.transform.rotation = Quaternion.Slerp(targetCamera.transform.rotation, targetRotation, 1f - Mathf.Exp(-rotationSpeed * deltaTime));
@@ -214,37 +263,141 @@ public class CameraController1912 : MonoBehaviour
         switch (currentMode)
         {
             case CameraMode.Hood:
-                targetPosition = transform.TransformPoint(hoodPosition);
-                lookTarget = transform.TransformPoint(hoodLookAt);
+                targetPosition = transform.TransformPoint(vehicle.cameraHoodPosition);
+                lookTarget = transform.TransformPoint(vehicle.cameraHoodLookAt);
                 break;
             case CameraMode.Cockpit:
-                DriverRigController driver = vehicle.GetComponentInChildren<DriverRigController>();
-                if (driver != null && driver.head != null)
+                Transform seatAnchor = ResolveSeatAnchor();
+                if (seatAnchor != null)
                 {
-                    targetPosition = driver.head.position + transform.forward * 0.18f + transform.up * 0.015f;
-                    lookTarget = targetPosition + transform.forward * 15f + transform.up * 0.12f;
+                    Vector3 seatLocal = transform.InverseTransformPoint(seatAnchor.position);
+                    targetPosition = transform.TransformPoint(seatLocal + cockpitSeatOffset);
+                    lookTarget = targetPosition + transform.forward * 15f + transform.up * 0.08f;
                 }
                 else
                 {
-                    targetPosition = transform.TransformPoint(cockpitPosition);
-                    lookTarget = transform.TransformPoint(cockpitLookAt);
+                    targetPosition = transform.TransformPoint(vehicle.cameraCockpitPosition);
+                    lookTarget = transform.TransformPoint(vehicle.cameraCockpitLookAt);
                 }
+                break;
+            case CameraMode.Rear:
+                lookTarget = transform.TransformPoint(vehicle.cameraChaseLookAt);
+                targetPosition = ResolveRearPosition(lookTarget);
                 break;
             case CameraMode.Cinematic:
                 orbitAngle += (orbitSpeed + orbitInput.x * 1.35f) * deltaTime;
                 orbitHeightOffset = Mathf.Clamp(orbitHeightOffset + orbitInput.y * deltaTime * 3f, -1.4f, 2.2f);
                 Vector3 orbitOffset = new Vector3(
-                    Mathf.Sin(orbitAngle) * orbitDistance,
+                    Mathf.Sin(orbitAngle) * vehicle.cameraOrbitDistance,
                     Mathf.Max(1.2f, orbitHeight + orbitHeightOffset),
-                    -Mathf.Cos(orbitAngle) * orbitDistance);
+                    -Mathf.Cos(orbitAngle) * vehicle.cameraOrbitDistance);
                 targetPosition = transform.TransformPoint(orbitOffset);
                 lookTarget = transform.TransformPoint(new Vector3(0f, orbitLookHeight, 0.4f));
+                targetPosition = ClampToEnvironment(targetPosition, lookTarget);
                 break;
             default:
-                targetPosition = transform.TransformPoint(chasePosition);
-                lookTarget = transform.TransformPoint(chaseLookAt);
+                targetPosition = transform.TransformPoint(vehicle.cameraChasePosition);
+                lookTarget = transform.TransformPoint(vehicle.cameraChaseLookAt);
+                targetPosition = ClampToEnvironment(targetPosition, lookTarget);
                 break;
         }
+    }
+
+    private void ResolveCockpitOffset()
+    {
+        if (cockpitOffsetResolved || vehicle == null) return;
+        DriverRigController driver = vehicle.GetComponentInChildren<DriverRigController>();
+        Transform seat = ResolveSeatAnchor();
+        if (driver == null || driver.head == null || seat == null) return;
+        Vector3 headLocal = vehicle.transform.InverseTransformPoint(driver.head.position);
+        Vector3 seatLocal = vehicle.transform.InverseTransformPoint(seat.position);
+        Vector3 offset = headLocal - seatLocal + Vector3.forward * 0.12f;
+        if (offset.y > 0.65f && offset.y < 1.8f && offset.magnitude < 2.2f)
+        {
+            cockpitSeatOffset = offset;
+            cockpitOffsetResolved = true;
+        }
+    }
+
+    private Transform ResolveSeatAnchor()
+    {
+        if (vehicle == null)
+            return null;
+        DriverRigController driver = vehicle.GetComponentInChildren<DriverRigController>();
+        if (driver != null && driver.seatAnchor != null && driver.seatAnchor.IsChildOf(vehicle.transform))
+            return driver.seatAnchor;
+        foreach (Transform candidate in vehicle.GetComponentsInChildren<Transform>(true))
+        {
+            if (string.Equals(candidate.name, "RB_DriverSeat", System.StringComparison.OrdinalIgnoreCase)
+                || string.Equals(candidate.name, "DriverSeat", System.StringComparison.OrdinalIgnoreCase)
+                || string.Equals(candidate.name, "SeatAnchor", System.StringComparison.OrdinalIgnoreCase))
+                return candidate;
+        }
+        return null;
+    }
+
+    private Vector3 ResolveRearPosition(Vector3 lookTarget)
+    {
+        Transform vehicleTransform = vehicle.transform;
+        BoxCollider hull = vehicle.GetComponent<BoxCollider>();
+        float rearSurface = hull != null ? hull.center.z - hull.size.z * 0.5f : -2.4f;
+        float hullTop = hull != null ? hull.center.y + hull.size.y * 0.5f + 0.2f : 1.9f;
+        float rearHeight = Mathf.Max(1.9f, Mathf.Max(vehicle.cameraChasePosition.y, hullTop));
+        float rearPosition = Mathf.Min(vehicle.cameraChasePosition.z - 0.8f, rearSurface - 1.2f);
+        Vector3 desired = vehicleTransform.TransformPoint(new Vector3(0f, rearHeight, rearPosition));
+
+        // Sweep from behind the hull so obstacles shorten the rear camera boom.
+        Vector3 probeOrigin = vehicleTransform.TransformPoint(new Vector3(0f, rearHeight, rearSurface - 0.25f));
+        Vector3 direction = (desired - probeOrigin).normalized;
+        float maximumDistance = Vector3.Distance(probeOrigin, desired);
+        RaycastHit[] hits = Physics.RaycastAll(probeOrigin, direction, maximumDistance, ~0, QueryTriggerInteraction.Ignore);
+        float nearest = maximumDistance;
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider == null || hit.collider.isTrigger || hit.collider.attachedRigidbody == body)
+                continue;
+            nearest = Mathf.Min(nearest, hit.distance);
+        }
+        return probeOrigin + direction * Mathf.Clamp(nearest - 0.22f, 0.2f, maximumDistance);
+    }
+
+    private Vector3 ClampToEnvironment(Vector3 desired, Vector3 lookTarget)
+    {
+        Vector3 direction = desired - lookTarget;
+        float distance = direction.magnitude;
+        if (distance < 0.2f) return desired;
+        direction /= distance;
+        RaycastHit[] hits = Physics.RaycastAll(lookTarget + direction * 0.6f, direction, Mathf.Max(0.1f, distance - 0.6f), ~0, QueryTriggerInteraction.Ignore);
+        float nearest = distance;
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider == null || hit.collider.isTrigger || hit.collider.attachedRigidbody == body) continue;
+            nearest = Mathf.Min(nearest, hit.distance + 0.6f);
+        }
+        return PushOutsideHull(lookTarget + direction * Mathf.Max(1.2f, nearest - 0.22f));
+    }
+
+    private Vector3 PushOutsideHull(Vector3 position)
+    {
+        if (vehicle == null) return position;
+        BoxCollider hull = vehicle.GetComponent<BoxCollider>();
+        if (hull == null) return position;
+        Vector3 local = hull.transform.InverseTransformPoint(position);
+        Vector3 center = hull.center;
+        Vector3 half = hull.size * 0.5f + Vector3.one * 0.24f;
+        Vector3 delta = local - center;
+        if (Mathf.Abs(delta.x) >= half.x || Mathf.Abs(delta.y) >= half.y || Mathf.Abs(delta.z) >= half.z)
+            return position;
+        float pushX = half.x - Mathf.Abs(delta.x);
+        float pushY = half.y - Mathf.Abs(delta.y);
+        float pushZ = half.z - Mathf.Abs(delta.z);
+        if (pushX <= pushY && pushX <= pushZ)
+            local.x = center.x + (delta.x < 0f ? -half.x : half.x);
+        else if (pushY <= pushZ)
+            local.y = center.y + (delta.y < 0f ? -half.y : half.y);
+        else
+            local.z = center.z + (delta.z < 0f ? -half.z : half.z);
+        return hull.transform.TransformPoint(local);
     }
 
     private float BaseFieldOfView()
@@ -260,24 +413,29 @@ public class CameraController1912 : MonoBehaviour
 
     private void UpdateShake(float deltaTime, float speedRatio)
     {
+        if (vehicle.PlanarSpeedMps < 0.05f)
+        {
+            ResetShakeState();
+            return;
+        }
+
         SettingsData settings = GameManager.Instance != null ? GameManager.Instance.Settings : null;
         bool shakeEnabled = settings == null || settings.cameraShake;
-        float targetAccelerationShake = 0f;
-        if (shakeEnabled && body != null)
-        {
-            Vector3 velocity = body.linearVelocity;
-            Vector3 acceleration = (velocity - previousVelocity) / deltaTime;
-            float longitudinal = Mathf.Abs(Vector3.Dot(acceleration, vehicle.transform.forward));
-            float lateral = Mathf.Abs(Vector3.Dot(acceleration, vehicle.transform.right));
-            targetAccelerationShake = Mathf.Clamp(Mathf.Max(0f, longitudinal - 1.5f) * 0.0015f + lateral * 0.0006f, 0f, 0.018f);
-            previousVelocity = velocity;
-        }
-        accelerationShake = Mathf.Lerp(accelerationShake, targetAccelerationShake, 1f - Mathf.Exp(-6f * deltaTime));
+        float accelerationTarget = shakeEnabled ? targetAccelerationShake : 0f;
+        accelerationShake = Mathf.Lerp(accelerationShake, accelerationTarget, 1f - Mathf.Exp(-6f * deltaTime));
 
         float damageShake = shakeEnabled ? Mathf.Clamp01(vehicle.damage / 100f) * 0.009f : 0f;
         float speedShake = shakeEnabled ? speedRatio * 0.004f : 0f;
         float modeScale = currentMode == CameraMode.Cinematic ? 0.35f : 1f;
         shake = Mathf.Lerp(shake, (accelerationShake + damageShake + speedShake) * modeScale, 1f - Mathf.Exp(-5f * deltaTime));
+    }
+
+    private void ResetShakeState()
+    {
+        previousVelocity = body != null ? body.linearVelocity : Vector3.zero;
+        targetAccelerationShake = 0f;
+        accelerationShake = 0f;
+        shake = 0f;
     }
 
     private Vector3 ShakeOffset()

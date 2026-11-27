@@ -1,0 +1,22 @@
+{
+  "generated": "2026-11-27",
+  "source": "tools/build_regional_variety.py",
+  "blend": "Regional_Variety.blend",
+  "units": "meters",
+  "blender_up": "Z",
+  "unity_up": "Y",
+  "lod1_decimate_ratio": 0.42,
+  "license": "Original project assets generated for RussoBalt The Road",
+  "assets": [
+    "Prop_Mediterranean_Cypress_01",
+    "Prop_Alpine_Cliff_01",
+    "Prop_Stone_Bridge_01",
+    "Building_Alpine_Chalet_01",
+    "Building_Coastal_Cottage_01",
+    "Prop_Vineyard_Rows_01",
+    "Prop_Race_Grandstand_01",
+    "Prop_Roadside_Shrine_01",
+    "Prop_Reed_Cluster_01",
+    "Prop_Cobbled_Road_10m_01"
+  ]
+}

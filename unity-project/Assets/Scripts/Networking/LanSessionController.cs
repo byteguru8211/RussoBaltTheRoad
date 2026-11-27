@@ -17,7 +17,7 @@ public class LanSessionController : MonoBehaviour
     public NetworkManager Network { get; private set; }
     public UnityTransport Transport { get; private set; }
     public ushort Port = 7777;
-    public const string BuildVersion = "0.6.0";
+    public static string BuildVersion => Application.version;
     public const int MaxPlayers = 6;
 
     private GameObject lobbyPrefab;

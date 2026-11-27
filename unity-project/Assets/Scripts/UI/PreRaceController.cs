@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -22,6 +23,8 @@ public class PreRaceController : MonoBehaviour
     private GameObject loadingPanel;
     private Text loadingText;
     private Image loadingFill;
+    private Text weatherText;
+    private Text timeText;
     private AsyncOperation loadOperation;
     private float yaw = 0.58f;
     private float orbitDirection = 1f;
@@ -202,8 +205,62 @@ public class PreRaceController : MonoBehaviour
         loadingText = UIUtils.Text(loadingPanel.transform, "Status", "Подготовка трассы…", 22, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.25f, 0.48f), new Vector2(0.75f, 0.53f), Vector2.zero, Vector2.zero);
         UIUtils.Panel(loadingPanel.transform, "ProgressBack", UITheme.Panel, new Vector2(0.25f, 0.405f), new Vector2(0.75f, 0.425f), Vector2.zero, Vector2.zero, false);
         loadingFill = UIUtils.Panel(loadingPanel.transform, "ProgressFill", UITheme.Brass, new Vector2(0.25f, 0.405f), new Vector2(0.25f, 0.425f), Vector2.zero, Vector2.zero, false);
-        UIUtils.Text(loadingPanel.transform, "Tip", "Совет: F запускает двигатель, C переключает камеру.", 18, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.2f, 0.31f), new Vector2(0.8f, 0.36f), Vector2.zero, Vector2.zero);
+        UIUtils.Text(loadingPanel.transform, "Tip", "Двигатель уже заведён · C — камера · R — задний ход.", 18, UITheme.Muted, TextAnchor.MiddleCenter, new Vector2(0.2f, 0.31f), new Vector2(0.8f, 0.36f), Vector2.zero, Vector2.zero);
+        BuildConditionPanel();
     }
+
+    private void BuildConditionPanel()
+    {
+        UIUtils.Card(selectionPanel.transform, "Conditions", UITheme.HudDark, new Vector2(0.48f, 0.19f), new Vector2(0.96f, 0.285f), Vector2.zero, Vector2.zero);
+        UIUtils.Text(selectionPanel.transform, "ConditionsLabel", "УСЛОВИЯ ЗАЕЗДА", 13, UITheme.Brass, TextAnchor.MiddleLeft, new Vector2(0.50f, 0.247f), new Vector2(0.94f, 0.275f), Vector2.zero, Vector2.zero);
+        UIUtils.Button(selectionPanel.transform, "Weather", "", new Vector2(0.50f, 0.198f), new Vector2(0.72f, 0.24f), Vector2.zero, Vector2.zero, CycleWeather, 14);
+        UIUtils.Button(selectionPanel.transform, "TimeOfDay", "", new Vector2(0.74f, 0.198f), new Vector2(0.94f, 0.24f), Vector2.zero, Vector2.zero, CycleTime, 14);
+        weatherText = UIUtils.Text(selectionPanel.transform, "WeatherText", "", 14, UITheme.Cream, TextAnchor.MiddleCenter, new Vector2(0.50f, 0.198f), new Vector2(0.72f, 0.24f), Vector2.zero, Vector2.zero);
+        timeText = UIUtils.Text(selectionPanel.transform, "TimeText", "", 14, UITheme.Cream, TextAnchor.MiddleCenter, new Vector2(0.74f, 0.198f), new Vector2(0.94f, 0.24f), Vector2.zero, Vector2.zero);
+        RefreshConditionLabels();
+    }
+
+    private void CycleWeather()
+    {
+        SettingsData settings = GameManager.Instance.Settings;
+        settings.weather = (WeatherPreset)(((int)settings.weather + 1) % Enum.GetValues(typeof(WeatherPreset)).Length);
+        RefreshConditionLabels();
+        GameManager.Instance.Save();
+    }
+
+    private void CycleTime()
+    {
+        SettingsData settings = GameManager.Instance.Settings;
+        settings.timeOfDay = (TimeOfDayPreset)(((int)settings.timeOfDay + 1) % Enum.GetValues(typeof(TimeOfDayPreset)).Length);
+        RefreshConditionLabels();
+        GameManager.Instance.Save();
+    }
+
+    private void RefreshConditionLabels()
+    {
+        SettingsData settings = GameManager.Instance.Settings;
+        if (weatherText != null) weatherText.text = "Погода · " + WeatherName(settings.weather);
+        if (timeText != null) timeText.text = "Время · " + TimeName(settings.timeOfDay);
+    }
+
+    private static string WeatherName(WeatherPreset weather) => weather switch
+    {
+        WeatherPreset.Clear => "Ясно",
+        WeatherPreset.Cloudy => "Облачно",
+        WeatherPreset.Rain => "Дождь",
+        WeatherPreset.Snow => "Снег",
+        WeatherPreset.Fog => "Туман",
+        _ => "Авто"
+    };
+
+    private static string TimeName(TimeOfDayPreset time) => time switch
+    {
+        TimeOfDayPreset.Dawn => "Рассвет",
+        TimeOfDayPreset.Day => "День",
+        TimeOfDayPreset.Sunset => "Закат",
+        TimeOfDayPreset.Night => "Ночь",
+        _ => "Авто"
+    };
 
     private void SetupOrbitInput(Image surface)
     {

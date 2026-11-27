@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SettingsUI : MonoBehaviour
 {
     private Canvas canvas;
+    private Button[] cameraButtons;
 
     public static void Show(Transform parent = null)
     {
@@ -26,24 +28,31 @@ public class SettingsUI : MonoBehaviour
         UIUtils.Slider(panel, "Music", "Музыка меню", settings.musicVolume, new Vector2(40, -380), v => settings.musicVolume = v);
         UIUtils.Slider(panel, "Steering", "Чувствительность руля", settings.steeringSensitivity, new Vector2(40, -445), v => settings.steeringSensitivity = v, 0.5f, 1.5f);
         UIUtils.Text(panel, "CameraLabel", "Камера", 22, UITheme.Cream, TextAnchor.MiddleLeft, new Vector2(0, 1), new Vector2(0, 1), new Vector2(40, -505), new Vector2(250, -477));
-        string[] cameraNames = { "Погоня", "Капот", "Кокпит", "Кино" };
+        string[] cameraNames = { "Погоня", "Капот", "Кокпит", "Кино", "Задняя" };
+        cameraButtons = new Button[cameraNames.Length];
+        const float cameraButtonWidth = 0.168f;
+        const float cameraButtonStep = 0.183f;
         for (int i = 0; i < cameraNames.Length; i++)
         {
             int mode = i;
-            UIUtils.Button(panel, "Camera_" + i, cameraNames[i], new Vector2(0.06f + i * 0.225f, 0.40f), new Vector2(0.25f + i * 0.225f, 0.455f), Vector2.zero, Vector2.zero, () =>
+            float left = 0.06f + i * cameraButtonStep;
+            cameraButtons[i] = UIUtils.Button(panel, "Camera_" + i, cameraNames[i], new Vector2(left, 0.40f), new Vector2(left + cameraButtonWidth, 0.455f), Vector2.zero, Vector2.zero, () =>
             {
                 settings.cameraMode = (CameraMode)mode;
                 GameManager.Instance.SelectCameraMode(mode);
+                RefreshCameraButtons();
             }, 18);
         }
-        UIUtils.Toggle(panel, "Shake", "Тряска камеры", settings.cameraShake, new Vector2(40, -555), v => settings.cameraShake = v);
-        UIUtils.Toggle(panel, "Clutch", "Помощь со сцеплением", settings.automaticClutch, new Vector2(40, -605), v => settings.automaticClutch = v);
-        UIUtils.Toggle(panel, "Subtitles", "Субтитры", settings.subtitles, new Vector2(40, -655), v => settings.subtitles = v);
-        UIUtils.Toggle(panel, "AutomaticTransmission", "Автоматическая коробка", settings.automaticTransmission, new Vector2(40, -705), v => settings.automaticTransmission = v);
+        RefreshCameraButtons();
+        UIUtils.Toggle(panel, "Shake", "Тряска камеры", settings.cameraShake, new Vector2(40, -615), v => settings.cameraShake = v);
+        UIUtils.Toggle(panel, "Clutch", "Помощь со сцеплением", settings.automaticClutch, new Vector2(40, -665), v => settings.automaticClutch = v);
+        UIUtils.Toggle(panel, "Subtitles", "Субтитры", settings.subtitles, new Vector2(40, -715), v => settings.subtitles = v);
+        UIUtils.Toggle(panel, "AutomaticTransmission", "Автоматическая коробка", settings.automaticTransmission, new Vector2(40, -765), v => settings.automaticTransmission = v);
         UIUtils.Button(panel, "Save", "Сохранить", new Vector2(0.25f, 0.02f), new Vector2(0.75f, 0.10f), Vector2.zero, Vector2.zero, () =>
         {
             GameManager.Instance.Profile.playerName = SaveSystem.NormalizePlayerName(GameManager.Instance.Profile.playerName);
             GameManager.Instance.Save();
+            RefreshCameraButtons();
             if (parent == null)
             {
                 Destroy(canvas.gameObject);
@@ -52,5 +61,15 @@ public class SettingsUI : MonoBehaviour
             else
                 Destroy(panel.gameObject);
         }, 26);
+    }
+
+    private void RefreshCameraButtons()
+    {
+        int activeMode = (int)GameManager.Instance.Settings.cameraMode;
+        for (int i = 0; i < cameraButtons.Length; i++)
+        {
+            bool active = i == activeMode;
+            UIUtils.SetButtonColor(cameraButtons[i], active ? UITheme.Brass : UITheme.Panel);
+        }
     }
 }

@@ -12,10 +12,14 @@ public class Checkpoint : MonoBehaviour
         trigger.radius = 8f;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) => Report(other);
+
+    private void OnTriggerStay(Collider other) => Report(other);
+
+    private void Report(Collider other)
     {
-        VehicleController1912 vehicle = other.attachedRigidbody != null ? other.attachedRigidbody.GetComponent<VehicleController1912>() : null;
+        VehicleController1912 vehicle = other.GetComponentInParent<VehicleController1912>();
         if (raceManager != null && vehicle != null && vehicle.isPlayer)
-            raceManager.PlayerCheckpoint(index);
+            raceManager.PlayerCheckpoint(index, vehicle);
     }
 }

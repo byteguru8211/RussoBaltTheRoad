@@ -62,14 +62,14 @@ public class DriverRigController : MonoBehaviour
 
     [Header("Seated pose")]
     public Vector3 boneAxis = Vector3.up;
-    public Vector3 leftGripLocal = new Vector3(0.22f, 0f, 0f);
-    public Vector3 rightGripLocal = new Vector3(-0.22f, 0f, 0f);
-    public Vector3 leftElbowPoleLocal = new Vector3(0.85f, -0.3f, 0.2f);
-    public Vector3 rightElbowPoleLocal = new Vector3(-0.85f, -0.3f, 0.2f);
-    public Vector3 leftKneeLocal = new Vector3(0.17f, 0.56f, 0.42f);
-    public Vector3 rightKneeLocal = new Vector3(-0.17f, 0.56f, 0.42f);
-    public Vector3 leftFootLocal = new Vector3(0.18f, 0.2f, 0.82f);
-    public Vector3 rightFootLocal = new Vector3(-0.18f, 0.2f, 0.82f);
+    public Vector3 leftGripLocal = new Vector3(-0.22f, 0f, 0f);
+    public Vector3 rightGripLocal = new Vector3(0.22f, 0f, 0f);
+    public Vector3 leftElbowPoleLocal = new Vector3(-0.85f, -0.3f, 0.2f);
+    public Vector3 rightElbowPoleLocal = new Vector3(0.85f, -0.3f, 0.2f);
+    public Vector3 leftKneeLocal = new Vector3(-0.17f, 0.56f, 0.42f);
+    public Vector3 rightKneeLocal = new Vector3(0.17f, 0.56f, 0.42f);
+    public Vector3 leftFootLocal = new Vector3(-0.18f, 0.2f, 0.82f);
+    public Vector3 rightFootLocal = new Vector3(0.18f, 0.2f, 0.82f);
     public Vector3 gearGripLocal = new Vector3(0f, 0.12f, 0f);
     public float armResponse = 12f;
     public float bodyResponse = 6f;
@@ -159,11 +159,24 @@ public class DriverRigController : MonoBehaviour
                 gearLever = FindContains(vehicleParts, "GearLever_Pivot");
             if (seatAnchor == null)
                 seatAnchor = FindExact(vehicleParts, "RB_DriverSeat") ?? FindExact(vehicleParts, "DriverSeat") ?? FindExact(vehicleParts, "SeatAnchor");
-            if (useSeatAnchor && seatAnchor != null && !rigRoot.IsChildOf(vehicle.transform))
+            if (useSeatAnchor && seatAnchor != null)
             {
-                rigRoot.position = seatAnchor.position;
-                rigRoot.rotation = seatAnchor.rotation;
+                // Preserve the imported axis conversion by moving only the direct driver child.
+                Transform driverRoot = transform;
+                while (driverRoot != null && driverRoot.parent != null && driverRoot.parent != vehicle.transform)
+                    driverRoot = driverRoot.parent;
+                if (driverRoot != null && driverRoot.parent == vehicle.transform)
+                {
+                    driverRoot.localPosition = seatAnchor.localPosition;
+                    driverRoot.localRotation = seatAnchor.localRotation;
+                }
             }
+        }
+
+        if (headRenderer == null && head != null)
+        {
+            headRenderer = head.GetComponent<Renderer>();
+            if (headRenderer == null) headRenderer = head.GetComponentInChildren<Renderer>(true);
         }
 
         if (pelvis != null) pelvisRest = pelvis.localRotation;
@@ -237,8 +250,8 @@ public class DriverRigController : MonoBehaviour
 
         SolveLeg(leftThigh, leftShin, leftFoot, leftKneeTarget, leftFootPosition, leftPole);
         SolveLeg(rightThigh, rightShin, rightFoot, rightKneeTarget, rightFootPosition, rightPole);
-        Vector3 leftToe = vehicle.transform.TransformPoint(new Vector3(0.18f, 0.16f, 1.04f));
-        Vector3 rightToe = vehicle.transform.TransformPoint(new Vector3(-0.18f, 0.16f, 1.04f));
+        Vector3 leftToe = vehicle.transform.TransformPoint(new Vector3(-0.18f, 0.16f, 1.04f));
+        Vector3 rightToe = vehicle.transform.TransformPoint(new Vector3(0.18f, 0.16f, 1.04f));
         AimBone(leftFoot, leftToe - leftFoot.position);
         AimBone(rightFoot, rightToe - rightFoot.position);
     }

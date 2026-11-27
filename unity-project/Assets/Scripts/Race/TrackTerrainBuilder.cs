@@ -7,30 +7,40 @@ public class TrackTerrainBuilder
     public Vector3 Origin { get; private set; }
     public float Size { get; private set; }
     public int Resolution { get; private set; }
+    public bool SnowCoveredGround => profile != null && profile.snowCoveredGround;
     public GameObject TerrainObject { get; private set; }
     private float[,] heights;
     private float roadHalfWidth;
     private float shoulderWidth;
     private IReadOnlyList<Vector3> samples;
+    private float[] sampleDistances;
     private TrackEnvironmentProfile profile;
     private int seed;
 
-    public void Build(Transform parent, TrackEnvironmentProfile environment, IReadOnlyList<Vector3> path, Material groundMaterial, Material snowMaterial, float halfRoadWidth, int randomSeed)
+    public void Build(Transform parent, TrackEnvironmentProfile environment, TrackBuilder builder, Material groundMaterial, Material snowMaterial, float halfRoadWidth, int randomSeed)
     {
         profile = environment;
-        samples = path;
+        samples = builder.Samples;
+        sampleDistances = new float[samples.Count];
+        float pathLength = 0f;
+        for (int i = 1; i < samples.Count; i++)
+        {
+            pathLength += Vector3.Distance(samples[i - 1], samples[i]);
+            sampleDistances[i] = pathLength;
+        }
+        pathLength += Vector3.Distance(samples[samples.Count - 1], samples[0]);
         seed = randomSeed;
         roadHalfWidth = halfRoadWidth;
         shoulderWidth = environment.shoulderWidth;
         Resolution = Mathf.Clamp(environment.terrainResolution, 65, 257);
         Size = environment.terrainSize;
 
-        Vector3 min = path[0];
-        Vector3 max = path[0];
-        for (int i = 1; i < path.Count; i++)
+        Vector3 min = samples[0];
+        Vector3 max = samples[0];
+        for (int i = 1; i < samples.Count; i++)
         {
-            min = Vector3.Min(min, path[i]);
-            max = Vector3.Max(max, path[i]);
+            min = Vector3.Min(min, samples[i]);
+            max = Vector3.Max(max, samples[i]);
         }
         Center = new Vector3((min.x + max.x) * 0.5f, 0f, (min.z + max.z) * 0.5f);
         Origin = new Vector3(Center.x - Size * 0.5f, -160f, Center.z - Size * 0.5f);
@@ -50,11 +60,22 @@ public class TrackTerrainBuilder
                 float worldZ = Origin.z + z * step;
                 Vector2 position = new Vector2(worldX, worldZ);
                 float nearestDistance;
-                float roadHeight = NearestRoadHeight(position, out nearestDistance);
+                float roadHeight;
+                float lateral;
+                float along;
+                NearestRoadInfo(position, out nearestDistance, out roadHeight, out lateral, out along);
                 float natural = NaturalHeight(worldX, worldZ);
+                float startDistance = Mathf.Min(along, builder.TrackLength - along);
+                if (startDistance <= TrackBuilder.StartSafeZoneMeters) natural = roadHeight - 0.16f;
                 float blend = SmoothStep(0f, 1f, (nearestDistance - corridor) / Mathf.Max(1f, profile.roadCutBlend));
                 float height = Mathf.Lerp(roadHeight - 0.16f, natural, blend);
-                if (profile.retainingWallDrop > 0f && nearestDistance > corridor)
+                if (profile.enableRoadsideDitches && !profile.seaEnabled && nearestDistance > corridor && startDistance > TrackBuilder.StartSafeZoneMeters + 4f)
+                {
+                    float ditchCenter = corridor + 2.1f;
+                    float ditch = Mathf.Exp(-Mathf.Pow((nearestDistance - ditchCenter) / 0.85f, 2f));
+                    if (lateral < 0f) height -= profile.roadsideDitchDepth * ditch;
+                }
+                if (profile.retainingWallDrop > 0f && nearestDistance > corridor && startDistance > TrackBuilder.StartSafeZoneMeters + 4f)
                 {
                     float wallCut = SmoothStep(corridor, corridor + 1.1f, nearestDistance);
                     height = Mathf.Min(height, roadHeight - 0.16f - profile.retainingWallDrop * wallCut);
@@ -64,6 +85,13 @@ public class TrackTerrainBuilder
                     float coast = SmoothStep(0f, 1f, (profile.coastlineZ - worldZ) / Mathf.Max(1f, profile.coastBlend));
                     height = Mathf.Lerp(height, profile.seaLevel - 3f, coast);
                 }
+                if (profile.seaEnabled && nearestDistance > corridor + 1f)
+                {
+                    float shore = 1f - SmoothStep(0f, 7f, Mathf.Abs(worldZ - profile.coastlineZ));
+                    float beachHeight = profile.seaLevel - 0.12f + (ValueNoise(worldX, worldZ, seed + 660, 0.04f) - 0.5f) * 0.35f;
+                    height = Mathf.Lerp(height, beachHeight, shore);
+                }
+                height = ApplyBridgeCarvings(builder, along, nearestDistance, roadHeight, height, corridor);
                 float edgeDistance = Mathf.Max(Mathf.Abs(worldX - Center.x), Mathf.Abs(worldZ - Center.z));
                 float edgeFade = SmoothStep(Size * 0.36f, Size * 0.5f, edgeDistance);
                 height = Mathf.Lerp(height, profile.seaEnabled ? profile.seaLevel - 3f : -6f, edgeFade);
@@ -98,52 +126,88 @@ public class TrackTerrainBuilder
     public float SampleHeight(Vector3 worldPosition)
     {
         if (heights == null) return -0.16f;
-        float fx = Mathf.Clamp((worldPosition.x - Origin.x) / Size * (Resolution - 1), 0f, Resolution - 1.001f);
-        float fz = Mathf.Clamp((worldPosition.z - Origin.z) / Size * (Resolution - 1), 0f, Resolution - 1.001f);
-        int x = Mathf.FloorToInt(fx);
-        int z = Mathf.FloorToInt(fz);
+        float fx = Mathf.Clamp((worldPosition.x - Origin.x) / Size * (Resolution - 1), 0f, Resolution - 1);
+        float fz = Mathf.Clamp((worldPosition.z - Origin.z) / Size * (Resolution - 1), 0f, Resolution - 1);
+        int x = Mathf.Min(Mathf.FloorToInt(fx), Resolution - 2);
+        int z = Mathf.Min(Mathf.FloorToInt(fz), Resolution - 2);
         float tx = fx - x;
         float tz = fz - z;
-        float a = Mathf.Lerp(heights[z, x], heights[z, x + 1], tx);
-        float b = Mathf.Lerp(heights[z + 1, x], heights[z + 1, x + 1], tx);
-        return Mathf.Lerp(a, b, tz);
+        float a = heights[z, x];
+        float b = heights[z, x + 1];
+        float c = heights[z + 1, x];
+        float d = heights[z + 1, x + 1];
+        if (tx + tz <= 1f) return a + (b - a) * tx + (c - a) * tz;
+        return b * (1f - tz) + c * (1f - tx) + d * (tx + tz - 1f);
     }
 
     public bool IsSnowAt(Vector3 worldPosition)
     {
-        if (profile.snowCoveredGround) return true;
-        float detail = ValueNoise(worldPosition.x, worldPosition.z, seed + 810, 0.035f) * 2f - 1f;
-        float t = SmoothStep(profile.snowStartHeight - profile.snowBlendHeight, profile.snowStartHeight + profile.snowBlendHeight, worldPosition.y + detail * 2f);
-        return t > 0.5f;
+        if (profile.snowCoveredGround || heights == null) return profile.snowCoveredGround;
+        float fx = Mathf.Clamp((worldPosition.x - Origin.x) / Size * (Resolution - 1), 0f, Resolution - 1);
+        float fz = Mathf.Clamp((worldPosition.z - Origin.z) / Size * (Resolution - 1), 0f, Resolution - 1);
+        int x = Mathf.Min(Mathf.FloorToInt(fx), Resolution - 2);
+        int z = Mathf.Min(Mathf.FloorToInt(fz), Resolution - 2);
+        float averageHeight = (heights[z, x] + heights[z, x + 1] + heights[z + 1, x] + heights[z + 1, x + 1]) * 0.25f;
+        float step = Size / (Resolution - 1);
+        float snowNoise = ValueNoise(Origin.x + x * step, Origin.z + z * step, seed + 810, 0.035f);
+        float snowWeight = SmoothStep(profile.snowStartHeight - profile.snowBlendHeight, profile.snowStartHeight + profile.snowBlendHeight, averageHeight + snowNoise * 2f);
+        return snowWeight > 0.52f;
     }
 
     public float DistanceToRoad(Vector3 worldPosition, out float roadHeight)
     {
-        return NearestRoadHeight(new Vector2(worldPosition.x, worldPosition.z), out roadHeight);
+        float lateral;
+        float along;
+        NearestRoadInfo(new Vector2(worldPosition.x, worldPosition.z), out float distance, out roadHeight, out lateral, out along);
+        return distance;
     }
 
-    private float NearestRoadHeight(Vector2 position, out float distance)
+    private void NearestRoadInfo(Vector2 position, out float distance, out float roadHeight, out float lateral, out float along)
     {
         float nearest = float.MaxValue;
-        float height = 0f;
+        roadHeight = 0f;
+        lateral = 0f;
+        along = 0f;
         for (int i = 0; i < samples.Count; i++)
         {
+            int next = (i + 1) % samples.Count;
             Vector3 a = samples[i];
-            Vector3 b = samples[(i + 1) % samples.Count];
+            Vector3 b = samples[next];
             float abx = b.x - a.x;
             float abz = b.z - a.z;
             float lengthSquared = abx * abx + abz * abz;
             float t = lengthSquared > 0.0001f ? Mathf.Clamp01(((position.x - a.x) * abx + (position.y - a.z) * abz) / lengthSquared) : 0f;
-            float dx = position.x - (a.x + abx * t);
-            float dz = position.y - (a.z + abz * t);
+            Vector3 closest = Vector3.Lerp(a, b, t);
+            float dx = position.x - closest.x;
+            float dz = position.y - closest.z;
             float candidate = dx * dx + dz * dz;
-            if (candidate < nearest)
-            {
-                nearest = candidate;
-                height = Mathf.Lerp(a.y, b.y, t);
-            }
+            if (candidate >= nearest) continue;
+            nearest = candidate;
+            roadHeight = closest.y;
+            float segmentLength = Vector3.Distance(a, b);
+            along = sampleDistances[i] + segmentLength * t;
+            Vector3 tangent = (b - a).normalized;
+            Vector3 right = Vector3.Cross(Vector3.up, tangent).normalized;
+            lateral = dx * right.x + dz * right.z;
         }
         distance = Mathf.Sqrt(nearest);
+    }
+
+    private static float ApplyBridgeCarvings(TrackBuilder builder, float along, float roadDistance, float roadHeight, float height, float corridor)
+    {
+        if (builder == null || builder.track == null) return height;
+        foreach (TrackData.TrackSection section in builder.EffectiveSections)
+        {
+            if (section == null || section.kind != TrackData.TrackSectionKind.StoneBridge) continue;
+            float length = Mathf.Clamp(section.lengthMeters, 24f, Mathf.Min(72f, builder.TrackLength * 0.2f));
+            float start = Mathf.Repeat(section.startProgress, 1f) * builder.TrackLength;
+            float wrapped = Mathf.Repeat(along - start, Mathf.Max(1f, builder.TrackLength));
+            if (wrapped > length) continue;
+            float t = Mathf.Clamp01(wrapped / length);
+            float envelope = Mathf.Sin(t * Mathf.PI);
+            float blend = 1f - SmoothStep(corridor + 1.2f, corridor + 5f, roadDistance);
+            height = Mathf.Min(height, roadHeight - 0.18f - envelope * 4.2f * blend);
+        }
         return height;
     }
 

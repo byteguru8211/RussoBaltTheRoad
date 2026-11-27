@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
         SelectedRaceType = Enum.IsDefined(typeof(RaceType), raceType) ? (RaceType)raceType : RaceType.Circuit;
         SelectedCameraMode = Settings.IsValidCameraMode()
             ? (int)Settings.cameraMode
-            : Mathf.Clamp(PlayerPrefs.GetInt(CameraSelectionKey, SelectedCameraMode), 0, (int)CameraMode.Cinematic);
+            : Mathf.Clamp(PlayerPrefs.GetInt(CameraSelectionKey, SelectedCameraMode), 0, (int)CameraMode.Rear);
     }
 
     private void SaveSelections()
@@ -162,7 +162,7 @@ public class GameManager : MonoBehaviour
             SelectedTrackId = firstOpen?.id ?? "winter_departure";
         }
         if (!Enum.IsDefined(typeof(RaceType), SelectedRaceType)) SelectedRaceType = RaceType.Circuit;
-        SelectedCameraMode = Mathf.Clamp(SelectedCameraMode, 0, (int)CameraMode.Cinematic);
+        SelectedCameraMode = Mathf.Clamp(SelectedCameraMode, 0, (int)CameraMode.Rear);
     }
 
     public bool SelectRace(string trackId, RaceType raceType)
@@ -184,7 +184,7 @@ public class GameManager : MonoBehaviour
 
     public void SelectCameraMode(int mode)
     {
-        SelectedCameraMode = Mathf.Clamp(mode, 0, (int)CameraMode.Cinematic);
+        SelectedCameraMode = Mathf.Clamp(mode, 0, (int)CameraMode.Rear);
         Settings.cameraMode = (CameraMode)SelectedCameraMode;
         Save();
     }

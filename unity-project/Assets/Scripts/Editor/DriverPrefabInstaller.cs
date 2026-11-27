@@ -33,12 +33,16 @@ public static class DriverPrefabInstaller
             controller = controllerOwner.AddComponent<DriverRigController>();
         controller.rigRoot = rig;
         controller.animator = animator;
-        controller.hideHeadInCockpit = false;
-        controller.useSeatAnchor = false;
-        controller.leftKneeLocal = new Vector3(0.17f, 0.64f, -0.22f);
-        controller.rightKneeLocal = new Vector3(-0.17f, 0.64f, -0.22f);
-        controller.leftFootLocal = new Vector3(0.18f, 0.24f, 0.24f);
-        controller.rightFootLocal = new Vector3(-0.18f, 0.24f, 0.24f);
+        controller.hideHeadInCockpit = true;
+        controller.useSeatAnchor = true;
+        controller.leftGripLocal = new Vector3(-0.22f, 0f, 0f);
+        controller.rightGripLocal = new Vector3(0.22f, 0f, 0f);
+        controller.leftElbowPoleLocal = new Vector3(-0.85f, -0.3f, 0.2f);
+        controller.rightElbowPoleLocal = new Vector3(0.85f, -0.3f, 0.2f);
+        controller.leftKneeLocal = new Vector3(-0.17f, 0.64f, -0.22f);
+        controller.rightKneeLocal = new Vector3(0.17f, 0.64f, -0.22f);
+        controller.leftFootLocal = new Vector3(-0.18f, 0.24f, 0.24f);
+        controller.rightFootLocal = new Vector3(0.18f, 0.24f, 0.24f);
 
         Directory.CreateDirectory(Path.GetDirectoryName(DriverPrefabPath));
         GameObject prefab = PrefabUtility.SaveAsPrefabAsset(instance, DriverPrefabPath);

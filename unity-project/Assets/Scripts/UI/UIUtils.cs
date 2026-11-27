@@ -86,16 +86,34 @@ public static class UIUtils
     {
         Button button = Card(parent, name, UITheme.Panel, anchorMin, anchorMax, offsetMin, offsetMax).gameObject.AddComponent<Button>();
         button.targetGraphic = button.image;
+        button.image.color = Color.white;
         ColorBlock colors = button.colors;
         colors.normalColor = UITheme.Panel;
         colors.highlightedColor = UITheme.Raised;
         colors.pressedColor = UITheme.Brass;
         colors.selectedColor = UITheme.Raised;
+        colors.colorMultiplier = 1f;
         colors.fadeDuration = 0.12f;
         button.colors = colors;
         Text(button.transform, "Label", label, fontSize, UITheme.Cream, TextAnchor.MiddleCenter, Vector2.zero, Vector2.one, new Vector2(18, 8), new Vector2(-18, -8), font);
         button.onClick.AddListener(() => action?.Invoke());
         return button;
+    }
+
+    public static void SetButtonColor(Button button, Color color)
+    {
+        if (button == null) return;
+        button.image.color = Color.white;
+        ColorBlock colors = button.colors;
+        colors.normalColor = color;
+        colors.highlightedColor = color;
+        colors.pressedColor = color == UITheme.Cream ? UITheme.Raised : color;
+        colors.selectedColor = color;
+        colors.colorMultiplier = 1f;
+        button.colors = colors;
+        Text label = button.GetComponentInChildren<Text>();
+        if (label != null)
+            label.color = color == UITheme.Brass ? UITheme.Dark : UITheme.Cream;
     }
 
     public static Image Background(Transform parent, string textureResource, Color tint)
